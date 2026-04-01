@@ -84,6 +84,12 @@ const smartCampus = projects.find((p) => p.slug === 'smartcampus')!;
     border: 1px solid currentColor;
     border-color: color-mix(in srgb, currentColor 12%, transparent);
     border-radius: 4px;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .infra-item:hover {
+    border-color: color-mix(in srgb, currentColor 30%, transparent);
+    transform: translateY(-2px);
   }
 
   .infra-name {

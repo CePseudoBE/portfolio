@@ -122,8 +122,14 @@ import { pipelineSteps } from '../../data/pipeline';
   .db-item {
     padding: 1rem;
     border: 1px solid currentColor;
+    transition: border-color 0.3s ease, transform 0.3s ease;
     border-color: color-mix(in srgb, currentColor 12%, transparent);
     border-radius: 4px;
+  }
+
+  .db-item:hover {
+    border-color: color-mix(in srgb, currentColor 30%, transparent);
+    transform: translateY(-2px);
   }
 
   .db-name {
