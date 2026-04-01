@@ -1,0 +1,165 @@
+/* ============================================
+   RESET
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--layer-surface-bg);
+  color: var(--layer-surface-text);
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: clamp(0.9375rem, 0.875rem + 0.25vw, 1.0625rem);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3, h4 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 2rem + 2.5vw, 5rem);
+}
+
+h2 {
+  font-size: clamp(1.75rem, 1.5rem + 1.25vw, 3rem);
+}
+
+h3 {
+  font-size: clamp(1.25rem, 1.125rem + 0.625vw, 1.75rem);
+}
+
+code,
+.mono {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 0.875em;
+}
+
+/* ============================================
+   LAYER COLOR VARIABLES
+   ============================================ */
+
+:root {
+  /* Layer 0 — Surface */
+  --layer-surface-accent: #8fa8c2;
+  --layer-surface-heading: #c8d5e2;
+  --layer-surface-text: #a0aab8;
+  --layer-surface-bg: #0c1018;
+
+  /* Layer 1 — Interface */
+  --layer-interface-accent: #5e8a8a;
+  --layer-interface-heading: #a8ccc8;
+  --layer-interface-text: #7e9494;
+  --layer-interface-bg: #0a0e12;
+
+  /* Layer 2 — Services */
+  --layer-services-accent: #4a7263;
+  --layer-services-heading: #8fbdaa;
+  --layer-services-text: #7a9e8e;
+  --layer-services-bg: #080c0e;
+
+  /* Layer 3 — Data */
+  --layer-data-accent: #6b6243;
+  --layer-data-heading: #b5a87a;
+  --layer-data-text: #8e8670;
+  --layer-data-bg: #0a0908;
+
+  /* Layer 4 — Infrastructure */
+  --layer-infra-accent: #5c4035;
+  --layer-infra-heading: #a88072;
+  --layer-infra-text: #8a7068;
+  --layer-infra-bg: #0a0807;
+
+  /* Layer 5 — Core */
+  --layer-core-accent: #3d2828;
+  --layer-core-heading: #9a7070;
+  --layer-core-text: #806464;
+  --layer-core-bg: #080606;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--layer-surface-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--layer-surface-accent);
+  border-radius: 3px;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--layer-surface-accent) var(--layer-surface-bg);
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
+  }
+}
+
+/* ============================================
+   SELECTION
+   ============================================ */
+
+::selection {
+  background: var(--layer-surface-accent);
+  color: var(--layer-surface-bg);
+}

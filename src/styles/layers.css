@@ -1,0 +1,203 @@
+/* ============================================
+   LAYER SECTIONS
+   Each layer scopes its own colors via data-layer
+   ============================================ */
+
+.layer {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: clamp(4rem, 3rem + 5vw, 8rem) clamp(1.5rem, 1rem + 2.5vw, 4rem);
+  z-index: 1;
+}
+
+/* Account for fixed DepthIndicator sidebar on desktop */
+@media (min-width: 769px) {
+  .layer {
+    padding-left: clamp(5rem, 4rem + 3vw, 8rem);
+  }
+}
+
+.layer-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ============================================
+   LAYER BLENDING
+   Each layer (except Surface) fades in from the
+   previous layer's bg via a top gradient + a
+   subtle accent glow line at the junction.
+   ============================================ */
+
+.layer + .layer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(6rem, 4rem + 8vw, 12rem);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Accent glow at the seam */
+.layer + .layer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* — Surface ——————————————————————————— */
+[data-layer="surface"] {
+  background-color: var(--layer-surface-bg);
+  color: var(--layer-surface-text);
+}
+
+[data-layer="surface"] h1,
+[data-layer="surface"] h2,
+[data-layer="surface"] h3,
+[data-layer="surface"] h4 {
+  color: var(--layer-surface-heading);
+}
+
+/* — Interface —————————————————————————— */
+[data-layer="interface"] {
+  background-color: var(--layer-interface-bg);
+  color: var(--layer-interface-text);
+}
+
+[data-layer="interface"]::before {
+  background: linear-gradient(
+    to bottom,
+    var(--layer-surface-bg),
+    transparent
+  );
+}
+
+[data-layer="interface"]::after {
+  background: var(--layer-interface-accent);
+  box-shadow: 0 0 12px 2px var(--layer-interface-accent);
+  opacity: 0.2;
+}
+
+[data-layer="interface"] h1,
+[data-layer="interface"] h2,
+[data-layer="interface"] h3,
+[data-layer="interface"] h4 {
+  color: var(--layer-interface-heading);
+}
+
+/* — Services ——————————————————————————— */
+[data-layer="services"] {
+  background-color: var(--layer-services-bg);
+  color: var(--layer-services-text);
+}
+
+[data-layer="services"]::before {
+  background: linear-gradient(
+    to bottom,
+    var(--layer-interface-bg),
+    transparent
+  );
+}
+
+[data-layer="services"]::after {
+  background: var(--layer-services-accent);
+  box-shadow: 0 0 12px 2px var(--layer-services-accent);
+  opacity: 0.2;
+}
+
+[data-layer="services"] h1,
+[data-layer="services"] h2,
+[data-layer="services"] h3,
+[data-layer="services"] h4 {
+  color: var(--layer-services-heading);
+}
+
+/* — Data ——————————————————————————————— */
+[data-layer="data"] {
+  background-color: var(--layer-data-bg);
+  color: var(--layer-data-text);
+}
+
+[data-layer="data"]::before {
+  background: linear-gradient(
+    to bottom,
+    var(--layer-services-bg),
+    transparent
+  );
+}
+
+[data-layer="data"]::after {
+  background: var(--layer-data-accent);
+  box-shadow: 0 0 12px 2px var(--layer-data-accent);
+  opacity: 0.2;
+}
+
+[data-layer="data"] h1,
+[data-layer="data"] h2,
+[data-layer="data"] h3,
+[data-layer="data"] h4 {
+  color: var(--layer-data-heading);
+}
+
+/* — Infrastructure ————————————————————— */
+[data-layer="infra"] {
+  background-color: var(--layer-infra-bg);
+  color: var(--layer-infra-text);
+}
+
+[data-layer="infra"]::before {
+  background: linear-gradient(
+    to bottom,
+    var(--layer-data-bg),
+    transparent
+  );
+}
+
+[data-layer="infra"]::after {
+  background: var(--layer-infra-accent);
+  box-shadow: 0 0 12px 2px var(--layer-infra-accent);
+  opacity: 0.2;
+}
+
+[data-layer="infra"] h1,
+[data-layer="infra"] h2,
+[data-layer="infra"] h3,
+[data-layer="infra"] h4 {
+  color: var(--layer-infra-heading);
+}
+
+/* — Core ——————————————————————————————— */
+[data-layer="core"] {
+  background-color: var(--layer-core-bg);
+  color: var(--layer-core-text);
+}
+
+[data-layer="core"]::before {
+  background: linear-gradient(
+    to bottom,
+    var(--layer-infra-bg),
+    transparent
+  );
+}
+
+[data-layer="core"]::after {
+  background: var(--layer-core-accent);
+  box-shadow: 0 0 12px 2px var(--layer-core-accent);
+  opacity: 0.2;
+}
+
+[data-layer="core"] h1,
+[data-layer="core"] h2,
+[data-layer="core"] h3,
+[data-layer="core"] h4 {
+  color: var(--layer-core-heading);
+}
