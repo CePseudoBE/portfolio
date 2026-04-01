@@ -1,11 +1,26 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Surface from '../components/layers/Surface.astro';
+import Interface from '../components/layers/Interface.astro';
+import Services from '../components/layers/Services.astro';
+import Data from '../components/layers/Data.astro';
+import Infra from '../components/layers/Infra.astro';
+import Core from '../components/layers/Core.astro';
+import DepthIndicator from '../components/ui/DepthIndicator.astro';
+import DepthReadout from '../components/ui/DepthReadout.astro';
+import StrataLines from '../components/ui/StrataLines.astro';
 ---
 
 <Layout>
-	<Welcome />
+  <StrataLines />
+  <DepthIndicator />
+  <DepthReadout />
+  <main>
+    <Surface />
+    <Interface />
+    <Services />
+    <Data />
+    <Infra />
+    <Core />
+  </main>
 </Layout>

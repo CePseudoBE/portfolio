@@ -1,0 +1,122 @@
+---
+// Layer 0 — Surface: Hero, name, tagline, intro
+import TechPill from '../ui/TechPill.astro';
+import Reveal from '../ui/Reveal.astro';
+import { skills } from '../../data/skills';
+---
+
+<section class="layer" data-layer="surface" id="surface">
+  <div class="layer-inner surface-layout">
+    <div class="surface-content">
+      <Reveal><p class="mono layer-label">0 — Surface</p></Reveal>
+      <Reveal delay={0.05}><p class="hero-name">Axel Hoffmann</p></Reveal>
+      <Reveal delay={0.15}><h1>Building what runs<br />beneath the surface.</h1></Reveal>
+      <Reveal delay={0.25}>
+        <p class="tagline">
+          Backend engineer crafting distributed systems, IoT platforms, and the invisible
+          infrastructure that makes things work. TypeScript, Rust, and everything in between.
+        </p>
+      </Reveal>
+      <Reveal delay={0.35}>
+        <div class="surface-stack">
+          {skills.map((cat) => (
+            <div class="stack-group">
+              <span class="mono stack-label">{cat.label}</span>
+              <div class="stack-items">
+                {cat.items.map((item) => <TechPill label={item} />)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </Reveal>
+    </div>
+    <div class="scroll-hint mono">
+      <span>scroll to descend</span>
+      <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+        <path d="M8 4L8 20M8 20L2 14M8 20L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .layer-label {
+    color: var(--layer-surface-accent);
+    font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+
+  .hero-name {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(1.1rem, 1rem + 0.5vw, 1.5rem);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--layer-surface-heading);
+    opacity: 0.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .surface-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - 8rem);
+  }
+
+  .surface-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .tagline {
+    margin-top: 1.5rem;
+    font-size: clamp(1.05rem, 1rem + 0.25vw, 1.25rem);
+    max-width: 40rem;
+    line-height: 1.7;
+  }
+
+  .surface-stack {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .stack-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stack-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7a8494;
+  }
+
+  .stack-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .scroll-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #7a8494;
+    padding-top: 2rem;
+  }
+
+  .scroll-hint svg {
+    opacity: 0.6;
+  }
+</style>

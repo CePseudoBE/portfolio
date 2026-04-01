@@ -1,0 +1,102 @@
+---
+// Layer 4 — Infrastructure: SmartCampus (featured), Proxmox, Docker, SSL/TLS, 4G/5G
+import ProjectCard from '../ui/ProjectCard.astro';
+import Reveal from '../ui/Reveal.astro';
+import { projects } from '../../data/projects';
+
+const smartCampus = projects.find((p) => p.slug === 'smartcampus')!;
+---
+
+<section class="layer" data-layer="infra" id="infra">
+  <div class="layer-inner">
+    <Reveal><p class="mono layer-label">4 — Infrastructure</p></Reveal>
+    <Reveal delay={0.1}><h2>Infrastructure</h2></Reveal>
+    <Reveal delay={0.15}>
+      <p class="layer-intro">
+        The physical and virtual substrate. Bare-metal servers, containerized services,
+        encrypted tunnels, and the radio networks that connect sensors to the stack.
+      </p>
+    </Reveal>
+
+    <Reveal delay={0.2}>
+      <div class="featured-project">
+        <span class="mono featured-label">Featured project</span>
+        <ProjectCard project={smartCampus} />
+      </div>
+    </Reveal>
+
+    <Reveal delay={0.1}><div class="infra-grid">
+      <div class="infra-item">
+        <span class="mono infra-name">Proxmox</span>
+        <p>Hypervisor for VM provisioning. Automated templates, resource isolation, snapshot-based rollback.</p>
+      </div>
+      <div class="infra-item">
+        <span class="mono infra-name">Docker</span>
+        <p>Containerized microservices with multi-stage builds. Compose for local dev, orchestrated deploys for production.</p>
+      </div>
+      <div class="infra-item">
+        <span class="mono infra-name">LoRaWAN</span>
+        <p>Long-range IoT gateway network. Payload decoding, device provisioning, sensor fleet management.</p>
+      </div>
+      <div class="infra-item">
+        <span class="mono infra-name">4G/5G Backhaul</span>
+        <p>Cellular uplink for remote campus zones beyond wired reach. Failover routing, bandwidth management.</p>
+      </div>
+    </div></Reveal>
+  </div>
+</section>
+
+<style>
+  .layer-label {
+    color: var(--layer-infra-accent);
+    font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .layer-intro {
+    max-width: 48rem;
+    margin-bottom: 3rem;
+  }
+
+  .featured-project {
+    margin-bottom: 3rem;
+  }
+
+  .featured-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--layer-infra-accent);
+    margin-bottom: 1rem;
+  }
+
+  .infra-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1.5rem;
+  }
+
+  .infra-item {
+    padding: 1.25rem;
+    border: 1px solid currentColor;
+    border-color: color-mix(in srgb, currentColor 12%, transparent);
+    border-radius: 4px;
+  }
+
+  .infra-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--layer-infra-accent);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .infra-item p {
+    font-size: 0.875rem;
+    opacity: 0.7;
+  }
+</style>

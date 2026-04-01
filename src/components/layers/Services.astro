@@ -1,0 +1,91 @@
+---
+// Layer 2 — Services: Digital Twin (featured project), patterns
+import ProjectCard from '../ui/ProjectCard.astro';
+import PatternCard from '../ui/PatternCard.astro';
+import Reveal from '../ui/Reveal.astro';
+import { projects } from '../../data/projects';
+
+const digitalTwin = projects.find((p) => p.slug === 'digital-twin')!;
+---
+
+<section class="layer" data-layer="services" id="services">
+  <div class="layer-inner">
+    <Reveal><p class="mono layer-label">2 — Services</p></Reveal>
+    <Reveal delay={0.1}><h2>Services & Patterns</h2></Reveal>
+    <Reveal delay={0.15}>
+      <p class="layer-intro">
+        Where business logic lives. Domain-driven services, clean dependency boundaries,
+        and architectural patterns that keep complexity in check.
+      </p>
+    </Reveal>
+
+    <Reveal delay={0.2}>
+      <div class="featured-project">
+        <span class="mono featured-label">Featured project</span>
+        <ProjectCard project={digitalTwin} />
+      </div>
+    </Reveal>
+
+    <Reveal delay={0.1}>
+      <div class="patterns-section">
+        <h3>Architecture Patterns</h3>
+        <div class="patterns-grid">
+        <PatternCard
+          name="DI / IoC"
+          description="Dependency injection and inversion of control for testable, decoupled service layers. Constructor injection, interface-driven contracts."
+        />
+        <PatternCard
+          name="Event-Driven"
+          description="BullMQ workers processing async jobs — sensor data ingestion, entity updates, notification dispatch. Decoupled producers and consumers."
+        />
+        <PatternCard
+          name="CQRS"
+          description="Command-Query Responsibility Segregation separating write paths (entity mutations) from read paths (optimized queries, cached views)."
+        />
+        <PatternCard
+          name="Monorepo"
+          description="9 packages, 4 dependency layers. Shared types, independent deployability, enforced boundaries via workspace constraints."
+        />
+        </div>
+      </div>
+    </Reveal>
+  </div>
+</section>
+
+<style>
+  .layer-label {
+    color: var(--layer-services-accent);
+    font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .layer-intro {
+    max-width: 48rem;
+    margin-bottom: 3rem;
+  }
+
+  .featured-project {
+    margin-bottom: 3rem;
+  }
+
+  .featured-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--layer-services-accent);
+    margin-bottom: 1rem;
+  }
+
+  .patterns-section h3 {
+    margin-bottom: 1.25rem;
+  }
+
+  .patterns-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 1rem;
+  }
+</style>

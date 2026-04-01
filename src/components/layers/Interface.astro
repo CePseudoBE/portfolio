@@ -1,0 +1,105 @@
+---
+// Layer 1 — Interface: APIs, protocols, endpoints
+import EndpointRow from '../ui/EndpointRow.astro';
+import Reveal from '../ui/Reveal.astro';
+import { endpoints } from '../../data/endpoints';
+---
+
+<section class="layer" data-layer="interface" id="interface">
+  <div class="layer-inner">
+    <Reveal><p class="mono layer-label">1 — Interface</p></Reveal>
+    <Reveal delay={0.1}><h2>APIs & Protocols</h2></Reveal>
+    <Reveal delay={0.15}>
+      <p class="layer-intro">
+        The contracts that connect systems. REST endpoints, NGSI-LD for digital twins,
+        LoRaWAN device provisioning, OAuth2 flows — every interaction starts at the interface.
+      </p>
+    </Reveal>
+
+    <Reveal delay={0.2}>
+      <div class="endpoints-section">
+        <h3>Endpoints</h3>
+        <div class="endpoints-list">
+          {endpoints.map((ep) => (
+            <EndpointRow
+              method={ep.method}
+              path={ep.path}
+              description={ep.description}
+              protocol={ep.protocol}
+            />
+          ))}
+        </div>
+      </div>
+    </Reveal>
+
+    <Reveal delay={0.1}><div class="protocols-grid">
+      <div class="protocol-item">
+        <span class="mono protocol-name">NGSI-LD</span>
+        <p>Context-based entity API for digital twin interoperability</p>
+      </div>
+      <div class="protocol-item">
+        <span class="mono protocol-name">LoRaWAN</span>
+        <p>Long-range IoT protocol for low-power sensor networks</p>
+      </div>
+      <div class="protocol-item">
+        <span class="mono protocol-name">OAuth2</span>
+        <p>Token-based authentication with client credentials and PKCE</p>
+      </div>
+      <div class="protocol-item">
+        <span class="mono protocol-name">MQTT</span>
+        <p>Lightweight pub/sub messaging for real-time sensor data</p>
+      </div>
+    </div></Reveal>
+  </div>
+</section>
+
+<style>
+  .layer-label {
+    color: var(--layer-interface-accent);
+    font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .layer-intro {
+    max-width: 48rem;
+    margin-bottom: 3rem;
+  }
+
+  .endpoints-section {
+    margin-bottom: 3rem;
+  }
+
+  .endpoints-section h3 {
+    margin-bottom: 1rem;
+  }
+
+  .protocols-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .protocol-item {
+    padding: 1.25rem;
+    border: 1px solid currentColor;
+    border-color: color-mix(in srgb, currentColor 12%, transparent);
+    border-radius: 4px;
+  }
+
+  .protocol-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--layer-interface-accent);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .protocol-item p {
+    font-size: 0.875rem;
+    opacity: 0.7;
+  }
+</style>
