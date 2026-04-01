@@ -1,0 +1,26 @@
+---
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<span class="tech-pill mono">{label}</span>
+
+<style>
+  .tech-pill {
+    display: inline-block;
+    padding: 0.2em 0.65em;
+    font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+    border: 1px solid currentColor;
+    border-radius: 9999px;
+    opacity: 0.85;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+  }
+
+  .tech-pill:hover {
+    opacity: 1;
+  }
+</style>

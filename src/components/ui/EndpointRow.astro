@@ -1,0 +1,68 @@
+---
+interface Props {
+  method: string;
+  path: string;
+  description: string;
+  protocol: string;
+}
+
+const { method, path, description, protocol } = Astro.props;
+---
+
+<div class="endpoint-row">
+  <div class="endpoint-head">
+    <span class={`method mono method--${method.toLowerCase()}`}>{method}</span>
+    <code class="path">{path}</code>
+    <span class="protocol mono">{protocol}</span>
+  </div>
+  <p class="endpoint-desc">{description}</p>
+</div>
+
+<style>
+  .endpoint-row {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid currentColor;
+    border-bottom-color: color-mix(in srgb, currentColor 12%, transparent);
+  }
+
+  .endpoint-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .method {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.15em 0.5em;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+  }
+
+  .method--get { color: #4ade80; }
+  .method--post { color: #60a5fa; }
+  .method--put { color: #fbbf24; }
+  .method--patch { color: #fb923c; }
+  .method--delete { color: #f87171; }
+
+  .path {
+    font-size: 0.85rem;
+    opacity: 0.9;
+  }
+
+  .protocol {
+    margin-left: auto;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.5;
+  }
+
+  .endpoint-desc {
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+    opacity: 0.6;
+    padding-left: 0.25rem;
+  }
+</style>

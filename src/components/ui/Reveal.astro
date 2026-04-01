@@ -1,0 +1,55 @@
+---
+interface Props {
+  direction?: 'up' | 'left' | 'right';
+  delay?: number;
+  class?: string;
+}
+
+const { direction = 'up', delay = 0, class: className = '' } = Astro.props;
+---
+
+<div class={`reveal ${className}`} data-reveal data-reveal-direction={direction} data-reveal-delay={String(delay)}>
+  <slot />
+</div>
+
+<script>
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
+    if (prefersReduced) {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+      return;
+    }
+
+    const direction = el.dataset.revealDirection || 'up';
+    const delay = parseFloat(el.dataset.revealDelay || '0');
+
+    // Initial hidden state
+    el.style.opacity = '0';
+    el.style.transition = `opacity 0.8s ease ${delay}s, transform 0.8s ease ${delay}s`;
+
+    if (direction === 'up') el.style.transform = 'translateY(32px)';
+    else if (direction === 'left') el.style.transform = 'translateX(-32px)';
+    else if (direction === 'right') el.style.transform = 'translateX(32px)';
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -15% 0px' },
+    );
+
+    observer.observe(el);
+  });
+</script>
+
+<style>
+  .reveal {
+    will-change: transform, opacity;
+  }
+</style>

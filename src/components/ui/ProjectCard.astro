@@ -1,0 +1,84 @@
+---
+import TechPill from './TechPill.astro';
+import type { Project } from '../../data/projects';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="project-card">
+  <header class="project-header">
+    <h3>{project.name}</h3>
+    <span class="mono project-role">{project.role}</span>
+  </header>
+
+  <p class="project-summary">{project.summary}</p>
+
+  <ul class="project-highlights">
+    {project.highlights.map((h) => <li>{h}</li>)}
+  </ul>
+
+  <div class="project-stack">
+    {project.stack.map((s) => <TechPill label={s} />)}
+  </div>
+</article>
+
+<style>
+  .project-card {
+    padding: clamp(1.5rem, 1.25rem + 1.25vw, 2.5rem);
+    border: 1px solid currentColor;
+    border-color: color-mix(in srgb, currentColor 15%, transparent);
+    border-radius: 6px;
+  }
+
+  .project-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .project-role {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.5;
+  }
+
+  .project-summary {
+    margin-bottom: 1.25rem;
+    max-width: 48rem;
+  }
+
+  .project-highlights {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-highlights li {
+    font-size: 0.9rem;
+    padding-left: 1.25rem;
+    position: relative;
+  }
+
+  .project-highlights li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    opacity: 0.4;
+  }
+
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+</style>

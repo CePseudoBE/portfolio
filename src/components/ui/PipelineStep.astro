@@ -1,0 +1,76 @@
+---
+interface Props {
+  index: number;
+  label: string;
+  description: string;
+  tech: string;
+  total: number;
+}
+
+const { index, label, description, tech, total } = Astro.props;
+---
+
+<div class="pipeline-step">
+  <div class="step-indicator">
+    <span class="step-number mono">{String(index + 1).padStart(2, '0')}</span>
+    {index < total - 1 && <div class="step-line" />}
+  </div>
+  <div class="step-content">
+    <h4>{label}</h4>
+    <p class="step-desc">{description}</p>
+    <span class="step-tech mono">{tech}</span>
+  </div>
+</div>
+
+<style>
+  .pipeline-step {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .step-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 2rem;
+  }
+
+  .step-number {
+    font-size: 0.75rem;
+    opacity: 0.5;
+    letter-spacing: 0.04em;
+  }
+
+  .step-line {
+    flex: 1;
+    width: 1px;
+    background: currentColor;
+    opacity: 0.15;
+    margin: 0.5rem 0;
+  }
+
+  .step-content {
+    padding-bottom: 1.75rem;
+  }
+
+  .step-content h4 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(1.1rem, 1rem + 0.3vw, 1.35rem);
+    margin-bottom: 0.35rem;
+  }
+
+  .step-desc {
+    font-size: 0.9rem;
+    opacity: 0.75;
+    margin-bottom: 0.5rem;
+    max-width: 36rem;
+  }
+
+  .step-tech {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.45;
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+interface Props {
+  name: string;
+  description: string;
+}
+
+const { name, description } = Astro.props;
+---
+
+<div class="pattern-card">
+  <h4 class="mono pattern-name">{name}</h4>
+  <p class="pattern-desc">{description}</p>
+</div>
+
+<style>
+  .pattern-card {
+    padding: 1.25rem;
+    border-left: 2px solid currentColor;
+    border-left-color: color-mix(in srgb, currentColor 30%, transparent);
+  }
+
+  .pattern-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .pattern-desc {
+    font-size: 0.9rem;
+    opacity: 0.75;
+    max-width: 36rem;
+  }
+</style>
