@@ -1,0 +1,52 @@
+---
+// Fixed bottom-right readout showing "depth: XX%"
+---
+
+<div class="depth-readout mono" aria-live="polite">
+  <span class="readout-label">depth:</span>
+  <span class="readout-value" id="depth-value">0%</span>
+</div>
+
+<script>
+  import { onDepthChange } from '../../scripts/depth-tracker';
+
+  const el = document.getElementById('depth-value');
+  if (el) {
+    onDepthChange(({ progress }) => {
+      el.textContent = `${progress}%`;
+    });
+  }
+</script>
+
+<style>
+  .depth-readout {
+    position: fixed;
+    bottom: clamp(1rem, 0.75rem + 1.25vw, 2rem);
+    right: clamp(1rem, 0.75rem + 1.25vw, 2rem);
+    z-index: 100;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #7a8494;
+    display: flex;
+    gap: 0.35em;
+    transition: color 0.3s ease;
+  }
+
+  .depth-readout:hover {
+    color: #a0aab8;
+  }
+
+  .readout-value {
+    min-width: 3ch;
+    text-align: right;
+  }
+
+  @media (max-width: 768px) {
+    .depth-readout {
+      bottom: 0.75rem;
+      right: 0.75rem;
+      font-size: 0.6rem;
+    }
+  }
+</style>

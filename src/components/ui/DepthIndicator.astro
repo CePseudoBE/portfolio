@@ -1,0 +1,107 @@
+---
+// Sidebar left — shows layer dots with active state
+import { LAYERS } from '../../types';
+---
+
+<nav class="depth-indicator" aria-label="Layer navigation">
+  <div class="depth-track">
+    {LAYERS.map((layer) => (
+      <a
+        href={`#${layer.id}`}
+        class="depth-dot"
+        data-layer-dot={layer.id}
+        aria-label={`${layer.label} layer`}
+      >
+        <span class="dot" />
+        <span class="dot-label mono">{layer.label}</span>
+      </a>
+    ))}
+  </div>
+</nav>
+
+<script>
+  import { initDepthTracker, onDepthChange } from '../../scripts/depth-tracker';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const dots = document.querySelectorAll<HTMLElement>('[data-layer-dot]');
+
+    onDepthChange(({ activeLayerId }) => {
+      dots.forEach((dot) => {
+        const isActive = dot.dataset.layerDot === activeLayerId;
+        dot.classList.toggle('is-active', isActive);
+      });
+    });
+
+    initDepthTracker();
+  });
+</script>
+
+<style>
+  .depth-indicator {
+    position: fixed;
+    left: clamp(1rem, 0.75rem + 1.25vw, 2rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+  }
+
+  .depth-track {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .depth-dot {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--layer-surface-text);
+    transition: color 0.3s ease;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.25;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .dot-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .depth-dot.is-active .dot {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+
+  .depth-dot.is-active .dot-label {
+    opacity: 1;
+    color: #7a8494;
+    transform: translateX(0);
+  }
+
+  .depth-dot:hover .dot-label {
+    opacity: 1;
+    color: #a0aab8;
+    transform: translateX(0);
+  }
+
+  @media (max-width: 768px) {
+    .depth-indicator {
+      display: none;
+    }
+  }
+</style>
