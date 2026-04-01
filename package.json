@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "deploy": "astro build && ssh root@204.168.185.161 \"rm -rf /var/www/axel-hoffmann.dev/*\" && scp -r dist/* root@204.168.185.161:/var/www/axel-hoffmann.dev/",
     "astro": "astro"
   },
   "dependencies": {
