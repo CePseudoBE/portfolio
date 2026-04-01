@@ -12,6 +12,12 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@fontsource/instrument-serif": "^5.2.8",
+    "@fontsource/manrope": "^5.2.8",
     "astro": "^6.1.2"
+  },
+  "devDependencies": {
+    "astro-critters": "^2.2.1"
   }
 }
