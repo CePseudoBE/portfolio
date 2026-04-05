@@ -42,6 +42,6 @@ export const projects: Project[] = [
       'NATS JetStream for event streaming',
       'Proxmox VM provisioning, 4G/5G backhaul',
     ],
-    stack: ['Rust', 'Actix-web', 'TimescaleDB', 'NATS JetStream', 'Proxmox', 'Docker'],
+    stack: ['Rust', 'Axum', 'TimescaleDB', 'NATS JetStream', 'Proxmox', 'Docker'],
   },
 ];

@@ -10,7 +10,7 @@ export const skills: SkillCategory[] = [
   },
   {
     label: 'Frameworks',
-    items: ['AdonisJS', 'Spring Boot', 'Actix-web'],
+    items: ['AdonisJS', 'Spring Boot', 'Axum'],
   },
   {
     label: 'Data',
