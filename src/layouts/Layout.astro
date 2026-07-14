@@ -6,8 +6,11 @@ interface Props {
 
 const {
   title = 'Axel Hoffmann | Backend Engineer',
-  description = 'Backend engineer specializing in TypeScript, Rust, and distributed systems. Building what runs beneath the surface.',
+  description = 'Backend engineer at STARI (ULB & FARI), Brussels. Rust, TypeScript, distributed systems, Kubernetes/GitOps. Building what runs beneath the surface.',
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og-image.png', Astro.site);
 
 import '../styles/global.css';
 import '../styles/layers.css';
@@ -28,11 +31,23 @@ import '@fontsource/manrope/latin-500.css';
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0c1018" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Axel Hoffmann" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <title>{title}</title>
   </head>
