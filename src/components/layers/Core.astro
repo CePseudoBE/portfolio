@@ -46,6 +46,16 @@ import Reveal from '../ui/Reveal.astro';
         </div>
       </Reveal>
 
+      <Reveal delay={0.1}>
+        <div class="beyond-section">
+          <h3>Beyond the Stack</h3>
+          <p class="beyond-text">
+            With the FARI AI Academy, I delivered a one-day training on AI for the
+            common good to BELSPO, the Belgian federal science policy office.
+          </p>
+        </div>
+      </Reveal>
+
       <Reveal delay={0.15}><div class="contact-section">
         <h3>Contact</h3>
         <div class="contact-links">
@@ -99,8 +109,14 @@ import Reveal from '../ui/Reveal.astro';
   }
 
   .values-section h3,
+  .beyond-section h3,
   .contact-section h3 {
     margin-bottom: 1rem;
+  }
+
+  .beyond-text {
+    max-width: 42rem;
+    font-size: 0.95rem;
   }
 
   .values-list {
