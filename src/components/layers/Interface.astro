@@ -29,7 +29,10 @@ const apiGateway = projects.find((p) => p.slug === 'api-gateway')!;
 
     <Reveal delay={0.2}>
       <div class="endpoints-section">
-        <h3>Endpoints</h3>
+        <div class="endpoints-header">
+          <h3>Endpoints</h3>
+          <span class="mono endpoints-note">Illustrative — representative of the APIs I build, not a public reference</span>
+        </div>
         <div class="endpoints-list">
           {endpoints.map((ep, i) => (
             <Reveal delay={0.05 * i}>
@@ -97,8 +100,18 @@ const apiGateway = projects.find((p) => p.slug === 'api-gateway')!;
     margin-bottom: 3rem;
   }
 
-  .endpoints-section h3 {
+  .endpoints-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
     margin-bottom: 1rem;
+  }
+
+  .endpoints-note {
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: #7a8494;
   }
 
   .protocols-grid {
