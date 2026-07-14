@@ -11,9 +11,10 @@ import DepthReadout from '../components/ui/DepthReadout.astro';
 ---
 
 <Layout>
+  <a href="#main" class="skip-link mono">Skip to content</a>
   <DepthIndicator />
   <DepthReadout />
-  <main>
+  <main id="main">
     <Surface />
     <Interface />
     <Services />

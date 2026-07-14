@@ -118,6 +118,36 @@ code,
 }
 
 /* ============================================
+   FOCUS & SKIP LINK
+   ============================================ */
+
+:focus-visible {
+  outline: 2px solid var(--layer-surface-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translate(-50%, calc(-100% - 1.5rem));
+  z-index: 300;
+  padding: 0.6em 1.2em;
+  background: var(--layer-surface-heading);
+  color: var(--layer-surface-bg);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: transform 0.2s ease;
+}
+
+.skip-link:focus-visible {
+  transform: translate(-50%, 0);
+}
+
+/* ============================================
    SCROLLBAR
    ============================================ */
 
