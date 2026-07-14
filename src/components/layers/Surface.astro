@@ -11,6 +11,9 @@ import { skills } from '../../data/skills';
       <Reveal><p class="mono layer-label">0 — Surface</p></Reveal>
       <Reveal delay={0.1}><h1 class="hero-name">Axel<br />Hoffmann</h1></Reveal>
       <Reveal delay={0.25}><p class="hero-title">Backend Engineer</p></Reveal>
+      <Reveal delay={0.35}>
+        <p class="hero-meta mono">STARI — ULB & FARI · Brussels · 2023 — present</p>
+      </Reveal>
       <Reveal delay={0.4}>
         <p class="tagline">
           Distributed systems, IoT platforms, and the invisible
@@ -63,6 +66,13 @@ import { skills } from '../../data/skills';
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--layer-surface-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-meta {
+    font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+    letter-spacing: 0.06em;
+    color: #7a8494;
     margin-bottom: 1.5rem;
   }
 
