@@ -79,41 +79,55 @@ code,
    LAYER COLOR VARIABLES
    ============================================ */
 
+/*
+  Each layer has 5 tiers:
+  - accent:  layer identity — borders, glows, pills. May dip below text
+             contrast in deep layers (never used for body-size text).
+  - label:   accent-tinted color safe for small text (>= 4.5:1 on its bg).
+             Equals accent where the accent already passes.
+  - heading: titles. text: body copy. Both >= 4.5:1 on their bg.
+*/
 :root {
   /* Layer 0 — Surface */
   --layer-surface-accent: #8fa8c2;
+  --layer-surface-label: #8fa8c2;
   --layer-surface-heading: #c8d5e2;
   --layer-surface-text: #a0aab8;
   --layer-surface-bg: #0c1018;
 
   /* Layer 1 — Interface */
   --layer-interface-accent: #5e8a8a;
+  --layer-interface-label: #5e8a8a;
   --layer-interface-heading: #a8ccc8;
   --layer-interface-text: #7e9494;
   --layer-interface-bg: #0a0e12;
 
   /* Layer 2 — Services */
   --layer-services-accent: #4a7263;
+  --layer-services-label: #568573;
   --layer-services-heading: #8fbdaa;
   --layer-services-text: #7a9e8e;
   --layer-services-bg: #080c0e;
 
   /* Layer 3 — Data */
   --layer-data-accent: #6b6243;
+  --layer-data-label: #867a54;
   --layer-data-heading: #b5a87a;
   --layer-data-text: #8e8670;
   --layer-data-bg: #0a0908;
 
   /* Layer 4 — Infrastructure */
   --layer-infra-accent: #5c4035;
+  --layer-infra-label: #9e6e5b;
   --layer-infra-heading: #a88072;
-  --layer-infra-text: #8a7068;
+  --layer-infra-text: #8e746b;
   --layer-infra-bg: #0a0807;
 
   /* Layer 5 — Core */
   --layer-core-accent: #3d2828;
+  --layer-core-label: #9f6c6c;
   --layer-core-heading: #9a7070;
-  --layer-core-text: #806464;
+  --layer-core-text: #917272;
   --layer-core-bg: #080606;
 }
 
