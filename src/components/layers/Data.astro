@@ -12,9 +12,10 @@ import { pipelineSteps } from '../../data/pipeline';
     <Reveal delay={0.1}><h2>Data Layer</h2></Reveal>
     <Reveal delay={0.15}>
       <p class="layer-intro">
-        From external APIs to NGSI-LD entities. Collectors ingest, Harvesters transform,
-        Redis caches, PostgreSQL persists — with BullMQ orchestrating the flow
-        and presigned URLs for heavy assets.
+        From sensor frames and external APIs to queryable entities. Idempotent
+        multi-protocol ingestion on NATS JetStream with a dead-letter queue,
+        time-series in TimescaleDB hypertables — and a BullMQ-orchestrated
+        pipeline turning collected data into NGSI-LD entities.
       </p>
     </Reveal>
 
@@ -48,6 +49,14 @@ import { pipelineSteps } from '../../data/pipeline';
         <div class="db-section">
           <h3>Storage</h3>
           <div class="db-list">
+            <div class="db-item">
+              <span class="mono db-name">TimescaleDB</span>
+              <p>Sensor time-series: hypertables, continuous aggregates, native compression</p>
+            </div>
+            <div class="db-item">
+              <span class="mono db-name">NATS JetStream</span>
+              <p>Durable event streaming for ingestion — idempotent consumers, dead-letter queue</p>
+            </div>
             <div class="db-item">
               <span class="mono db-name">PostgreSQL</span>
               <p>Metadata, user ownership, subscriptions, historical entity data</p>
