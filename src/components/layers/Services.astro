@@ -2,10 +2,14 @@
 // Layer 2 — Services: Digital Twin (featured project), patterns
 import ProjectCard from '../ui/ProjectCard.astro';
 import PatternCard from '../ui/PatternCard.astro';
+import TechPill from '../ui/TechPill.astro';
 import Reveal from '../ui/Reveal.astro';
 import { projects } from '../../data/projects';
 
 const digitalTwin = projects.find((p) => p.slug === 'digital-twin')!;
+const alsoShipped = ['infofin', 'tandem', 'iris'].map(
+  (slug) => projects.find((p) => p.slug === slug)!,
+);
 ---
 
 <section class="layer" data-layer="services" id="services">
@@ -23,6 +27,30 @@ const digitalTwin = projects.find((p) => p.slug === 'digital-twin')!;
       <div class="featured-project">
         <span class="mono featured-label">Featured project</span>
         <ProjectCard project={digitalTwin} />
+      </div>
+    </Reveal>
+
+    <Reveal delay={0.1}>
+      <div class="shipped-section">
+        <h3>Also in Production</h3>
+        <div class="shipped-grid">
+          {alsoShipped.map((p) => (
+            <article class="shipped-card">
+              <header class="shipped-header">
+                <span class="mono shipped-name">{p.name}</span>
+                {p.links?.[0] && (
+                  <a href={p.links[0].href} class="mono shipped-link" target="_blank" rel="noopener noreferrer">
+                    {p.links[0].label}
+                  </a>
+                )}
+              </header>
+              <p class="shipped-summary">{p.summary}</p>
+              <div class="shipped-stack">
+                {p.stack.map((s) => <TechPill label={s} />)}
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </Reveal>
 
@@ -77,6 +105,72 @@ const digitalTwin = projects.find((p) => p.slug === 'digital-twin')!;
     letter-spacing: 0.1em;
     color: var(--layer-services-accent);
     margin-bottom: 1rem;
+  }
+
+  .shipped-section {
+    margin-bottom: 3rem;
+  }
+
+  .shipped-section h3 {
+    margin-bottom: 1.25rem;
+  }
+
+  .shipped-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1rem;
+  }
+
+  .shipped-card {
+    padding: 1.25rem;
+    border: 1px solid currentColor;
+    border-color: color-mix(in srgb, currentColor 12%, transparent);
+    border-radius: 4px;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .shipped-card:hover {
+    border-color: color-mix(in srgb, currentColor 30%, transparent);
+    transform: translateY(-2px);
+  }
+
+  .shipped-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+
+  .shipped-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--layer-services-accent);
+  }
+
+  .shipped-link {
+    font-size: 0.7rem;
+    color: #7a8494;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .shipped-link:hover {
+    color: var(--layer-services-heading);
+  }
+
+  .shipped-summary {
+    font-size: 0.875rem;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+  }
+
+  .shipped-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
   }
 
   .patterns-section h3 {
