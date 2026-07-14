@@ -20,13 +20,15 @@ import { endpoints } from '../../data/endpoints';
       <div class="endpoints-section">
         <h3>Endpoints</h3>
         <div class="endpoints-list">
-          {endpoints.map((ep) => (
-            <EndpointRow
-              method={ep.method}
-              path={ep.path}
-              description={ep.description}
-              protocol={ep.protocol}
-            />
+          {endpoints.map((ep, i) => (
+            <Reveal delay={0.05 * i}>
+              <EndpointRow
+                method={ep.method}
+                path={ep.path}
+                description={ep.description}
+                protocol={ep.protocol}
+              />
+            </Reveal>
           ))}
         </div>
       </div>
