@@ -6,18 +6,18 @@ export interface SkillCategory {
 export const skills: SkillCategory[] = [
   {
     label: 'Languages',
-    items: ['Rust', 'TypeScript', 'Java'],
+    items: ['Rust', 'TypeScript', 'PHP', 'SQL'],
   },
   {
-    label: 'Frameworks',
-    items: ['AdonisJS', 'Spring Boot', 'Axum'],
+    label: 'Backend',
+    items: ['Axum', 'Tokio', 'AdonisJS', 'Laravel'],
   },
   {
-    label: 'Data',
-    items: ['PostgreSQL', 'TimescaleDB', 'Redis', 'BullMQ', 'NATS JetStream', 'NGSI-LD'],
+    label: 'Data & Messaging',
+    items: ['PostgreSQL', 'TimescaleDB', 'NATS JetStream', 'MQTT', 'Redis', 'NGSI-LD'],
   },
   {
     label: 'Infrastructure',
-    items: ['Proxmox', 'Docker', 'LoRaWAN'],
+    items: ['Kubernetes / OKD', 'GitOps', 'Docker', 'Proxmox', 'LoRaWAN'],
   },
 ];
