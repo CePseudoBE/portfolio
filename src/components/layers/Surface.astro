@@ -9,17 +9,17 @@ import { skills } from '../../data/skills';
   <div class="layer-inner surface-layout">
     <div class="surface-content">
       <Reveal><p class="mono layer-label">0 — Surface</p></Reveal>
-      <Reveal delay={0.05}><p class="hero-name">Axel Hoffmann</p></Reveal>
-      <Reveal delay={0.15}><h1>Building what runs<br />beneath the surface.</h1></Reveal>
-      <Reveal delay={0.25}>
+      <Reveal delay={0.1}><h1 class="hero-name">Axel<br />Hoffmann</h1></Reveal>
+      <Reveal delay={0.25}><p class="hero-title">Backend Engineer</p></Reveal>
+      <Reveal delay={0.4}>
         <p class="tagline">
-          Backend engineer crafting distributed systems, IoT platforms, and the invisible
-          infrastructure that makes things work. TypeScript, Rust, and everything in between.
+          Distributed systems, IoT platforms, and the invisible
+          infrastructure that makes things work.
         </p>
       </Reveal>
-      <Reveal delay={0.35}>
+      <Reveal delay={0.55}>
         <div class="surface-stack">
-          {skills.map((cat) => (
+          {skills.map((cat, i) => (
             <div class="stack-group">
               <span class="mono stack-label">{cat.label}</span>
               <div class="stack-items">
@@ -45,17 +45,25 @@ import { skills } from '../../data/skills';
     font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .hero-name {
     font-family: 'Instrument Serif', Georgia, serif;
-    font-size: clamp(1.1rem, 1rem + 0.5vw, 1.5rem);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
+    font-size: clamp(3.5rem, 2.5rem + 5vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
     color: var(--layer-surface-heading);
-    opacity: 0.6;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: clamp(0.85rem, 0.8rem + 0.25vw, 1rem);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--layer-surface-accent);
+    margin-bottom: 1.5rem;
   }
 
   .surface-layout {
@@ -73,9 +81,8 @@ import { skills } from '../../data/skills';
   }
 
   .tagline {
-    margin-top: 1.5rem;
     font-size: clamp(1.05rem, 1rem + 0.25vw, 1.25rem);
-    max-width: 40rem;
+    max-width: 36rem;
     line-height: 1.7;
   }
 
