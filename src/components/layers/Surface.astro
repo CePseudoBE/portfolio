@@ -122,6 +122,19 @@ import { skills } from '../../data/skills';
     gap: 0.4rem;
   }
 
+  /* Nested wrapping flex rows overflow the viewport on narrow screens
+     (the group's intrinsic width is its unwrapped pill row) */
+  @media (max-width: 768px) {
+    .surface-stack {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .stack-group {
+      width: 100%;
+    }
+  }
+
   .scroll-hint {
     display: flex;
     align-items: center;
