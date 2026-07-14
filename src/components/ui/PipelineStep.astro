@@ -10,7 +10,7 @@ interface Props {
 const { index, label, description, tech, total } = Astro.props;
 ---
 
-<div class="pipeline-step">
+<div class="pipeline-step" data-pipeline-step>
   <div class="step-indicator">
     <span class="step-number mono">{String(index + 1).padStart(2, '0')}</span>
     {index < total - 1 && <div class="step-line" />}
@@ -21,6 +21,32 @@ const { index, label, description, tech, total } = Astro.props;
     <span class="step-tech mono">{tech}</span>
   </div>
 </div>
+
+<script>
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReduced) {
+    document.querySelectorAll<HTMLElement>('[data-pipeline-step]').forEach((step, i) => {
+      const line = step.querySelector<HTMLElement>('.step-line');
+      if (!line) return;
+
+      line.style.transformOrigin = 'top';
+      line.style.transform = 'scaleY(0)';
+      line.style.transition = `transform 0.6s ease ${i * 0.1}s`;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            line.style.transform = 'scaleY(1)';
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.2 },
+      );
+      observer.observe(step);
+    });
+  }
+</script>
 
 <style>
   .pipeline-step {
