@@ -29,6 +29,11 @@ import { LAYERS } from '../../types';
       dots.forEach((dot) => {
         const isActive = dot.dataset.layerDot === activeLayerId;
         dot.classList.toggle('is-active', isActive);
+        if (isActive) {
+          dot.setAttribute('aria-current', 'true');
+        } else {
+          dot.removeAttribute('aria-current');
+        }
       });
     });
 
@@ -93,7 +98,8 @@ import { LAYERS } from '../../types';
     transform: translateX(0);
   }
 
-  .depth-dot:hover .dot-label {
+  .depth-dot:hover .dot-label,
+  .depth-dot:focus-visible .dot-label {
     opacity: 1;
     color: #a0aab8;
     transform: translateX(0);
