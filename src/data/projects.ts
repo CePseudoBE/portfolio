@@ -23,12 +23,14 @@ export const projects: Project[] = [
     layer: 'interface',
     role: 'Backend engineer',
     summary:
-      'A single gateway unifying heterogeneous urban data sources — digital twin entities, IoT sensors, mobility and environment data — behind one consistent API, feeding a Unity-based 3D visualization of the city.',
+      'The Digital Twin Framework in production: a single gateway unifying heterogeneous urban data sources — digital twin entities, IoT sensors, mobility and environment data — behind one consistent API, feeding a Unity-based 3D visualization of the city.',
     highlights: [
+      'Built on my open-source Digital Twin Framework',
       'One contract over four heterogeneous source families',
       'Consumed by a Unity 3D urban visualization client',
     ],
-    stack: [],
+    stack: ['TypeScript', 'NGSI-LD', 'PostgreSQL', 'Redis', 'BullMQ'],
+    links: [{ label: 'github.com/CePseudoBE/digitaltwin', href: 'https://github.com/CePseudoBE/digitaltwin' }],
   },
   {
     slug: 'digital-twin',
