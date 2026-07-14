@@ -1,8 +1,12 @@
 ---
 // Layer 1 — Interface: APIs, protocols, endpoints
 import EndpointRow from '../ui/EndpointRow.astro';
+import ProjectCard from '../ui/ProjectCard.astro';
 import Reveal from '../ui/Reveal.astro';
 import { endpoints } from '../../data/endpoints';
+import { projects } from '../../data/projects';
+
+const apiGateway = projects.find((p) => p.slug === 'api-gateway')!;
 ---
 
 <section class="layer" data-layer="interface" id="interface">
@@ -14,6 +18,13 @@ import { endpoints } from '../../data/endpoints';
         The contracts that connect systems. REST endpoints, NGSI-LD for digital twins,
         LoRaWAN device provisioning, OAuth2 flows — every interaction starts at the interface.
       </p>
+    </Reveal>
+
+    <Reveal delay={0.2}>
+      <div class="featured-project">
+        <span class="mono featured-label">Featured project</span>
+        <ProjectCard project={apiGateway} />
+      </div>
     </Reveal>
 
     <Reveal delay={0.2}>
@@ -67,6 +78,19 @@ import { endpoints } from '../../data/endpoints';
   .layer-intro {
     max-width: 48rem;
     margin-bottom: 3rem;
+  }
+
+  .featured-project {
+    margin-bottom: 3rem;
+  }
+
+  .featured-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--layer-interface-accent);
+    margin-bottom: 1rem;
   }
 
   .endpoints-section {

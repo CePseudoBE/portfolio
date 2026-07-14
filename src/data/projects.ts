@@ -18,6 +18,19 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: 'api-gateway',
+    name: 'Unified API Gateway',
+    layer: 'interface',
+    role: 'Backend engineer',
+    summary:
+      'A single gateway unifying heterogeneous urban data sources — digital twin entities, IoT sensors, mobility and environment data — behind one consistent API, feeding a Unity-based 3D visualization of the city.',
+    highlights: [
+      'One contract over four heterogeneous source families',
+      'Consumed by a Unity 3D urban visualization client',
+    ],
+    stack: [],
+  },
+  {
     slug: 'digital-twin',
     name: 'Digital Twin Framework',
     layer: 'services',
