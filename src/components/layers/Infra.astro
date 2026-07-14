@@ -4,7 +4,7 @@ import ProjectCard from '../ui/ProjectCard.astro';
 import Reveal from '../ui/Reveal.astro';
 import { projects } from '../../data/projects';
 
-const smartCampus = projects.find((p) => p.slug === 'smartcampus')!;
+const sparc = projects.find((p) => p.slug === 'sparc')!;
 ---
 
 <section class="layer" data-layer="infra" id="infra">
@@ -21,7 +21,7 @@ const smartCampus = projects.find((p) => p.slug === 'smartcampus')!;
     <Reveal delay={0.2}>
       <div class="featured-project">
         <span class="mono featured-label">Featured project</span>
-        <ProjectCard project={smartCampus} />
+        <ProjectCard project={sparc} />
       </div>
     </Reveal>
 
