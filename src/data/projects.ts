@@ -1,5 +1,10 @@
 import type { LayerId } from '../types';
 
+export interface ProjectLink {
+  label: string;
+  href: string;
+}
+
 export interface Project {
   slug: string;
   name: string;
@@ -8,6 +13,7 @@ export interface Project {
   summary: string;
   highlights: string[];
   stack: string[];
+  links?: ProjectLink[];
 }
 
 export const projects: Project[] = [
