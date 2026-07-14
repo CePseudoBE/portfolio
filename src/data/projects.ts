@@ -21,18 +21,17 @@ export const projects: Project[] = [
     slug: 'digital-twin',
     name: 'Digital Twin Framework',
     layer: 'services',
-    role: 'Lead developer',
+    role: 'Author — open source, MIT',
     summary:
-      'Custom micro-framework replacing FIWARE/Orion for NGSI-LD digital twins. Component-based architecture with Collectors, Harvesters, and Handlers — published as a monorepo on npm.',
+      'Component-based TypeScript framework for building NGSI-LD digital twins, built as an in-house replacement for FIWARE/Orion. Structured as a layered monorepo, open source under the MIT license.',
     highlights: [
-      'Monorepo: 9 packages, 4 dependency layers',
-      'Native NGSI-LD entity management with subscription notifications',
       'Component model: Collectors, Harvesters, Handlers, Assets Managers',
+      'Native NGSI-LD entity management with subscription notifications',
       'Redis + PostgreSQL + BullMQ (4 priority queues)',
       'Presigned URL upload via OVH Object Storage',
-      '~60% overhead reduction vs FIWARE/Orion',
     ],
     stack: ['TypeScript', 'PostgreSQL', 'Redis', 'BullMQ', 'NGSI-LD', 'OVH S3'],
+    links: [{ label: 'github.com/CePseudoBE/digitaltwin', href: 'https://github.com/CePseudoBE/digitaltwin' }],
   },
   {
     slug: 'sparc',
