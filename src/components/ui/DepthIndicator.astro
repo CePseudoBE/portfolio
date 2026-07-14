@@ -99,9 +99,29 @@ import { LAYERS } from '../../types';
     transform: translateX(0);
   }
 
+  /* Mobile: compact dots, no labels — navigation must stay available */
   @media (max-width: 768px) {
     .depth-indicator {
+      left: 0.4rem;
+    }
+
+    .depth-track {
+      gap: 1rem;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+    }
+
+    .dot-label {
       display: none;
+    }
+
+    /* Enlarge the touch target beyond the visible dot */
+    .depth-dot {
+      padding: 0.35rem;
+      margin: -0.35rem;
     }
   }
 </style>
