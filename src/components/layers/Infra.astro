@@ -13,8 +13,9 @@ const sparc = projects.find((p) => p.slug === 'sparc')!;
     <Reveal delay={0.1}><h2>Infrastructure</h2></Reveal>
     <Reveal delay={0.15}>
       <p class="layer-intro">
-        The physical and virtual substrate. Bare-metal servers, containerized services,
-        encrypted tunnels, and the radio networks that connect sensors to the stack.
+        The physical and virtual substrate — and the pipeline that ships to it.
+        Production runs on Kubernetes (OKD/OpenShift) behind a full GitOps chain:
+        merging to main <em>is</em> the deployment.
       </p>
     </Reveal>
 
@@ -25,22 +26,50 @@ const sparc = projects.find((p) => p.slug === 'sparc')!;
       </div>
     </Reveal>
 
+    <Reveal delay={0.1}>
+      <div class="gitops-section">
+        <h3>GitOps Chain</h3>
+        <ol class="gitops-flow">
+          <li class="gitops-step">
+            <span class="mono gitops-name">Merge</span>
+            <p>A merge on main is the only deployment trigger</p>
+          </li>
+          <li class="gitops-step">
+            <span class="mono gitops-name">Tekton</span>
+            <p>In-cluster pipelines build and push the images</p>
+          </li>
+          <li class="gitops-step">
+            <span class="mono gitops-name">Argo CD</span>
+            <p>Syncs cluster state to the Git repository, continuously</p>
+          </li>
+          <li class="gitops-step">
+            <span class="mono gitops-name">Kustomize</span>
+            <p>Per-environment overlays, no templating drift</p>
+          </li>
+          <li class="gitops-step">
+            <span class="mono gitops-name">Sealed Secrets</span>
+            <p>Secrets encrypted at rest in Git, decrypted only in-cluster</p>
+          </li>
+        </ol>
+      </div>
+    </Reveal>
+
     <Reveal delay={0.1}><div class="infra-grid">
       <div class="infra-item">
-        <span class="mono infra-name">Proxmox</span>
-        <p>Hypervisor for VM provisioning. Automated templates, resource isolation, snapshot-based rollback.</p>
+        <span class="mono infra-name">Kubernetes / OKD</span>
+        <p>Hardened workloads: readOnlyRootFilesystem, non-root containers, OpenShift SCC-constrained pods.</p>
       </div>
       <div class="infra-item">
         <span class="mono infra-name">Docker</span>
         <p>Containerized microservices with multi-stage builds. Compose for local dev, orchestrated deploys for production.</p>
       </div>
       <div class="infra-item">
-        <span class="mono infra-name">LoRaWAN</span>
-        <p>Long-range IoT gateway network. Payload decoding, device provisioning, sensor fleet management.</p>
+        <span class="mono infra-name">Proxmox</span>
+        <p>Hypervisor for VM provisioning. Automated templates, resource isolation, snapshot-based rollback.</p>
       </div>
       <div class="infra-item">
-        <span class="mono infra-name">4G/5G Backhaul</span>
-        <p>Cellular uplink for remote campus zones beyond wired reach. Failover routing, bandwidth management.</p>
+        <span class="mono infra-name">LoRaWAN</span>
+        <p>Long-range IoT gateway network. Payload decoding, device provisioning, sensor fleet management.</p>
       </div>
     </div></Reveal>
   </div>
@@ -71,6 +100,53 @@ const sparc = projects.find((p) => p.slug === 'sparc')!;
     letter-spacing: 0.1em;
     color: var(--layer-infra-accent);
     margin-bottom: 1rem;
+  }
+
+  .gitops-section {
+    margin-bottom: 3rem;
+  }
+
+  .gitops-section h3 {
+    margin-bottom: 1.25rem;
+  }
+
+  .gitops-flow {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1rem;
+    counter-reset: gitops;
+  }
+
+  .gitops-step {
+    position: relative;
+    padding: 1rem 1rem 1rem 1.1rem;
+    border-left: 2px solid var(--layer-infra-accent);
+    counter-increment: gitops;
+  }
+
+  .gitops-step::before {
+    content: counter(gitops, decimal-leading-zero);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: #7a8494;
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .gitops-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--layer-infra-accent);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .gitops-step p {
+    font-size: 0.85rem;
+    opacity: 0.7;
   }
 
   .infra-grid {
