@@ -14,8 +14,9 @@ const sparc = projects.find((p) => p.slug === 'sparc')!;
     <Reveal delay={0.15}>
       <p class="layer-intro">
         The physical and virtual substrate — and the pipeline that ships to it.
-        Production runs on Kubernetes (OKD/OpenShift) behind a full GitOps chain:
-        merging to main <em>is</em> the deployment.
+        Two substrates: a Proxmox VM running the SPARC backend under Docker, and
+        an OKD/OpenShift cluster running everything else behind a full GitOps
+        chain where merging to main <em>is</em> the deployment.
       </p>
     </Reveal>
 
