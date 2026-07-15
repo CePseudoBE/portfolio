@@ -54,15 +54,16 @@ export const projects: Project[] = [
     layer: 'infra',
     role: 'Sole engineer — backend, web app & infrastructure',
     summary:
-      'Sensor Platform for Academic Research and Community — an IoT platform in production across ULB campuses. Carried end-to-end solo: Rust backend, Nuxt 4 web application, and OKD infrastructure.',
+      'Sensor Platform for Academic Research and Community — an IoT platform in production across ULB campuses. Carried end-to-end solo: Rust backend, Nuxt 4 web application, and its deployment.',
     highlights: [
       'Rust workspace of 8 crates, 673 automated tests',
       'Idempotent multi-protocol ingestion — LoRaWAN/ChirpStack, MQTT 5.0, HTTP — on NATS JetStream with dead-letter queue',
       'TimescaleDB storage: hypertables, continuous aggregates, compression',
       'Hexagonal architecture with CQRS separation enforced at compile time',
       'OIDC auth (Authentik, RS256/JWKS), fail-closed multi-tenant RBAC',
+      'Backend runs on a Proxmox VM (Docker, Traefik TLS termination); event-driven cert rotation via a systemd.path unit watching the internal-PKI machine certificate — renewal triggers a Traefik restart, no cron',
     ],
-    stack: ['Rust', 'Axum', 'Nuxt 4', 'TimescaleDB', 'NATS JetStream', 'OKD'],
+    stack: ['Rust', 'Axum', 'Nuxt 4', 'TimescaleDB', 'NATS JetStream', 'Proxmox'],
     links: [{ label: 'sparc.ulb.be', href: 'https://sparc.ulb.be' }],
   },
   {
