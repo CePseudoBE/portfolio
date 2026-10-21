@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Page not found | Axel Hoffmann">
+  <main id="main" class="layer not-found" data-layer="surface">
+    <div class="layer-inner">
+      <p class="mono layer-label">404 / Bedrock</p>
+      <h1>Nothing at this depth.</h1>
+      <p class="not-found-text">This page does not exist. The whole portfolio lives on a single page.</p>
+      <a href="/" class="button mono">Back to the surface</a>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .not-found {
+    display: flex;
+    align-items: center;
+  }
+
+  .layer-label {
+    color: var(--layer-surface-accent);
+    font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .not-found-text {
+    margin: 1rem 0 2rem;
+    max-width: 36rem;
+  }
+</style>
