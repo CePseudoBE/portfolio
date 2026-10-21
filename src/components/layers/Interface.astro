@@ -1,71 +1,73 @@
 ---
-// Layer 1 — Interface: APIs, protocols, endpoints
-import EndpointRow from '../ui/EndpointRow.astro';
-import ProjectCard from '../ui/ProjectCard.astro';
+// Layer 1 — Interface: SPARC overview, architecture, how data gets in
+import ArchitectureDiagram from '../ui/ArchitectureDiagram.astro';
+import MetricBlock from '../ui/MetricBlock.astro';
 import Reveal from '../ui/Reveal.astro';
-import { endpoints } from '../../data/endpoints';
-import { projects } from '../../data/projects';
-
-const apiGateway = projects.find((p) => p.slug === 'api-gateway')!;
+import { sparcConstraints, sparcIngestion, sparcMetrics } from '../../data/sparc';
 ---
 
 <section class="layer" data-layer="interface" id="interface">
   <div class="layer-inner">
-    <Reveal><p class="mono layer-label">1 — Interface</p></Reveal>
-    <Reveal delay={0.1}><h2>APIs & Protocols</h2></Reveal>
-    <Reveal delay={0.15}>
-      <p class="layer-intro">
-        The contracts that connect systems. REST endpoints, NGSI-LD for digital twins,
-        LoRaWAN device provisioning, OAuth2 flows — every interaction starts at the interface.
-      </p>
+    <Reveal><p class="mono layer-label">1 / Interface</p></Reveal>
+    <Reveal delay={0.1}>
+      <h2>SPARC, a campus IoT platform</h2>
+      <p class="mono sparc-role">Sole engineer, within STARI · Rust backend, Nuxt 4 web app, infrastructure</p>
     </Reveal>
-
-    <Reveal delay={0.2}>
-      <div class="featured-project">
-        <span class="mono featured-label">Featured project</span>
-        <ProjectCard project={apiGateway} />
+    <Reveal delay={0.15}>
+      <div class="layer-intro">
+        <p>
+          Sensor Platform for Academic Research and Community. In production since
+          January 2026 on two ULB campuses, used by a research center (CIREM) and
+          ULB's infrastructure department.
+        </p>
+        <p>
+          <strong>The problem:</strong> research and campus teams need reliable sensor
+          data, but devices speak different protocols and no team should have to run
+          its own pipeline.
+        </p>
+        <a class="mono sparc-link" href="https://sparc.ulb.be">sparc.ulb.be</a>
       </div>
     </Reveal>
 
-    <Reveal delay={0.2}>
-      <div class="endpoints-section">
-        <div class="endpoints-header">
-          <h3>Endpoints</h3>
-          <span class="mono endpoints-note">Illustrative — representative of the APIs I build, not a public reference</span>
+    <div class="overview-grid">
+      <Reveal>
+        <div>
+          <h3>Constraints</h3>
+          <ul class="constraints">
+            {sparcConstraints.map((constraint) => <li>{constraint}</li>)}
+          </ul>
         </div>
-        <div class="endpoints-list">
-          {endpoints.map((ep, i) => (
-            <Reveal delay={0.05 * i}>
-              <EndpointRow
-                method={ep.method}
-                path={ep.path}
-                description={ep.description}
-                protocol={ep.protocol}
-              />
-            </Reveal>
+      </Reveal>
+      <Reveal delay={0.1}>
+        <div>
+          <h3>By the numbers</h3>
+          <div class="metrics-grid">
+            {sparcMetrics.map((metric) => <MetricBlock value={metric.value} label={metric.label} />)}
+          </div>
+        </div>
+      </Reveal>
+    </div>
+
+    <Reveal>
+      <div class="architecture-section">
+        <h3>Architecture</h3>
+        <ArchitectureDiagram />
+      </div>
+    </Reveal>
+
+    <Reveal>
+      <div>
+        <h3>How data gets in</h3>
+        <div class="ingestion-grid">
+          {sparcIngestion.map((item) => (
+            <div class="ingestion-item">
+              <span class="mono ingestion-name">{item.name}</span>
+              <p>{item.description}</p>
+            </div>
           ))}
         </div>
       </div>
     </Reveal>
-
-    <Reveal delay={0.1}><div class="protocols-grid">
-      <div class="protocol-item">
-        <span class="mono protocol-name">NGSI-LD</span>
-        <p>Context-based entity API for digital twin interoperability</p>
-      </div>
-      <div class="protocol-item">
-        <span class="mono protocol-name">LoRaWAN</span>
-        <p>Long-range IoT protocol for low-power sensor networks</p>
-      </div>
-      <div class="protocol-item">
-        <span class="mono protocol-name">OAuth2</span>
-        <p>Token-based authentication with client credentials and PKCE</p>
-      </div>
-      <div class="protocol-item">
-        <span class="mono protocol-name">MQTT</span>
-        <p>Lightweight pub/sub messaging for real-time sensor data</p>
-      </div>
-    </div></Reveal>
   </div>
 </section>
 
@@ -78,72 +80,104 @@ const apiGateway = projects.find((p) => p.slug === 'api-gateway')!;
     margin-bottom: 1.5rem;
   }
 
-  .layer-intro {
-    max-width: 48rem;
-    margin-bottom: 3rem;
-  }
-
-  .featured-project {
-    margin-bottom: 3rem;
-  }
-
-  .featured-label {
-    display: inline-block;
-    font-size: 0.7rem;
+  .sparc-role {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--layer-interface-label);
-    margin-bottom: 1rem;
-  }
-
-  .endpoints-section {
-    margin-bottom: 3rem;
-  }
-
-  .endpoints-header {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-  }
-
-  .endpoints-note {
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     color: #7a8494;
   }
 
-  .protocols-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
+  .layer-intro {
+    max-width: 48rem;
+    margin: 1.5rem 0 3rem;
   }
 
-  .protocol-item {
+  .layer-intro p {
+    margin-bottom: 1rem;
+  }
+
+  .layer-intro strong {
+    font-weight: 500;
+    color: var(--layer-interface-heading);
+  }
+
+  .sparc-link {
+    color: var(--layer-interface-heading);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  h3 {
+    margin-bottom: 1.25rem;
+  }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 1.5rem + 2.5vw, 4rem);
+    margin-bottom: 3rem;
+  }
+
+  .constraints {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .constraints li {
+    position: relative;
+    padding-left: 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .constraints li::before {
+    content: '·' / '';
+    position: absolute;
+    left: 0.25rem;
+    color: var(--layer-interface-label);
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .architecture-section {
+    margin-bottom: 3rem;
+  }
+
+  .ingestion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1rem;
+  }
+
+  .ingestion-item {
     padding: 1.25rem;
     border: 1px solid currentColor;
     border-color: color-mix(in srgb, currentColor 12%, transparent);
     border-radius: 4px;
-    transition: border-color 0.3s ease, transform 0.3s ease;
   }
 
-  .protocol-item:hover {
-    border-color: color-mix(in srgb, currentColor 30%, transparent);
-    transform: translateY(-2px);
-  }
-
-  .protocol-name {
+  .ingestion-name {
+    display: block;
+    margin-bottom: 0.5rem;
     font-size: 0.8rem;
     font-weight: 500;
     letter-spacing: 0.04em;
     color: var(--layer-interface-label);
-    display: block;
-    margin-bottom: 0.5rem;
   }
 
-  .protocol-item p {
+  .ingestion-item p {
     font-size: 0.875rem;
+  }
+
+  @media (min-width: 769px) {
+    .overview-grid {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 </style>

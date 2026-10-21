@@ -1,84 +1,109 @@
 ---
-// Layer 5 — Core: Values, about, contact
+// Layer 5 — Core: other work, about, contact
+import ProjectCard from '../ui/ProjectCard.astro';
+import TechPill from '../ui/TechPill.astro';
 import Reveal from '../ui/Reveal.astro';
+import { projects } from '../../data/projects';
+import { skills } from '../../data/skills';
+import { contact } from '../../data/contact';
+
+const digitalTwin = projects.find((p) => p.slug === 'digital-twin')!;
+const alsoShipped = ['tandem', 'iris', 'infofin'].map(
+  (slug) => projects.find((p) => p.slug === slug)!,
+);
 ---
 
 <section class="layer" data-layer="core" id="core">
   <div class="layer-inner core-layout">
-    <Reveal><p class="mono layer-label">5 — Core</p></Reveal>
-    <Reveal delay={0.1}><h2>Core</h2></Reveal>
+    <Reveal><p class="mono layer-label">5 / Core</p></Reveal>
 
     <div class="core-content">
-      <Reveal delay={0.15}>
-        <div class="about-section">
+      <Reveal>
+        <div>
+          <h2>Other work</h2>
+          <ProjectCard project={digitalTwin} />
+        </div>
+      </Reveal>
+
+      <Reveal>
+        <div>
+          <h3>Also shipped to production at ULB</h3>
+          <ul class="shipped-list">
+            {alsoShipped.map((p) => (
+              <li class="shipped-item">
+                <span class="mono shipped-name">{p.name}</span>
+                <span class="shipped-summary">{p.summary}</span>
+                <span class="mono shipped-meta">
+                  {p.stack.join(' · ')}
+                  {p.links?.[0] && (
+                    <>
+                      {' · '}
+                      <a href={p.links[0].href}>{p.links[0].label}</a>
+                    </>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Reveal>
+
+      <Reveal>
+        <div>
+          <h2>About</h2>
           <p class="about-text">
-            I build the systems that run behind the screen — backend services, data pipelines,
-            IoT infrastructure. I care about clean architecture, honest engineering, and
-            making things that actually work under load.
+            I build the systems behind the screen: backend services, data pipelines and
+            IoT infrastructure. I care about clean architecture, honest engineering and
+            software that holds up in production. My rule of thumb: simple until proven
+            otherwise.
           </p>
           <p class="about-text">
-            Since 2023 I'm a backend engineer at STARI (ULB & FARI) in Brussels, in the
-            orbit of FARI — the AI Institute for the Common Good. Distributed systems,
-            digital twins, and IoT platforms in production. I write Rust when correctness
-            and performance matter, TypeScript when velocity matters, and I'm always
-            looking for the right tradeoff between the two.
+            Since 2023, I have been a backend engineer at STARI (ULB &amp; FARI) in
+            Brussels, working closely with FARI, the AI Institute for the Common Good.
+            I reach for Rust when correctness and performance are critical, and
+            TypeScript when iteration speed matters more.
+          </p>
+          <p class="about-text">
+            With the FARI AI Academy, I delivered a one-day training session on AI for
+            the common good for BELSPO, the Belgian Federal Science Policy Office.
           </p>
         </div>
       </Reveal>
 
-      <Reveal delay={0.1}>
-        <div class="values-section">
-          <h3>Values</h3>
-          <div class="values-list">
-          <div class="value-item">
-            <span class="mono value-name">Depth over breadth</span>
-            <p>I'd rather understand one system deeply than skim ten frameworks.</p>
+      <Reveal>
+        <div>
+          <h3>Stack</h3>
+          <div class="stack-groups">
+            {skills.map((category) => (
+              <div class="stack-group">
+                <span class="mono stack-label">{category.label}</span>
+                <div class="stack-items">
+                  {category.items.map((item) => <TechPill label={item} />)}
+                </div>
+              </div>
+            ))}
           </div>
-          <div class="value-item">
-            <span class="mono value-name">Own the outcome</span>
-            <p>From schema design to deployment pipeline — I ship end-to-end.</p>
-          </div>
-          <div class="value-item">
-            <span class="mono value-name">Simple until proven otherwise</span>
-            <p>No premature abstractions. Complexity is earned, not assumed.</p>
-          </div>
-        </div>
         </div>
       </Reveal>
 
-      <Reveal delay={0.1}>
-        <div class="beyond-section">
-          <h3>Beyond the Stack</h3>
-          <p class="beyond-text">
-            With the FARI AI Academy, I delivered a one-day training on AI for the
-            common good to BELSPO, the Belgian federal science policy office.
+      <Reveal>
+        <div id="contact" class="contact-section">
+          <h2>Contact</h2>
+          <p class="contact-lead">Open to remote backend roles in the EU.</p>
+          <p class="mono contact-email">
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
           </p>
+          <div class="contact-actions">
+            <a href={`mailto:${contact.email}`} class="button button-primary mono">Email me</a>
+            <a href={contact.cv} class="button mono">Download CV (PDF)</a>
+            <a href={contact.github} class="button mono">GitHub</a>
+            <a href={contact.linkedin} class="button mono">LinkedIn</a>
+          </div>
         </div>
       </Reveal>
-
-      <Reveal delay={0.15}><div class="contact-section">
-        <h3>Contact</h3>
-        <div class="contact-links">
-          <a href="https://github.com/CePseudoBE" class="contact-link" target="_blank" rel="noopener noreferrer">
-            <span class="mono">GitHub</span>
-          </a>
-          <a href="https://www.linkedin.com/in/axel-g-hoffmann/" class="contact-link" target="_blank" rel="noopener noreferrer">
-            <span class="mono">LinkedIn</span>
-          </a>
-          <a href="mailto:axel.g.hoffmann@gmail.com" class="contact-link">
-            <span class="mono">Email</span>
-          </a>
-          <a href="/cv.pdf" class="contact-link" target="_blank" rel="noopener">
-            <span class="mono">CV — PDF</span>
-          </a>
-        </div>
-      </div></Reveal>
     </div>
 
-    <footer class="core-footer mono">
-      <span class="depth-final">depth: 100%</span>
-      <span class="built-with">Built with Astro</span>
-    </footer>
+    <footer class="core-footer mono">Built with Astro</footer>
   </div>
 </section>
 
@@ -102,7 +127,54 @@ import Reveal from '../ui/Reveal.astro';
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    margin-top: 1.5rem;
+  }
+
+  h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    margin-bottom: 1rem;
+  }
+
+  .shipped-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .shipped-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--layer-core-accent);
+  }
+
+  .shipped-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--layer-core-label);
+  }
+
+  .shipped-summary {
+    font-size: 0.95rem;
+  }
+
+  .shipped-meta {
+    font-size: 0.75rem;
+    color: #7a8494;
+  }
+
+  .shipped-meta a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .shipped-meta a:hover {
+    color: var(--layer-core-heading);
   }
 
   .about-text {
@@ -111,76 +183,81 @@ import Reveal from '../ui/Reveal.astro';
     font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
   }
 
-  .values-section h3,
-  .beyond-section h3,
-  .contact-section h3 {
-    margin-bottom: 1rem;
-  }
-
-  .beyond-text {
-    max-width: 42rem;
-    font-size: 0.95rem;
-  }
-
-  .values-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: 1.25rem;
-  }
-
-  .value-item {
-    padding: 1.25rem;
-    border-left: 2px solid var(--layer-core-accent);
-  }
-
-  .value-name {
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-
-  .value-item p {
-    font-size: 0.875rem;
-  }
-
-  .contact-links {
+  .stack-groups {
     display: flex;
-    gap: 1.5rem;
     flex-wrap: wrap;
+    gap: 1.5rem 2rem;
   }
 
-  .contact-link {
-    padding: 0.6em 1.5em;
-    border: 1px solid var(--layer-core-accent);
-    border-radius: 4px;
-    font-size: 0.85rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  .contact-link:hover {
-    background-color: var(--layer-core-heading);
-    color: var(--layer-core-bg);
-  }
-
-  .core-footer {
+  .stack-group {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 3rem;
-    margin-top: auto;
-    font-size: 0.7rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stack-label {
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: #7a8494;
   }
 
+  .stack-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  /* Nested wrapping flex rows overflow the viewport on narrow screens
+     (the group's intrinsic width is its unwrapped pill row) */
   @media (max-width: 768px) {
-    .core-footer {
+    .stack-groups {
       flex-direction: column;
-      gap: 0.5rem;
-      align-items: flex-start;
     }
+
+    .stack-group {
+      width: 100%;
+    }
+  }
+
+  .contact-lead {
+    font-size: clamp(1.05rem, 1rem + 0.25vw, 1.25rem);
+    color: var(--layer-core-heading);
+  }
+
+  .contact-email {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .contact-email a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .button-primary {
+    background-color: var(--layer-core-heading);
+    border-color: var(--layer-core-heading);
+    color: var(--layer-core-bg);
+  }
+
+  .button-primary:hover {
+    background-color: var(--layer-core-label);
+  }
+
+  .core-footer {
+    padding-top: 3rem;
+    margin-top: auto;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7a8494;
   }
 </style>

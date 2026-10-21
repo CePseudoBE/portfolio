@@ -1,5 +1,3 @@
-import type { LayerId } from '../types';
-
 export interface ProjectLink {
   label: string;
   href: string;
@@ -8,7 +6,6 @@ export interface ProjectLink {
 export interface Project {
   slug: string;
   name: string;
-  layer: LayerId;
   role: string;
   summary: string;
   highlights: string[];
@@ -18,80 +15,43 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    slug: 'api-gateway',
-    name: 'Unified API Gateway',
-    layer: 'interface',
-    role: 'Backend engineer',
+    slug: 'digital-twin',
+    name: 'Digital Twin Framework',
+    role: 'Author · open source (MIT)',
     summary:
-      'The Digital Twin Framework in production: a single gateway unifying heterogeneous urban data sources — digital twin entities, IoT sensors, mobility and environment data — behind one consistent API, feeding a Unity-based 3D visualization of the city.',
+      'Component-based TypeScript framework for NGSI-LD digital twins, developed for FARI and designed as an in-house alternative to FIWARE/Orion. In production as the gateway that unifies digital twin entities, IoT sensors, mobility and environmental data behind one API for a Unity-based 3D city visualization.',
     highlights: [
-      'Built on my open-source Digital Twin Framework',
-      'One contract over four heterogeneous source families',
-      'Consumed by a Unity 3D urban visualization client',
+      'Components: Collectors, Harvesters, Handlers, Assets Managers',
+      'Native NGSI-LD entities with subscription notifications',
+      'Redis, PostgreSQL and BullMQ (4 queues); presigned-URL uploads to OVH Object Storage',
     ],
     stack: ['TypeScript', 'NGSI-LD', 'PostgreSQL', 'Redis', 'BullMQ'],
     links: [{ label: 'github.com/CePseudoBE/digitaltwin', href: 'https://github.com/CePseudoBE/digitaltwin' }],
   },
   {
-    slug: 'digital-twin',
-    name: 'Digital Twin Framework',
-    layer: 'services',
-    role: 'Author — open source, MIT',
-    summary:
-      'Component-based TypeScript framework for building NGSI-LD digital twins, built as an in-house replacement for FIWARE/Orion. Structured as a layered monorepo, open source under the MIT license.',
-    highlights: [
-      'Component model: Collectors, Harvesters, Handlers, Assets Managers',
-      'Native NGSI-LD entity management with subscription notifications',
-      'Redis + PostgreSQL + BullMQ (4 priority queues)',
-      'Presigned URL upload via OVH Object Storage',
-    ],
-    stack: ['TypeScript', 'PostgreSQL', 'Redis', 'BullMQ', 'NGSI-LD', 'OVH S3'],
-    links: [{ label: 'github.com/CePseudoBE/digitaltwin', href: 'https://github.com/CePseudoBE/digitaltwin' }],
-  },
-  {
-    slug: 'sparc',
-    name: 'SPARC',
-    layer: 'infra',
-    role: 'Sole engineer — backend, web app & infrastructure',
-    summary:
-      'Sensor Platform for Academic Research and Community — an IoT platform in production across ULB campuses. Carried end-to-end solo: Rust backend, Nuxt 4 web application, and its deployment.',
-    highlights: [
-      'Rust workspace of 8 crates, 673 automated tests',
-      'Idempotent multi-protocol ingestion — LoRaWAN/ChirpStack, MQTT 5.0, HTTP — on NATS JetStream with dead-letter queue',
-      'TimescaleDB storage: hypertables, continuous aggregates, compression',
-      'Hexagonal architecture with CQRS separation enforced at compile time',
-      'OIDC auth (Authentik, RS256/JWKS), fail-closed multi-tenant RBAC',
-      'Backend runs on a Proxmox VM (Docker, Traefik TLS termination); event-driven cert rotation via a systemd.path unit watching the internal-PKI machine certificate — renewal triggers a Traefik restart, no cron',
-    ],
-    stack: ['Rust', 'Axum', 'Nuxt 4', 'TimescaleDB', 'NATS JetStream', 'Proxmox'],
-    links: [{ label: 'sparc.ulb.be', href: 'https://sparc.ulb.be' }],
-  },
-  {
-    slug: 'infofin',
-    name: 'Infofin',
-    layer: 'services',
-    role: 'Backend engineer',
-    summary: 'Laravel platform delivered and running in production at ULB.',
-    highlights: [],
-    stack: ['PHP', 'Laravel'],
-    links: [{ label: 'infofin.ulb.be', href: 'https://infofin.ulb.be' }],
-  },
-  {
     slug: 'tandem',
     name: 'Tandem',
-    layer: 'services',
     role: 'Backend engineer',
-    summary: 'Language-exchange platform matching learners for tandem practice.',
+    summary: 'Language-exchange platform matching learners across three universities.',
     highlights: [],
-    stack: ['TypeScript', 'AdonisJS'],
+    stack: ['AdonisJS'],
   },
   {
     slug: 'iris',
     name: 'IRIS',
-    layer: 'services',
     role: 'Backend engineer',
-    summary: 'Application submission platform handling candidate files end-to-end.',
+    summary: 'Platform for submitting applications and their supporting documents.',
     highlights: [],
-    stack: ['TypeScript', 'AdonisJS'],
+    stack: ['AdonisJS'],
+  },
+  {
+    slug: 'infofin',
+    name: 'Infofin',
+    role: 'Backend engineer',
+    summary:
+      "ULB's platform listing research funding opportunities (calls for projects, grants, mobility, events).",
+    highlights: [],
+    stack: ['Laravel'],
+    links: [{ label: 'infofin.ulb.be', href: 'https://infofin.ulb.be' }],
   },
 ];

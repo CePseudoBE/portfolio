@@ -3,10 +3,21 @@ export interface SkillCategory {
   items: string[];
 }
 
+export const heroStack: string[] = [
+  'Rust',
+  'TypeScript',
+  'SQL',
+  'Axum',
+  'NATS JetStream',
+  'TimescaleDB',
+  'PostgreSQL',
+  'Kubernetes / OKD',
+];
+
 export const skills: SkillCategory[] = [
   {
     label: 'Languages',
-    items: ['Rust', 'TypeScript', 'PHP', 'SQL'],
+    items: ['Rust', 'TypeScript', 'SQL', 'PHP'],
   },
   {
     label: 'Backend',
@@ -14,10 +25,18 @@ export const skills: SkillCategory[] = [
   },
   {
     label: 'Data & Messaging',
-    items: ['PostgreSQL', 'TimescaleDB', 'NATS JetStream', 'MQTT', 'Redis', 'NGSI-LD'],
+    items: ['PostgreSQL', 'TimescaleDB', 'NATS JetStream', 'MQTT', 'Redis', 'BullMQ', 'NGSI-LD'],
   },
   {
     label: 'Infrastructure',
-    items: ['Kubernetes / OKD', 'GitOps', 'Docker', 'Proxmox', 'LoRaWAN'],
+    items: ['Kubernetes / OKD', 'GitOps', 'Podman', 'Docker', 'Traefik', 'Proxmox', 'GitLab CI'],
+  },
+  {
+    label: 'Security & Observability',
+    items: ['OIDC / OAuth2', 'Prometheus', 'Grafana'],
+  },
+  {
+    label: 'IoT',
+    items: ['LoRaWAN', 'ChirpStack'],
   },
 ];

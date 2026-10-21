@@ -1,80 +1,39 @@
 ---
-// Layer 2 — Services: Digital Twin (featured project), patterns
-import ProjectCard from '../ui/ProjectCard.astro';
+// Layer 2 — Services: SPARC architecture and key decisions
 import PatternCard from '../ui/PatternCard.astro';
-import TechPill from '../ui/TechPill.astro';
 import Reveal from '../ui/Reveal.astro';
-import { projects } from '../../data/projects';
-
-const digitalTwin = projects.find((p) => p.slug === 'digital-twin')!;
-const alsoShipped = ['infofin', 'tandem', 'iris'].map(
-  (slug) => projects.find((p) => p.slug === slug)!,
-);
+import { sparcDecisions, sparcFeatures } from '../../data/sparc';
 ---
 
 <section class="layer" data-layer="services" id="services">
   <div class="layer-inner">
-    <Reveal><p class="mono layer-label">2 — Services</p></Reveal>
-    <Reveal delay={0.1}><h2>Services & Patterns</h2></Reveal>
+    <Reveal><p class="mono layer-label">2 / Services</p></Reveal>
+    <Reveal delay={0.1}><h2>Architecture and key decisions</h2></Reveal>
     <Reveal delay={0.15}>
       <p class="layer-intro">
-        Where business logic lives. Domain-driven services, clean dependency boundaries,
-        and architectural patterns that keep complexity in check.
+        A modular monolith in Rust: hexagonal architecture (ports and adapters), an
+        event-driven ingestion pipeline, and a light CQRS split between the write path
+        and the read path.
       </p>
     </Reveal>
 
-    <Reveal delay={0.2}>
-      <div class="featured-project">
-        <span class="mono featured-label">Featured project</span>
-        <ProjectCard project={digitalTwin} />
-      </div>
-    </Reveal>
-
-    <Reveal delay={0.1}>
-      <div class="shipped-section">
-        <h3>Also in Production</h3>
-        <div class="shipped-grid">
-          {alsoShipped.map((p) => (
-            <article class="shipped-card">
-              <header class="shipped-header">
-                <span class="mono shipped-name">{p.name}</span>
-                {p.links?.[0] && (
-                  <a href={p.links[0].href} class="mono shipped-link" target="_blank" rel="noopener noreferrer">
-                    {p.links[0].label}
-                  </a>
-                )}
-              </header>
-              <p class="shipped-summary">{p.summary}</p>
-              <div class="shipped-stack">
-                {p.stack.map((s) => <TechPill label={s} />)}
-              </div>
-            </article>
+    <Reveal>
+      <div class="decisions-section">
+        <h3>Decisions and trade-offs</h3>
+        <div class="decisions-grid">
+          {sparcDecisions.map((decision) => (
+            <PatternCard name={decision.name} description={decision.description} />
           ))}
         </div>
       </div>
     </Reveal>
 
-    <Reveal delay={0.1}>
-      <div class="patterns-section">
-        <h3>Architecture Patterns</h3>
-        <div class="patterns-grid">
-        <PatternCard
-          name="DI / IoC"
-          description="Dependency injection and inversion of control for testable, decoupled service layers. Constructor injection, interface-driven contracts."
-        />
-        <PatternCard
-          name="Event-Driven"
-          description="BullMQ workers processing async jobs — sensor data ingestion, entity updates, notification dispatch. Decoupled producers and consumers."
-        />
-        <PatternCard
-          name="CQRS"
-          description="Command-Query Responsibility Segregation separating write paths (entity mutations) from read paths (optimized queries, cached views)."
-        />
-        <PatternCard
-          name="Monorepo"
-          description="Layered workspaces with shared types, independent deployability, and dependency boundaries enforced by workspace constraints."
-        />
-        </div>
+    <Reveal>
+      <div>
+        <h3>What it does</h3>
+        <ul class="features-list">
+          {sparcFeatures.map((feature) => <li>{feature}</li>)}
+        </ul>
       </div>
     </Reveal>
   </div>
@@ -94,91 +53,30 @@ const alsoShipped = ['infofin', 'tandem', 'iris'].map(
     margin-bottom: 3rem;
   }
 
-  .featured-project {
-    margin-bottom: 3rem;
-  }
-
-  .featured-label {
-    display: inline-block;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--layer-services-label);
-    margin-bottom: 1rem;
-  }
-
-  .shipped-section {
-    margin-bottom: 3rem;
-  }
-
-  .shipped-section h3 {
+  h3 {
     margin-bottom: 1.25rem;
   }
 
-  .shipped-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: 1rem;
+  .decisions-section {
+    margin-bottom: 3rem;
   }
 
-  .shipped-card {
-    padding: 1.25rem;
-    border: 1px solid currentColor;
-    border-color: color-mix(in srgb, currentColor 12%, transparent);
-    border-radius: 4px;
-    transition: border-color 0.3s ease, transform 0.3s ease;
-  }
-
-  .shipped-card:hover {
-    border-color: color-mix(in srgb, currentColor 30%, transparent);
-    transform: translateY(-2px);
-  }
-
-  .shipped-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-bottom: 0.5rem;
-  }
-
-  .shipped-name {
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: var(--layer-services-label);
-  }
-
-  .shipped-link {
-    font-size: 0.7rem;
-    color: #7a8494;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .shipped-link:hover {
-    color: var(--layer-services-heading);
-  }
-
-  .shipped-summary {
-    font-size: 0.875rem;
-    margin-bottom: 1rem;
-  }
-
-  .shipped-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .patterns-section h3 {
-    margin-bottom: 1.25rem;
-  }
-
-  .patterns-grid {
+  .decisions-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
     gap: 1rem;
+  }
+
+  .features-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 0.75rem 2rem;
+  }
+
+  .features-list li {
+    padding-left: 1rem;
+    border-left: 2px solid var(--layer-services-accent);
+    font-size: 0.95rem;
   }
 </style>

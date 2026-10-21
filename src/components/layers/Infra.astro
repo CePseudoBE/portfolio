@@ -1,35 +1,38 @@
 ---
-// Layer 4 — Infrastructure: SmartCampus (featured), Proxmox, Docker, SSL/TLS, 4G/5G
-import ProjectCard from '../ui/ProjectCard.astro';
+// Layer 4 — Infrastructure: how SPARC runs, and the GitOps chain for other services
 import Reveal from '../ui/Reveal.astro';
-import { projects } from '../../data/projects';
-
-const sparc = projects.find((p) => p.slug === 'sparc')!;
+import { sparcInfra } from '../../data/sparc';
 ---
 
 <section class="layer" data-layer="infra" id="infra">
   <div class="layer-inner">
-    <Reveal><p class="mono layer-label">4 — Infrastructure</p></Reveal>
-    <Reveal delay={0.1}><h2>Infrastructure</h2></Reveal>
+    <Reveal><p class="mono layer-label">4 / Infrastructure</p></Reveal>
+    <Reveal delay={0.1}><h2>How it runs</h2></Reveal>
     <Reveal delay={0.15}>
       <p class="layer-intro">
-        The physical and virtual substrate — and the pipeline that ships to it.
-        Two substrates: a Proxmox VM running the SPARC backend under Docker, and
-        an OKD/OpenShift cluster running everything else behind a full GitOps
-        chain where merging to main <em>is</em> the deployment.
+        SPARC runs as Podman containers behind Traefik on a Proxmox VM, with GitLab CI
+        for builds and tests. At its scale, a VM is simpler to run and to debug than
+        a Kubernetes cluster.
       </p>
     </Reveal>
 
-    <Reveal delay={0.2}>
-      <div class="featured-project">
-        <span class="mono featured-label">Featured project</span>
-        <ProjectCard project={sparc} />
-      </div>
-    </Reveal>
+    <Reveal><div class="infra-grid">
+      {sparcInfra.map((item) => (
+        <div class="infra-item">
+          <span class="mono infra-name">{item.name}</span>
+          <p>{item.description}</p>
+        </div>
+      ))}
+    </div></Reveal>
 
     <Reveal delay={0.1}>
       <div class="gitops-section">
-        <h3>GitOps Chain</h3>
+        <h3>Beyond SPARC: OKD and GitOps</h3>
+        <p class="gitops-intro">
+          Our other services run on an OKD (OpenShift) cluster, where merging to main
+          <em>is</em> the deployment. Workloads are hardened: read-only root filesystem,
+          non-root containers, SCC-constrained pods.
+        </p>
         <ol class="gitops-flow">
           <li class="gitops-step">
             <span class="mono gitops-name">Merge</span>
@@ -41,7 +44,7 @@ const sparc = projects.find((p) => p.slug === 'sparc')!;
           </li>
           <li class="gitops-step">
             <span class="mono gitops-name">Argo CD</span>
-            <p>Syncs cluster state to the Git repository, continuously</p>
+            <p>Continuously syncs the cluster to the state declared in Git</p>
           </li>
           <li class="gitops-step">
             <span class="mono gitops-name">Kustomize</span>
@@ -49,30 +52,11 @@ const sparc = projects.find((p) => p.slug === 'sparc')!;
           </li>
           <li class="gitops-step">
             <span class="mono gitops-name">Sealed Secrets</span>
-            <p>Secrets encrypted at rest in Git, decrypted only in-cluster</p>
+            <p>Secrets encrypted at rest in Git, decrypted only in the cluster</p>
           </li>
         </ol>
       </div>
     </Reveal>
-
-    <Reveal delay={0.1}><div class="infra-grid">
-      <div class="infra-item">
-        <span class="mono infra-name">Kubernetes / OKD</span>
-        <p>Hardened workloads: readOnlyRootFilesystem, non-root containers, OpenShift SCC-constrained pods.</p>
-      </div>
-      <div class="infra-item">
-        <span class="mono infra-name">Docker</span>
-        <p>Containerized microservices with multi-stage builds. Compose for local dev, orchestrated deploys for production.</p>
-      </div>
-      <div class="infra-item">
-        <span class="mono infra-name">Proxmox</span>
-        <p>Runs the SPARC backend stack under Docker: Rust API, NATS, TimescaleDB, ChirpStack, Traefik. Event-driven TLS cert rotation, LoRaWAN chain secured gateway-to-network-server.</p>
-      </div>
-      <div class="infra-item">
-        <span class="mono infra-name">LoRaWAN</span>
-        <p>Long-range IoT gateway network. Payload decoding, device provisioning, sensor fleet management.</p>
-      </div>
-    </div></Reveal>
   </div>
 </section>
 
@@ -90,69 +74,11 @@ const sparc = projects.find((p) => p.slug === 'sparc')!;
     margin-bottom: 3rem;
   }
 
-  .featured-project {
-    margin-bottom: 3rem;
-  }
-
-  .featured-label {
-    display: inline-block;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--layer-infra-label);
-    margin-bottom: 1rem;
-  }
-
-  .gitops-section {
-    margin-bottom: 3rem;
-  }
-
-  .gitops-section h3 {
-    margin-bottom: 1.25rem;
-  }
-
-  .gitops-flow {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-    gap: 1rem;
-    counter-reset: gitops;
-  }
-
-  .gitops-step {
-    position: relative;
-    padding: 1rem 1rem 1rem 1.1rem;
-    border-left: 2px solid var(--layer-infra-accent);
-    counter-increment: gitops;
-  }
-
-  .gitops-step::before {
-    content: counter(gitops, decimal-leading-zero);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    color: #7a8494;
-    display: block;
-    margin-bottom: 0.35rem;
-  }
-
-  .gitops-name {
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: var(--layer-infra-label);
-    display: block;
-    margin-bottom: 0.4rem;
-  }
-
-  .gitops-step p {
-    font-size: 0.85rem;
-  }
-
   .infra-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     gap: 1.5rem;
+    margin-bottom: 3rem;
   }
 
   .infra-item {
@@ -179,5 +105,52 @@ const sparc = projects.find((p) => p.slug === 'sparc')!;
 
   .infra-item p {
     font-size: 0.875rem;
+  }
+
+  .gitops-section h3 {
+    margin-bottom: 1rem;
+  }
+
+  .gitops-intro {
+    max-width: 48rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .gitops-flow {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1rem;
+    counter-reset: gitops;
+  }
+
+  .gitops-step {
+    position: relative;
+    padding: 1rem 1rem 1rem 1.1rem;
+    border-left: 2px solid var(--layer-infra-accent);
+    counter-increment: gitops;
+  }
+
+  .gitops-step::before {
+    content: counter(gitops, decimal-leading-zero);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: #7a8494;
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .gitops-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--layer-infra-label);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .gitops-step p {
+    font-size: 0.85rem;
   }
 </style>

@@ -6,33 +6,35 @@ export interface PipelineStep {
 
 export const pipelineSteps: PipelineStep[] = [
   {
-    label: 'Collect',
-    description: 'Scheduled Collectors fetch data from external APIs and IoT sources',
-    tech: 'Cron / Collectors',
+    label: 'Receive',
+    description:
+      'LoRaWAN uplinks from ChirpStack v4, MQTT 5.0 messages from Mosquitto, HTTP requests authenticated per device',
+    tech: 'Rust / Axum / Tokio',
   },
   {
-    label: 'Queue',
-    description: 'Jobs dispatched across 4 priority queues for async processing',
-    tech: 'BullMQ / Redis',
+    label: 'Buffer',
+    description: 'Every reading is published to a durable stream between ingestion and storage',
+    tech: 'NATS JetStream',
   },
   {
-    label: 'Process',
-    description: 'Harvesters aggregate and transform collected data into new datasets',
-    tech: 'Harvesters / EventBus',
+    label: 'Consume',
+    description:
+      'Idempotent consumers store each reading once, even if it is delivered twice; poison messages go to a dead-letter queue',
+    tech: 'JetStream consumers',
   },
   {
     label: 'Store',
-    description: 'Metadata and historical data persisted, raw files on S3-compatible storage',
-    tech: 'PostgreSQL / OVH S3',
+    description: 'Time series in hypertables, with native compression',
+    tech: 'TimescaleDB',
   },
   {
-    label: 'Cache',
-    description: 'Entity last-state and active subscriptions cached for sub-ms reads',
-    tech: 'Redis',
+    label: 'Aggregate',
+    description: 'Continuous aggregates pre-compute rollups for the read path',
+    tech: 'TimescaleDB',
   },
   {
     label: 'Serve',
-    description: 'NGSI-LD API exposes entities with subscription-driven real-time notifications',
-    tech: 'NGSI-LD / REST',
+    description: 'Query API behind OIDC and RBAC, used by the Nuxt 4 web app',
+    tech: 'Axum / Nuxt 4',
   },
 ];
