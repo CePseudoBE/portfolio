@@ -2,18 +2,20 @@
 
 ## Concept
 
-Portfolio de développeur backend structuré comme une **descente en profondeur** à travers les couches d'un système. Le visiteur scrolle et "perce" chaque couche, de la surface (API) jusqu'au core (valeurs, contact). La métaphore fonctionne à deux niveaux : un non-technique comprend intuitivement "ce mec travaille sur les fondations", un technique reconnaît le modèle en couches.
+Portfolio de développeur backend structuré comme une **descente en profondeur** à travers les couches d'un système : **SPARC**, le projet phare. Le visiteur scrolle et "perce" chaque couche de SPARC, de la surface (hero) jusqu'au core (autres projets, about, contact). La métaphore et le projet phare ne font qu'un : chaque couche raconte une seule histoire. Cible : postes Backend Engineer medior, full remote UE ; un recruteur passe 30 à 60 secondes sur le site, donc SPARC, le niveau et le contact doivent être visibles dès le hero.
 
 ### Les 6 couches
 
-| Layer | ID | Accent | Heading | Text | Background | Contenu |
-|---|---|---|---|---|---|---|
-| 0 - Surface | `surface` | `#8fa8c2` | `#c8d5e2` | `#a0aab8` | `#0c1018` | Hero, nom, rôle STARI, tagline, stack |
-| 1 - Interface | `interface` | `#5e8a8a` | `#a8ccc8` | `#7e9494` | `#0a0e12` | API Gateway (projet phare), endpoints illustratifs, protocoles |
-| 2 - Services | `services` | `#4a7263` | `#8fbdaa` | `#7a9e8e` | `#080c0e` | Digital Twin (projet phare), Infofin/Tandem/IRIS, patterns |
-| 3 - Data | `data` | `#6b6243` | `#b5a87a` | `#8e8670` | `#0a0908` | Pipeline, TimescaleDB, NATS JetStream, PostgreSQL, Redis, BullMQ |
-| 4 - Infrastructure | `infra` | `#5c4035` | `#a88072` | `#8a7068` | `#0a0807` | SPARC (projet phare), GitOps chain, Kubernetes/OKD, Proxmox, LoRaWAN |
-| 5 - Core | `core` | `#3d2828` | `#9a7070` | `#806464` | `#080606` | Valeurs, about, BELSPO/FARI Academy, contact, CV |
+| Layer | ID | Label nav | Accent | Heading | Text | Background | Contenu |
+|---|---|---|---|---|---|---|---|
+| 0 - Surface | `surface` | Intro | `#8fa8c2` | `#c8d5e2` | `#a0aab8` | `#0c1018` | Hero : nom, titre, 3 ans à l'ULB, dispo remote UE, phrase SPARC, CTA (case study, email, CV), ~8 pills |
+| 1 - Interface | `interface` | SPARC | `#5e8a8a` | `#a8ccc8` | `#7e9494` | `#0a0e12` | SPARC : problème, contraintes, chiffres, diagramme write/read path, comment les données entrent (LoRaWAN, MQTT, HTTP, accès) |
+| 2 - Services | `services` | Architecture | `#4a7263` | `#8fbdaa` | `#7a9e8e` | `#080c0e` | Monolithe modulaire, décisions et trade-offs, fonctionnalités |
+| 3 - Data | `data` | Pipeline | `#6b6243` | `#b5a87a` | `#8e8670` | `#0a0908` | Write path étape par étape, "When things go wrong" (fiabilité) |
+| 4 - Infrastructure | `infra` | Infrastructure | `#5c4035` | `#a88072` | `#8a7068` | `#0a0807` | Comment SPARC tourne (VM, Podman, Traefik, GitLab CI, Prometheus/Grafana), puis OKD + GitOps pour les autres services |
+| 5 - Core | `core` | Work & contact | `#3d2828` | `#9a7070` | `#806464` | `#080606` | Digital Twin Framework, "Also shipped" (Tandem, IRIS, Infofin), about, stack complète, contact |
+
+Les h2 décrivent le contenu ("How it runs"), le petit label mono garde la métaphore ("4 / Infrastructure").
 
 ### Système de couleurs dual-track
 
@@ -30,7 +32,8 @@ Le fond (`bg`) s'assombrit progressivement. L'accent aussi. Mais heading et text
 - **Vibe** : dark, éditorial, atmosphérique. Pas "template dev dark mode". Penser Linear, pas Bootstrap.
 - **Fond** : shift progressif inspiré des strates géologiques. Du bleu-ardoise en surface vers le brun-terre en profondeur. Pas de thème clair : le fond sombre fait partie du concept.
 - **Typographie** : Instrument Serif (display, titres) + IBM Plex Mono (labels, code, annotations) + Manrope (body text). PAS de Inter, Roboto, Space Grotesk. Subsets latins uniquement.
-- **Éléments récurrents** : indicateur de profondeur fixe (sidebar gauche, dots compacts sur mobile), readout "depth: XX%" en bas à droite.
+- **Éléments récurrents** : indicateur de profondeur fixe (sidebar gauche, dots compacts sur mobile), readout "depth: XX%" en bas à droite, liens rapides fixes en haut à droite (SPARC, Contact, CV).
+- **Rédaction** : 5 tirets cadratins (—) maximum dans tout le texte affiché (lu comme du texte généré par IA). Préférer deux-points, virgules, points. Labels de couche au format `0 / Surface`.
 
 ## Stack
 
@@ -46,30 +49,38 @@ Le fond (`bg`) s'assombrit progressivement. L'accent aussi. Mais heading et text
 src/
   layouts/Layout.astro        # Layout principal, fonts, meta
   pages/index.astro           # Page unique, assemble les couches
+  pages/404.astro             # Page 404 (servie par nginx via error_page)
   components/
     layers/                   # Surface, Interface, Services, Data, Infra, Core
-    ui/                       # DepthIndicator, DepthReadout, Reveal, TechPill,
-                              # EndpointRow, MetricBlock, ProjectCard, PatternCard,
-                              # PipelineStep
-  styles/                     # global.css (reset, variables), layers.css
-  data/                       # projects.ts, skills.ts, endpoints.ts, pipeline.ts
+    ui/                       # DepthIndicator, DepthReadout, QuickLinks, Reveal,
+                              # TechPill, MetricBlock, ProjectCard, PatternCard,
+                              # PipelineStep, ArchitectureDiagram
+  styles/                     # global.css (reset, variables, .button), layers.css
+  data/                       # sparc.ts, pipeline.ts, projects.ts, skills.ts, contact.ts
   scripts/depth-tracker.ts    # Logique scroll -> depth percentage
 ```
 
 ## Contenu technique (EXACT — règle : AUCUNE donnée inventée)
 
-Tout fait affiché doit être vérifiable. Pas de métriques non mesurées, pas de faux endpoints présentés comme réels (les endpoints de la layer Interface sont marqués "illustrative").
+Tout fait affiché doit être vérifiable. Pas de métriques non mesurées, pas d'endpoints inventés.
 
 ### Ce qu'on montre
 
-- **Parcours** : backend engineer chez STARI (ULB & FARI), Bruxelles, depuis 2023. Contexte FARI = AI Institute for the Common Good.
-- **SPARC** (Sensor Platform for Academic Research and Community) : en production sur les campus ULB (https://sparc.ulb.be). Porté seul de bout en bout : backend Rust, web app Nuxt 4, infra OKD. Faits : 8 crates, 673 tests automatisés, ingestion idempotente multi-protocole (LoRaWAN/ChirpStack, MQTT 5.0, HTTP) sur NATS JetStream + dead-letter queue, TimescaleDB (hypertables, agrégats continus, compression), hexagonale + CQRS garanti à la compilation, OIDC (Authentik, RS256/JWKS), RBAC multi-tenant fail-closed.
-- **Digital Twin Framework** : framework TypeScript à composants (Collectors, Harvesters, Handlers, Assets Managers), NGSI-LD natif, remplacement in-house de FIWARE/Orion, Redis + PostgreSQL + BullMQ (4 queues), presigned upload OVH S3. Open source MIT : https://github.com/CePseudoBE/digitaltwin. PAS de nombre de packages, PAS de claim de performance.
-- **API Gateway** : c'est le Digital Twin Framework en production — unifie digital twin, capteurs IoT, mobilité, environnement pour une visualisation 3D urbaine sous Unity. Stack : TypeScript, NGSI-LD, PostgreSQL, Redis, BullMQ.
-- **Infofin** (https://infofin.ulb.be, Laravel, en production), **Tandem** (échange linguistique, AdonisJS), **IRIS** (soumission de candidatures, AdonisJS).
+- **Parcours** : backend engineer chez STARI (ULB & FARI), Bruxelles, depuis 2023 (3 ans). Contexte FARI = AI Institute for the Common Good. Ouvert aux postes remote dans l'UE.
+- **SPARC** (Sensor Platform for Academic Research and Community) : https://sparc.ulb.be. Seul ingénieur sur SPARC, au sein de STARI : backend Rust, web app Nuxt 4, infra.
+  - En production depuis janvier 2026, 2 campus ULB (d'autres prévus), ~50 devices, 3 gateways LoRaWAN.
+  - Utilisateurs : un centre de recherche (CIREM) et le département infrastructure de l'ULB.
+  - Ingestion : LoRaWAN (ChirpStack v4, gateways existantes du campus, TLS gateway → network server), MQTT 5.0 (Mosquitto, TLS), HTTP (une clé API par device).
+  - Rust (Axum, Tokio), 8 crates, 673 tests automatisés. Monolithe modulaire, hexagonal (ports & adapters), pipeline event-driven, CQRS léger garanti à la compilation (l'API ne peut pas écrire de télémétrie).
+  - NATS JetStream (buffer, consumers idempotents, dead-letter queue), TimescaleDB (hypertables, agrégats continus, compression).
+  - OIDC via Authentik (RS256/JWKS, pas de secret partagé), RBAC multi-tenant fail-closed.
+  - Fonctionnalités : alertes de seuil par email, exports CSV asynchrones, statut des devices dérivé de la dernière activité, gestion de flotte LoRaWAN via l'API.
+  - Pourquoi Rust : construit seul, le compilateur est le premier filet de sécurité.
+  - **Déploiement (version unique partout)** : Podman + Traefik sur une VM Proxmox, GitLab CI, Prometheus + Grafana. Certificat TLS de la PKI interne, rotation via une unit systemd.path qui redémarre Traefik. **SPARC ne tourne PAS sur OKD** : OKD + GitOps (Tekton, Argo CD, Kustomize, Sealed Secrets) fait tourner les autres services.
+- **Digital Twin Framework** : framework TypeScript à composants (Collectors, Harvesters, Handlers, Assets Managers), développé pour FARI, NGSI-LD natif, alternative in-house à FIWARE/Orion, Redis + PostgreSQL + BullMQ (4 queues), presigned upload OVH S3. Open source MIT : https://github.com/CePseudoBE/digitaltwin. En production comme gateway unifiant entités digital twin, capteurs IoT, mobilité et environnement pour une visualisation 3D Unity (l'ancienne carte "API Gateway" est fusionnée ici). PAS de nombre de packages, PAS de claim de performance.
+- **Also shipped to production at ULB** (une ligne chacun) : **Tandem** (échange linguistique, trois universités, AdonisJS), **IRIS** (soumission de candidatures et pièces justificatives, AdonisJS), **Infofin** (https://infofin.ulb.be, Laravel : "ULB's platform listing research funding opportunities (calls for projects, grants, mobility, events)").
 - **BELSPO** : formation d'une journée sur l'IA pour le bien commun, avec la FARI AI Academy.
-- **Patterns** : DI/IoC, event-driven (BullMQ workers), CQRS, monorepo (sans chiffres).
-- **Stack** : Rust, TypeScript, PHP, SQL. Axum, Tokio, AdonisJS, Laravel. PostgreSQL, TimescaleDB, NATS JetStream, MQTT, Redis, NGSI-LD. Kubernetes/OKD, GitOps (Argo CD, Tekton, Kustomize, Sealed Secrets), Docker, Proxmox, LoRaWAN. OIDC/OAuth2.
+- **Stack** : Rust, TypeScript, SQL, PHP. Axum, Tokio, AdonisJS, Laravel. PostgreSQL, TimescaleDB, NATS JetStream, MQTT, Redis, BullMQ, NGSI-LD. Kubernetes/OKD, GitOps (Argo CD, Tekton, Kustomize, Sealed Secrets), Podman, Docker, Traefik, Proxmox, GitLab CI. OIDC/OAuth2, Prometheus, Grafana. LoRaWAN, ChirpStack.
 
 ### Ce qu'on NE montre PAS
 
@@ -80,6 +91,9 @@ Tout fait affiché doit être vérifiable. Pas de métriques non mesurées, pas 
 - **PAS de TaxCalc** sauf décision contraire explicite
 - **PAS de claims non mesurées** (ex-"~60% overhead reduction" : supprimée définitivement)
 - **PAS de comptes de packages/layers** pour le Digital Twin (les sources divergent, la métrique ne veut rien dire)
+- **PAS de messages/jour** pour SPARC tant que ce n'est pas mesuré
+- **PAS d'app mobile** (Cordova/Vue) : hors cible backend
+- **PAS de cartes génériques** (définitions de protocoles, liste de patterns) ni d'endpoints "illustratifs" : chaque élément doit parler d'un vrai projet
 
 ## Conventions de code
 
@@ -121,8 +135,9 @@ Tout fait affiché doit être vérifiable. Pas de métriques non mesurées, pas 
 
 ## Notes
 
-- Le site est une single page. Pas de routing multi-pages.
-- GitHub : https://github.com/CePseudoBE — LinkedIn : https://www.linkedin.com/in/axel-g-hoffmann/ — Email : axel.g.hoffmann@gmail.com
-- CV : `public/cv.pdf` (version EN sans photo), lié depuis Core.
+- Le site est une single page. Pas de routing multi-pages (seule exception : `404.astro`).
+- GitHub : https://github.com/CePseudoBE — LinkedIn : https://www.linkedin.com/in/axel-g-hoffmann/ — Email : axel.g.hoffmann@gmail.com (source : `src/data/contact.ts`).
+- CV : `public/cv.pdf` (version EN sans photo), lié depuis le hero, les liens rapides et Core.
+- Image sociale : `public/og-sparc.png` (2400×1260). LinkedIn cache l'image par URL : tout nouveau rendu doit changer de nom de fichier.
 - Le contenu est en anglais (portfolio pour des postes remote internationaux).
 - Le "depth: XX%" readout et l'indicateur latéral sont des éléments signature du design, ne pas les retirer.
