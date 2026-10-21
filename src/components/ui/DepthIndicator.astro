@@ -99,9 +99,12 @@ import { LAYERS } from '../../types';
   }
 
   .dot-label {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    background-color: color-mix(in srgb, var(--layer-core-bg) 85%, transparent);
     opacity: 0;
     transform: translateX(-4px);
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -113,10 +116,14 @@ import { LAYERS } from '../../types';
     transform: scale(1.5);
   }
 
-  .depth-dot.is-active .dot-label {
-    opacity: 1;
-    color: #7a8494;
-    transform: translateX(0);
+  /* Below this width the left gutter is narrower than the labels, so a
+     permanently visible active label would sit on top of body text */
+  @media (min-width: 1500px) {
+    .depth-dot.is-active .dot-label {
+      opacity: 1;
+      color: #7a8494;
+      transform: translateX(0);
+    }
   }
 
   .depth-dot:hover .dot-label,

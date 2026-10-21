@@ -1,0 +1,36 @@
+---
+// Fixed top-right shortcuts: SPARC, contact and CV are one click away from anywhere
+import { contact } from '../../data/contact';
+---
+
+<nav class="quick-links mono" aria-label="Quick links">
+  <a href="#interface">SPARC</a>
+  <a href="#contact">Contact</a>
+  <a href={contact.cv}>CV</a>
+</nav>
+
+<style>
+  .quick-links {
+    position: fixed;
+    top: clamp(0.5rem, 0.25rem + 1.25vw, 1.5rem);
+    right: clamp(0.5rem, 0.25rem + 1.25vw, 2rem);
+    z-index: 100;
+    display: flex;
+    padding: 0.25rem;
+    border-radius: 4px;
+    background-color: color-mix(in srgb, var(--layer-core-bg) 85%, transparent);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .quick-links a {
+    padding: 0.4rem 0.7rem;
+    color: var(--layer-surface-text);
+    transition: color 0.2s ease;
+  }
+
+  .quick-links a:hover {
+    color: var(--layer-surface-heading);
+  }
+</style>
