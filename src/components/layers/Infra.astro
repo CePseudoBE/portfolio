@@ -1,5 +1,5 @@
 ---
-// Layer 4 — Infrastructure: how SPARC runs, and the GitOps chain for other services
+// Layer 4 — Infrastructure: SPARC's backend VM, and the OKD GitOps chain for its front-end
 import Reveal from '../ui/Reveal.astro';
 import { sparcInfra } from '../../data/sparc';
 ---
@@ -10,9 +10,9 @@ import { sparcInfra } from '../../data/sparc';
     <Reveal delay={0.1}><h2>How it runs</h2></Reveal>
     <Reveal delay={0.15}>
       <p class="layer-intro">
-        SPARC runs as Podman containers behind Traefik on a Proxmox VM, with GitLab CI
-        for builds and tests. At its scale, a VM is simpler to run and to debug than
-        a Kubernetes cluster.
+        SPARC's backend runs as Podman containers behind Traefik on a Proxmox VM, with
+        GitLab CI for builds and tests. Its Nuxt 4 front-end runs on our OKD cluster,
+        deployed through GitOps.
       </p>
     </Reveal>
 
@@ -27,9 +27,10 @@ import { sparcInfra } from '../../data/sparc';
 
     <Reveal delay={0.1}>
       <div class="gitops-section">
-        <h3>Beyond SPARC: OKD and GitOps</h3>
+        <h3>Front-end and other services: OKD and GitOps</h3>
         <p class="gitops-intro">
-          Our other services run on an OKD (OpenShift) cluster, where merging to main
+          SPARC's front-end, IRIS, Tandem and Infofin run on an OKD (OpenShift) cluster,
+          where merging to main
           <em>is</em> the deployment. Workloads are hardened: read-only root filesystem,
           non-root containers, SCC-constrained pods.
         </p>

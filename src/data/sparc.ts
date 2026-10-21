@@ -105,9 +105,9 @@ export const sparcDecisions: NamedItem[] = [
       'Time series stay in PostgreSQL and plain SQL: hypertables for ingestion, continuous aggregates for reads, native compression for storage.',
   },
   {
-    name: 'A VM, not the Kubernetes cluster',
+    name: 'The backend on a VM, not the cluster',
     description:
-      "Our other services run on OKD, but SPARC's scale does not justify Kubernetes. Podman and Traefik on a VM are simpler to run and to debug.",
+      "SPARC's scale does not justify Kubernetes for the backend: Podman and Traefik on a VM are simpler to run and to debug. The Nuxt 4 front-end ships through our OKD GitOps chain.",
   },
 ];
 
@@ -153,7 +153,7 @@ export const failureCases: FailureCase[] = [
 export const sparcInfra: NamedItem[] = [
   {
     name: 'Proxmox VM + Podman',
-    description: 'The Rust API, NATS, TimescaleDB, ChirpStack and Traefik run as containers on a VM.',
+    description: 'The backend stack (Rust API, NATS, TimescaleDB, ChirpStack, Traefik) runs as containers on a VM.',
   },
   {
     name: 'Traefik + internal PKI',
