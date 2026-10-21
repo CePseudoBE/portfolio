@@ -34,12 +34,16 @@
     bottom: clamp(1rem, 0.75rem + 1.25vw, 2rem);
     right: clamp(1rem, 0.75rem + 1.25vw, 2rem);
     z-index: 100;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: #7a8494;
     display: flex;
     gap: 0.35em;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    /* the readout floats over body text, so it needs its own backdrop */
+    background-color: color-mix(in srgb, var(--layer-core-bg) 85%, transparent);
     transition: color 0.3s ease;
   }
 
@@ -54,9 +58,8 @@
 
   @media (max-width: 768px) {
     .depth-readout {
-      bottom: 0.75rem;
-      right: 0.75rem;
-      font-size: 0.6rem;
+      bottom: 0.5rem;
+      right: 0.5rem;
     }
   }
 </style>
