@@ -135,5 +135,5 @@ Tout fait affiché doit être vérifiable. Pas de métriques non mesurées, pas 
 - Le site est une single page. Pas de routing multi-pages (seule exception : `404.astro`).
 - GitHub : https://github.com/CePseudoBE — LinkedIn : https://www.linkedin.com/in/axel-g-hoffmann/ — Email : axel.g.hoffmann@gmail.com (source : `src/data/contact.ts`).
 - CV : `public/cv.pdf` (version EN sans photo), lié depuis le header et Contact.
-- Image sociale : `public/og-sparc.png` (2400×1260). LinkedIn cache l'image par URL : tout nouveau rendu doit changer de nom de fichier. L'image actuelle et `public/favicon.svg` portent encore l'ancien design "Depth" : à refaire.
+- Image sociale : `public/og-axel-hoffmann.png` (2400×1260). LinkedIn cache l'image par URL : tout nouveau rendu doit changer de nom de fichier. Diagramme d'architecture : `public/sparc-architecture.svg` (sources : `src/data/sparc.ts`).
 - Le contenu est en anglais (portfolio pour des postes remote internationaux).

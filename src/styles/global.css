@@ -136,6 +136,12 @@ figure {
   margin: 1.5rem 0;
 }
 
+figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 figcaption,
 footer,
 .secondary {
