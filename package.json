@@ -9,6 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "deploy": "astro build && ssh root@204.168.185.161 \"rm -rf /var/www/axel-hoffmann.dev/*\" && scp -r dist/* root@204.168.185.161:/var/www/axel-hoffmann.dev/",
     "astro": "astro"
   },
@@ -19,6 +22,10 @@
     "astro": "^6.1.2"
   },
   "devDependencies": {
-    "astro-critters": "^2.2.1"
+    "@astrojs/check": "^0.9.12",
+    "astro-critters": "^2.2.1",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
+    "typescript": "^5.9.3"
   }
 }

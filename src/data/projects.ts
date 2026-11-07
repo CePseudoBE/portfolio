@@ -26,7 +26,12 @@ export const projects: Project[] = [
       'Redis, PostgreSQL and BullMQ (4 queues); presigned-URL uploads to OVH Object Storage',
     ],
     stack: ['TypeScript', 'NGSI-LD', 'PostgreSQL', 'Redis', 'BullMQ'],
-    links: [{ label: 'github.com/CePseudoBE/digitaltwin', href: 'https://github.com/CePseudoBE/digitaltwin' }],
+    links: [
+      {
+        label: 'github.com/CePseudoBE/digitaltwin',
+        href: 'https://github.com/CePseudoBE/digitaltwin',
+      },
+    ],
   },
   {
     slug: 'tandem',
