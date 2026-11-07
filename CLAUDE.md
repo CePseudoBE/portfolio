@@ -2,89 +2,102 @@
 
 ## Concept
 
-Portfolio de développeur backend centré sur **SPARC**, le projet phare. Une seule page, une seule colonne, du texte lisible. Cible : postes Backend Engineer medior, full remote UE ; un recruteur passe 30 à 60 secondes sur le site, donc SPARC, le niveau et le contact doivent être visibles en haut de page.
+Portfolio de développeur backend centré sur **SPARC**, le projet phare. Une seule page. Cible : postes Backend Engineer medior, full remote UE ; un recruteur passe 30 à 60 secondes sur le site, donc SPARC, le niveau et le contact doivent être visibles tout de suite.
 
-Le site doit avoir l'air construit à la main par un ingénieur backend, pas généré par une IA. Ne pas charger de skill de design frontend et ne pas chercher à le rendre "distinctif" ou "éditorial" de sa propre initiative : c'est cet instinct qui avait produit l'ancienne version (concept "Depth", abandonné). Voir **Banned patterns**.
+Historique : la v1 ("Depth", serif, thème sombre, labels uppercase, glows) faisait généré par IA ; la v2 (texte brut) n'avait aucune identité. La v3 tire sa personnalité de **quelques choix de design fermes** et de **preuves réelles** : l'architecture dessinée depuis le code, une vraie capture de l'app, une démo de panne basée sur les vraies règles, un vrai extrait de code. Pas des effets.
 
-### Sections (ordre fixe)
+### Structure de la page
 
-| Composant      | id               | Titre          | Contenu                                                                             |
-| -------------- | ---------------- | -------------- | ----------------------------------------------------------------------------------- |
-| Header         | -                | h1 (nom)       | Nom, une ligne de rôle, une ligne de liens de contact                               |
-| Intro          | -                | -              | 3 ans à l'ULB, dispo remote UE, phrase SPARC, stack principale en une ligne         |
-| Sparc          | `sparc`          | SPARC          | Problème, chiffres en une phrase, contraintes, write/read paths (figure), ingestion |
-| Architecture   | `architecture`   | Architecture   | Monolithe modulaire, décisions et trade-offs, extrait de code Rust, fonctionnalités |
-| Reliability    | `reliability`    | Reliability    | Write path étape par étape, "When things go wrong"                                  |
-| Infrastructure | `infrastructure` | Infrastructure | Backend sur VM, capture Grafana, front-end et autres services sur OKD + GitOps      |
-| OtherWork      | `other-work`     | Other work     | Digital Twin Framework, "Also shipped" (Tandem, IRIS, Infofin)                      |
-| About          | `about`          | About          | Parcours, BELSPO, stack complète                                                    |
-| Contact        | `contact`        | Contact        | Email, CV, GitHub, LinkedIn                                                         |
+| Composant                    | id      | Titre                                 | Contenu                                                                                                 |
+| ---------------------------- | ------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `Sidebar`                    | -       | h1 (nom)                              | Nom, rôle, "ULB, Brussels · since 2023", liens de contact, nav, disponibilité, "Rust, TypeScript, SQL." |
+| lead (`index.astro`)         | -       | -                                     | Phrase d'accroche SPARC                                                                                 |
+| `Sparc`                      | `sparc` | h2 SPARC                              | Diagramme, datasheet + capture, problème, contraintes, décisions, pannes, infrastructure                |
+| `FailureDemo` (dans `Sparc`) | `demo`  | h3 What happens when something breaks | Démo interactive de la write path                                                                       |
+| `CodeExcerpt` (dans `Sparc`) | `code`  | h3 The export queue is a table        | Extrait `claim_next` verbatim, Shiki                                                                    |
+| `Notes` (dans `Sparc`)       | `notes` | h3 Notes                              | Rendu seulement si une note est publiée                                                                 |
+| `OtherWork`                  | `other` | h2 Other work                         | Digital Twin (lignes de couches), Also shipped, ligne OKD/GitOps                                        |
+| `About`                      | `about` | h2 About                              | Parcours, envie d'équipe, homelab, BELSPO, stack en une ligne                                           |
+| footer (`index.astro`)       | -       | -                                     | Liens de contact, "Built with Astro"                                                                    |
 
-### Style visuel
+### Design system
 
-- Une pile système pour tout le texte : `system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`. `ui-monospace` uniquement dans `<code>`/`<pre>` et pour des noms d'outils inline dans une phrase.
-- Hiérarchie par taille et graisse uniquement (400/600). h1 2.25rem, h2 1.5rem, h3 1.125rem. Body 1rem / line-height 1.6, mesure 70ch max. `text-wrap: balance` sur les titres, `text-wrap: pretty` sur les paragraphes.
-- Fond `#ffffff`, texte `#1a1a1a`, secondaire `#555`. Un seul accent : `#1f5fbf`, pour les liens et le focus uniquement. Mode sombre via `prefers-color-scheme` : `#141414` / `#e6e6e6`, secondaire `#a6a6a6`, liens `#8ab4f8` (`#1f5fbf` ne fait que 3:1 sur `#141414`).
-- Une colonne alignée à gauche dans un cadre centré de 60rem ; la prose est limitée à 44rem. Seuls les `<figure>` (diagramme, code, captures) vont jusqu'à 60rem : c'est la seule asymétrie voulue.
-- Plus d'espace au-dessus des titres qu'en dessous.
-- Listes de termes (décisions, scénarios de panne, infra, ingestion) en `<dl>` simples, étapes en `<ol>`, stack en phrases séparées par des virgules, CTA en liens soulignés.
-- Le site ne charge aucun JavaScript ; le contenu est complet tel quel.
+- **Police** : Archivo variable (`@fontsource-variable/archivo`), uniquement le fichier latin `wdth`, importé en `?url` dans `Layout.astro` (preload + `@font-face` inline). Une seule famille partout.
+  - Nom : `font-stretch: 68%`, 800, 56px (48px sous 900px), line-height 0.92. h2 : 72%, 750, 42px. h3 : 85%, 700, 22px.
+  - Body 17px / 1.6. Lead 26px, 450, 32ch max. Paragraphes 68ch max.
+  - Code : pile `ui-monospace`, seulement dans `<pre>` et `<code>`.
+- **Couleurs** (`global.css`, clair par défaut, sombre via `prefers-color-scheme`) :
+  - clair : `--ink #161616`, `--muted #5a5a5a`, `--rule #d9d9d9`, `--signal #c4471d`, `--bg #fff`, `--soft #f5f5f4`, `--rust #eef3fb`, `--rustline #1f5fbf`
+  - sombre : `--ink #e8e8e8`, `--muted #a6a6a6`, `--rule #333`, `--signal #e9764c`, `--bg #141414`, `--soft #1c1c1c`, `--rust #17233a`, `--rustline #8ab4f8`
+  - `--on-signal` : texte sur fond `--signal` (blanc en clair, `#141414` en sombre, car le blanc ne fait que 2.9:1 sur `#e9764c`).
+  - `--signal` (orange) a deux usages seulement : soulignement des liens et état "down" de la démo. Jamais décoratif.
+  - Bleu (`--rust`/`--rustline`) = "partie du backend Rust", dans le diagramme et la démo.
+- **Layout** : deux colonnes à partir de 900px (sidebar 260px en `position: sticky`, contenu à droite, max 1280px, gap 64px). En dessous : une colonne, sidebar en haut, pas sticky. `minmax(0, 1fr)` sur les pistes de grille pour éviter tout débordement à 390px.
+- **Nav active** : gras + couleur ink uniquement (`aria-current`, posé par le script de `Sidebar`). Pas de barre colorée.
+- **JavaScript** : deux petits scripts seulement, la nav active (`Sidebar`) et la démo (`FailureDemo`). La page se lit entièrement sans JS.
 
 ## Banned patterns
 
-Ne jamais réintroduire, même "pour améliorer le design" :
-
-- **Polices** : tout paquet `@fontsource` ou police web. Instrument Serif, toute serif display, tout mot d'accent en italique, Inter, Geist, Space Grotesk, Manrope, DM Sans, Plus Jakarta, Syne, Outfit, Fraunces, Playfair, IBM Plex, JetBrains Mono.
-- **Typographie** : `text-transform: uppercase` (nulle part), `letter-spacing` autre que la valeur par défaut, monospace hors `<code>`/`<pre>`/noms d'outils inline, graisses autres que 400/600, h1 plein écran.
-- **Couleur** : fond crème/beige, palettes par section ou par "couche", dégradés (`gradient`), glows, `box-shadow` colorées, glassmorphism (`backdrop-filter`, fonds translucides), bandes d'accent en `border-left`, toute couleur d'accent autre que le bleu des liens, mode sombre bleu marine.
-- **Layout** : hero centré ou plein écran, sections en `min-height: 100vh`, petit label au-dessus des titres, numérotation "N / Layer", grilles de cartes, cartes imbriquées, icônes au-dessus des titres, grilles de stats ("By the numbers"), pills/tags de technos, boutons, badge dans le hero, indicateur "scroll", navigation fixe.
-- **Mouvement** : révélation au scroll (`opacity: 0` initial), compteurs animés, lignes animées, indicateur de profondeur, readout "depth: XX%", tracker de scroll, `scroll-behavior: smooth`, `@keyframes`, effets hover en `transform`. Seules les transitions de couleur au hover/focus sont permises.
-- **Concept** : la métaphore "Depth" (couches, surface, core, descente) dans le texte, les ids, les classes ou les noms de fichiers.
-- **Preuves** : images générées, captures, diagrammes ou extraits de code factices. Les `<figure>` de preuve (diagramme d'architecture, extrait de code Rust, capture Grafana) ne contiennent que des fichiers fournis par Axel. En attendant : un placeholder `TODO` rendu uniquement en dev (`import.meta.env.DEV`), pour que `pnpm deploy` ne le publie jamais.
-- **Rédaction** : plus de 3 tirets cadratins (—) dans tout le texte affiché, slogans, contrastes forcés. Ne pas réécrire la copie d'Axel sans demande : signaler les lignes problématiques.
+- Pas de police serif display ni de mot d'accent en italique. Pas d'Instrument Serif, Inter, Geist, Space Grotesk, Manrope, DM Sans, IBM Plex ni JetBrains Mono.
+- Pas de `text-transform: uppercase` ni de letter-spacing large.
+- Pas de dégradés, glows, ombres colorées, glassmorphism ni bordures latérales colorées sur des cartes.
+- Pas d'animation d'apparition ou de révélation, pas de flèche qui rebondit, pas de contenu à `opacity: 0` avant que le JS tourne. La seule animation est la démo de panne, et elle respecte `prefers-reduced-motion`.
+- Pas de grille de gros chiffres. Les faits vont dans la datasheet.
+- Pas de petit label numéroté au-dessus des titres ("0 / Surface"). Pas de concept "depth".
+- Au plus 3 tirets cadratins (—) dans tout le texte affiché.
+- Aucun fait, chiffre, image ou code inventé. Tout ce qui est affiché vient du repo SPARC, du dashboard live ou d'Axel.
 
 ## Stack
 
 - **Framework** : Astro (statique, single page)
 - **Package manager** : pnpm (PAS npm ni yarn)
-- **Styling** : CSS vanilla, tout dans `src/styles/global.css`. PAS de Tailwind, PAS de CSS-in-JS.
-- **JavaScript client** : aucun.
-- **Outillage** : `pnpm format` / `pnpm format:check` (Prettier + prettier-plugin-astro), `pnpm check` (`astro check`, types). Pas de linter à ce jour.
+- **Styling** : CSS vanilla. Variables, base et éléments partagés dans `src/styles/global.css` ; styles propres à un composant dans son `<style>` scopé. PAS de Tailwind, PAS de CSS-in-JS.
+- **Coloration du code** : `<Code>` d'Astro (Shiki), thèmes `github-light-default` / `github-dark-default`, `defaultColor: false` ; le choix du thème se fait dans `global.css` via `prefers-color-scheme`.
+- **Outillage** : `pnpm format` / `pnpm format:check` (Prettier + prettier-plugin-astro), `pnpm check` (`astro check`). Pas de linter à ce jour.
 - **Déploiement** : `pnpm deploy` — build + scp vers le VPS (axel-hoffmann.dev).
 
 ## Structure du projet
 
 ```
 src/
-  layouts/Layout.astro        # Layout principal, meta
-  pages/index.astro           # Page unique, assemble les sections
+  layouts/Layout.astro        # Meta, police, global.css
+  pages/index.astro           # Page unique : sidebar, lead, sections, footer
   pages/404.astro             # Page 404 (servie par nginx via error_page)
-  components/sections/        # Header, Intro, Sparc, Architecture, Reliability,
-                              # Infrastructure, OtherWork, About, Contact
-  styles/global.css           # Variables de couleur, typographie, listes, figures
-  data/                       # sparc.ts, pipeline.ts, projects.ts, skills.ts, contact.ts
+  components/                 # Sidebar, ContactLinks, Sparc, FailureDemo, CodeExcerpt,
+                              # Notes, OtherWork, About
+  styles/global.css           # Variables de couleur, typographie, layout, tableaux, code
+  data/                       # sparc.ts, projects.ts, skills.ts, contact.ts, notes.ts,
+                              # claim-next.txt (extrait Rust verbatim)
 ```
 
 ## Contenu technique (EXACT — règle : AUCUNE donnée inventée)
 
-Tout fait affiché doit être vérifiable. Pas de métriques non mesurées, pas d'endpoints inventés.
+Tout fait affiché doit être vérifiable. Pas de métriques non mesurées, pas d'endpoints inventés. Faits SPARC vérifiés le 7 novembre 2026 contre le repo (branche `develop`) et le dashboard live.
 
 ### Ce qu'on montre
 
-- **Parcours** : backend engineer chez STARI (ULB & FARI), Bruxelles, depuis 2023 (3 ans). Contexte FARI = AI Institute for the Common Good. Ouvert aux postes remote dans l'UE.
+- **Parcours** : backend engineer chez STARI (ULB & FARI), Bruxelles, depuis 2023. Premier emploi, après un bachelier en informatique (réseaux et télécoms) à la HEH. Contexte FARI = AI Institute for the Common Good. Ouvert aux postes remote dans l'UE.
 - **SPARC** (Sensor Platform for Academic Research and Community) : https://sparc.ulb.be. Seul ingénieur sur SPARC, au sein de STARI : backend Rust, web app Nuxt 4, infra.
-  - En production depuis janvier 2026, 2 campus ULB (d'autres prévus), ~50 devices, 3 gateways LoRaWAN.
+  - En production depuis janvier 2026 (d'autres campus prévus). Parc : "34 registered sensors, 3 LoRaWAN gateways, 2 campuses (November 2026)" (dashboard : 22 actifs sur 24 h). Toujours dater ce chiffre et le mettre à jour avec la date.
   - Utilisateurs : un centre de recherche (CIREM) et le département infrastructure de l'ULB.
-  - Ingestion : LoRaWAN (ChirpStack v4, gateways existantes du campus, TLS gateway → network server), MQTT 5.0 (Mosquitto, TLS), HTTP (une clé API par device).
-  - Rust (Axum, Tokio), 8 crates, 673 tests automatisés. Monolithe modulaire, hexagonal (ports & adapters), pipeline event-driven, CQRS léger garanti à la compilation (l'API ne peut pas écrire de télémétrie).
-  - NATS JetStream (buffer, consumers idempotents, dead-letter queue), TimescaleDB (hypertables, agrégats continus, compression).
-  - OIDC via Authentik (RS256/JWKS, pas de secret partagé), RBAC multi-tenant fail-closed.
-  - Fonctionnalités : alertes de seuil par email, exports CSV asynchrones, statut des devices dérivé de la dernière activité, gestion de flotte LoRaWAN via l'API.
+  - Backend : un workspace Rust (8 crates, 673 tests automatisés), une image, trois binaires : `iot-ingestion`, `iot-processing`, `iot-api`. Hexagonal (ports & adapters), pipeline event-driven, CQRS léger garanti à la compilation (l'API ne peut pas écrire de télémétrie).
+  - Ingestion :
+    - MQTT 5.0 : les devices se connectent à Mosquitto en TLS 1.3 (port 8883), avec authentification et ACLs. Le saut Mosquitto → `iot-ingestion` est en TCP simple sur le réseau interne uniquement.
+    - LoRaWAN : gateways existantes du campus, ChirpStack v4 sur une VM séparée, qui publie vers le Mosquitto de la plateforme en MQTT/TLS.
+    - HTTP : via Traefik (`/ingest`, rate limité), une clé API par device (HMAC-SHA256, comparaison en temps constant).
+    - L'hôte de Mosquitto n'est pas vérifié : ne pas écrire sur quelle VM il tourne.
+  - `iot-processing` : valide contre le registre de métriques, stocke de façon idempotente (`ON CONFLICT … DO NOTHING`), évalue les seuils d'alerte. Lectures invalides → `DLQ_OBSERVATIONS`. Alertes par email via un relais SMTP. Pas d'ack JetStream tant que l'insert n'a pas réussi.
+  - `iot-api` : Axum, OIDC (Authentik, RS256/JWKS, pas de secret partagé), RBAC multi-tenant fail-closed, workers d'export CSV (la table `export_jobs` est la file, avec `SKIP LOCKED`), gestion de flotte LoRaWAN via l'API gRPC de ChirpStack.
+  - NATS JetStream : stream `OBSERVATIONS` (buffer durable), dead-letter `DLQ_OBSERVATIONS`.
+  - TimescaleDB : hypertable compressée, agrégats continus (horaire → journalier). Grafana lit les agrégats directement ; Prometheus scrape les trois binaires.
+  - Modèle de données : FIWARE Smart Data Models, ids NGSI-LD.
+  - Statut des devices dérivé de la dernière lecture, jamais stocké.
   - Pourquoi Rust : construit seul, le compilateur est le premier filet de sécurité.
-  - **Déploiement (version unique partout)** : le **backend** SPARC tourne avec Podman + Traefik sur une VM Proxmox, GitLab CI, Prometheus + Grafana. Certificat TLS de la PKI interne, rotation via une unit systemd.path qui redémarre Traefik. Le **front-end** Nuxt 4 de SPARC tourne sur OKD via la chaîne GitOps (Tekton, Argo CD, Kustomize, Sealed Secrets), comme IRIS, Tandem et Infofin. Ne jamais écrire que tout SPARC tourne sur OKD, ni que SPARC n'y est pas du tout.
-- **Digital Twin Framework** : framework TypeScript à composants (Collectors, Harvesters, Handlers, Assets Managers), développé pour FARI, NGSI-LD natif, alternative in-house à FIWARE/Orion, Redis + PostgreSQL + BullMQ (4 queues), presigned upload OVH S3. Open source MIT : https://github.com/CePseudoBE/digitaltwin. En production comme gateway unifiant entités digital twin, capteurs IoT, mobilité et environnement pour une visualisation 3D Unity (l'ancienne carte "API Gateway" est fusionnée ici). PAS de nombre de packages, PAS de claim de performance.
-- **Also shipped to production at ULB** (une ligne chacun) : **Tandem** (échange linguistique, trois universités, AdonisJS), **IRIS** (soumission de candidatures et pièces justificatives, AdonisJS), **Infofin** (https://infofin.ulb.be, Laravel : "ULB's platform listing research funding opportunities (calls for projects, grants, mobility, events)").
+  - **Déploiement (version unique partout)** : le **backend** SPARC tourne avec Podman + Traefik sur une VM Proxmox, GitLab CI, Prometheus + Grafana. Certificat TLS de la PKI interne, rotation via une unit systemd.path qui redémarre Traefik. Le **front-end** Nuxt 4 (un BFF) tourne sur OKD via la chaîne GitOps (Tekton, Argo CD, Kustomize, Sealed Secrets), comme IRIS, Tandem et Infofin. Ne jamais écrire que tout SPARC tourne sur OKD, ni que SPARC n'y est pas du tout.
+- **Digital Twin Framework** : framework TypeScript à composants (Collectors, Harvesters, Handlers, Assets Managers), développé pour FARI, NGSI-LD natif, alternative in-house à FIWARE/Orion, Redis + PostgreSQL + BullMQ, presigned upload OVH S3. Quatre couches de packages affichées en lignes (engine ; components, assets ; database, storage, auth ; shared), chaque couche ne dépend que des couches inférieures. Open source MIT : https://github.com/CePseudoBE/digitaltwin. En production comme gateway unifiant entités digital twin, capteurs IoT, mobilité et environnement pour une visualisation 3D Unity. PAS de nombre de packages, PAS de claim de performance.
+- **Also shipped to production at ULB** (une ligne chacun) : **Tandem** (échange linguistique pour étudiants et personnel de trois universités : ULB, VUB, UAntwerp ; AdonisJS), **IRIS** (soumission de candidatures et documents pour post-doctorants, AdonisJS), **Infofin** (https://infofin.ulb.be, Laravel).
 - **BELSPO** : formation d'une journée sur l'IA pour le bien commun, avec la FARI AI Academy.
+- **Notes prévues** (`src/data/notes.ts`, `published: false`) : CQRS par le système de types, statut de device qui ne peut pas mentir, rotation de certificats PKI sans cron. Passer `published` à `true` seulement quand `/notes/{slug}/` existe.
 - **Stack** : Rust, TypeScript, SQL, PHP. Axum, Tokio, AdonisJS, Laravel. PostgreSQL, TimescaleDB, NATS JetStream, MQTT, Redis, BullMQ, NGSI-LD. Kubernetes/OKD, GitOps (Argo CD, Tekton, Kustomize, Sealed Secrets), Podman, Docker, Traefik, Proxmox, GitLab CI. OIDC/OAuth2, Prometheus, Grafana. LoRaWAN, ChirpStack.
 
 ### Ce qu'on NE montre PAS
@@ -95,7 +108,7 @@ Tout fait affiché doit être vérifiable. Pas de métriques non mesurées, pas 
 - **PAS de Lostgard** (ce n'est pas mon projet)
 - **PAS de TaxCalc** sauf décision contraire explicite
 - **PAS de claims non mesurées** (ex-"~60% overhead reduction" : supprimée définitivement)
-- **PAS de comptes de packages/layers** pour le Digital Twin (les sources divergent, la métrique ne veut rien dire)
+- **PAS de nombre de packages** pour le Digital Twin (les sources divergent, la métrique ne veut rien dire)
 - **PAS de messages/jour** pour SPARC tant que ce n'est pas mesuré
 - **PAS d'app mobile** (Cordova/Vue) : hors cible backend
 - **PAS de cartes génériques** (définitions de protocoles, liste de patterns) ni d'endpoints "illustratifs" : chaque élément doit parler d'un vrai projet
@@ -104,14 +117,13 @@ Tout fait affiché doit être vérifiable. Pas de métriques non mesurées, pas 
 
 ### Astro
 
-- Un composant par section (un h2 = un fichier dans `components/sections/`).
-- Props typées avec TypeScript dans le frontmatter.
-- Les données structurées (listes, chiffres, projets, liens) viennent de `src/data/`, pas hardcodées dans les composants.
+- Un composant par fichier dans `src/components/`, props typées dans le frontmatter.
+- Les données structurées (listes, chiffres, projets, liens, textes alternatifs) viennent de `src/data/`, pas hardcodées dans les composants.
 
 ### CSS
 
-- Couleurs uniquement via les variables de `global.css` : `--bg`, `--text`, `--text-secondary`, `--link`.
-- Styler les éléments HTML (`h2`, `dl`, `figure`...) plutôt que d'inventer des classes. Classes existantes : `.secondary`, `.todo`, `.skip-link`.
+- Couleurs uniquement via les variables de `global.css`.
+- Mobile-first, breakpoint unique à 900px.
 - Pas de `!important`. Jamais.
 
 ### TypeScript
@@ -120,20 +132,24 @@ Tout fait affiché doit être vérifiable. Pas de métriques non mesurées, pas 
 
 ### Commits
 
+- Axel relit et committe lui-même : ne pas committer ni pousser sans demande explicite.
 - Atomiques : un commit = un changement logique, qui compile.
 - Messages à l'impératif, en anglais, préfixés (content, fix, feat, refactor, chore, perf, style) avec scope si pertinent.
 
 ## Tests
 
 - `pnpm format:check`, `pnpm check` et `pnpm build` doivent passer.
-- Vérifier en clair et en sombre, sur mobile et desktop, et sans JavaScript.
-- `rg -i "uppercase|letter-spacing|gradient|box-shadow|backdrop-filter|@fontsource|opacity: 0" src` ne doit rien renvoyer.
-- Lighthouse : viser 95+ en performance. Contrastes : WCAG AA minimum.
+- Captures à 390, 768 et 1360px, clair et sombre, conformes à la maquette, sans scroll horizontal.
+- La démo marche (DB down → le backlog monte puis se vide ; invalide → DLQ ; redelivery → pas de nouvelle ligne), aussi avec `prefers-reduced-motion`. La page se lit sans JS.
+- Contrastes WCAG AA, un seul h1, niveaux de titres dans l'ordre, focus visible.
+- `rg -i "uppercase|letter-spacing|gradient|box-shadow|backdrop-filter|opacity: ?0|Instrument" src public/*.svg` : justifier chaque résultat.
 
 ## Notes
 
-- Le site est une single page. Pas de routing multi-pages (seule exception : `404.astro`).
+- Le site est une single page. Pas de routing multi-pages (seule exception : `404.astro`, et les futures pages de notes).
 - GitHub : https://github.com/CePseudoBE — LinkedIn : https://www.linkedin.com/in/axel-g-hoffmann/ — Email : axel.g.hoffmann@gmail.com (source : `src/data/contact.ts`).
-- CV : `public/cv.pdf` (version EN sans photo), lié depuis le header et Contact.
-- Image sociale : `public/og-axel-hoffmann.png` (2400×1260). LinkedIn cache l'image par URL : tout nouveau rendu doit changer de nom de fichier. Diagramme d'architecture : `public/sparc-architecture.svg` (sources : `src/data/sparc.ts`).
+- CV : `public/cv.pdf` (version EN sans photo), lié depuis la sidebar et le footer.
+- Image sociale : `public/og-axel-hoffmann.png` (2400×1260). LinkedIn cache l'image par URL : tout nouveau rendu doit changer de nom de fichier.
+- Diagramme : `public/sparc-architecture.svg` (clair/sombre via sa propre media query). Son `<desc>` et `sparcDiagramAlt` dans `src/data/sparc.ts` doivent rester identiques.
+- Capture de l'app : `public/sparc-explorer.png` (vraie capture, mode clair).
 - Le contenu est en anglais (portfolio pour des postes remote internationaux).

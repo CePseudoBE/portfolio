@@ -1,0 +1,29 @@
+---
+import { skills } from '../data/skills';
+
+const stackLine = skills.map((category) => category.items.join(', ')).join(' · ');
+---
+
+<section id="about">
+  <h2>About</h2>
+  <p>
+    I started at ULB in 2023, right after my bachelor's in computer science (networks and telecoms)
+    at HEH. It's my first job, and most of it has been building things on my own: SPARC from the
+    first design to production, plus the platforms around it. Working alone taught me to keep
+    systems simple, to test what matters, and to think about what happens when something fails,
+    because when it breaks, the Teams message comes to me.
+  </p>
+  <p>
+    Now I want to work in a team, with engineers I can learn from and review code with. I'm open to
+    both backend and data engineering roles, and I'm getting deeper into streaming, CDC and
+    lakehouses.
+  </p>
+  <p>
+    Outside work, I'm building a small homelab on second-hand PCs, so I can break things there
+    before I break them at work.
+  </p>
+  <p>
+    I also gave a one-day training on AI for the common good to BELSPO, with the FARI AI Academy.
+  </p>
+  <p class="tags">{stackLine}</p>
+</section>

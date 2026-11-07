@@ -1,0 +1,19 @@
+---
+import { Code } from 'astro:components';
+import claimNext from '../data/claim-next.txt?raw';
+---
+
+<section id="code">
+  <h3>The export queue is a table</h3>
+  <p>
+    CSV exports run in the background. Instead of adding a broker, the <code>export_jobs</code>{' '}
+    table is the queue: each worker claims one job in a single statement, and{' '}
+    <code>SKIP LOCKED</code> lets several workers run without taking the same job.
+  </p>
+  <Code
+    code={claimNext.trimEnd()}
+    lang="rust"
+    themes={{ light: 'github-light-high-contrast', dark: 'github-dark-default' }}
+    defaultColor={false}
+  />
+</section>

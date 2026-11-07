@@ -1,0 +1,18 @@
+---
+import { contact } from '../data/contact';
+---
+
+<ul class="contact-links">
+  <li>
+    <a href={`mailto:${contact.email}`}>{contact.email}</a>
+  </li>
+  <li>
+    <a href={contact.cv}>CV (PDF)</a>
+  </li>
+  <li>
+    <a href={contact.github}>GitHub</a>
+  </li>
+  <li>
+    <a href={contact.linkedin}>LinkedIn</a>
+  </li>
+</ul>

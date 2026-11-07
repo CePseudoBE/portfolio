@@ -1,0 +1,120 @@
+---
+import { alsoShipped, digitalTwin } from '../data/projects';
+---
+
+<section id="other">
+  <h2>Other work</h2>
+  <p class="sub">Also in production at ULB, and built for FARI.</p>
+
+  <h3>
+    {digitalTwin.name} <span class="license">· {digitalTwin.license}</span>
+  </h3>
+  <p>{digitalTwin.summary}</p>
+  <ul class="layers" aria-label="Package layers, each layer only depends on layers below it">
+    {digitalTwin.layers.map((layer) => (
+      <li>
+        <span class="layer-label">{layer.label}</span>
+        <span>
+          {layer.packages.map((name, index) => (
+            <>
+              {index > 0 && ', '}
+              <code>{name}</code>
+            </>
+          ))}
+          : {layer.description}
+        </span>
+      </li>
+    ))}
+  </ul>
+  <p class="tags">
+    Each layer depends only on the layers below it. {digitalTwin.stack.join(', ')} ·{' '}
+    <a href={digitalTwin.link.href}>{digitalTwin.link.label}</a>
+  </p>
+
+  <h3>Also shipped</h3>
+  <ul class="shipped">
+    {alsoShipped.map((project) => (
+      <li>
+        <b>{project.name}</b>
+        <span>
+          {project.summary} {project.stack}.
+          {project.link && <a href={project.link.href}>{project.link.label}</a>}
+        </span>
+      </li>
+    ))}
+  </ul>
+  <p class="tags">
+    Front-ends and these services run on OKD, deployed through GitOps: Tekton, Argo CD, Kustomize,
+    Sealed Secrets.
+  </p>
+</section>
+
+<style>
+  .license {
+    font-stretch: 100%;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--muted);
+  }
+
+  .layers {
+    display: grid;
+    gap: 6px;
+    max-width: 560px;
+    margin: 0 0 12px;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem;
+  }
+
+  .layers li {
+    display: grid;
+    grid-template-columns: 70px minmax(0, 1fr);
+    border: 1px solid var(--ink);
+    background: var(--bg);
+  }
+
+  .layers span {
+    padding: 7px 10px;
+  }
+
+  .layers .layer-label {
+    border-right: 1px solid var(--ink);
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+
+  .layers code {
+    font-size: 0.8125rem;
+  }
+
+  .shipped {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 68ch;
+  }
+
+  .shipped li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+    padding: 12px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  @media (min-width: 900px) {
+    .shipped li {
+      grid-template-columns: 140px minmax(0, 1fr);
+      gap: 16px;
+    }
+  }
+
+  .shipped b {
+    font-weight: 650;
+  }
+
+  .shipped span {
+    color: var(--muted);
+  }
+</style>

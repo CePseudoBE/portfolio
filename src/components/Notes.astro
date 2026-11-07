@@ -1,0 +1,41 @@
+---
+import { publishedNotes } from '../data/notes';
+---
+
+{publishedNotes.length > 0 && (
+  <section id="notes">
+    <h3>Notes</h3>
+    <ul class="notes">
+      {publishedNotes.map((note) => (
+        <li>
+          <a href={`/notes/${note.slug}/`}>{note.title}</a>
+          <span>{note.summary}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .notes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 68ch;
+  }
+
+  .notes li {
+    border-top: 1px solid var(--rule);
+    padding: 12px 0;
+  }
+
+  .notes a {
+    font-weight: 600;
+  }
+
+  .notes span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+</style>

@@ -15,6 +15,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og-axel-hoffmann.png', Astro.site);
 
 import '../styles/global.css';
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+
+const archivoFontFace = `@font-face{font-family:Archivo;font-style:normal;font-display:swap;font-weight:100 900;font-stretch:62% 125%;src:url(${archivoLatin}) format('woff2-variations')}`;
 ---
 
 <!doctype html>
@@ -29,6 +32,8 @@ import '../styles/global.css';
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href={canonical} />
+    <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
+    <style is:inline set:html={archivoFontFace} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />

@@ -3,16 +3,7 @@ export interface SkillCategory {
   items: string[];
 }
 
-export const heroStack: string[] = [
-  'Rust',
-  'TypeScript',
-  'SQL',
-  'Axum',
-  'NATS JetStream',
-  'TimescaleDB',
-  'PostgreSQL',
-  'Kubernetes / OKD',
-];
+export const coreLanguages: string[] = ['Rust', 'TypeScript', 'SQL'];
 
 export const skills: SkillCategory[] = [
   {

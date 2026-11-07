@@ -1,0 +1,368 @@
+---
+import { failureCases } from '../data/sparc';
+---
+
+<section id="demo">
+  <h3>When things go wrong</h3>
+  <p>
+    A simulation of the write path. Stop the database, send a broken reading or replay one, and
+    watch where each reading goes.
+  </p>
+  <div class="demo" data-demo>
+    <div class="controls" data-js-only hidden>
+      <button type="button" id="demo-db" aria-pressed="false">
+        Stop TimescaleDB
+      </button>
+      <button type="button" id="demo-bad">
+        Send an invalid reading
+      </button>
+      <button type="button" id="demo-dup">
+        Redeliver a stored reading
+      </button>
+    </div>
+    <div class="track" id="demo-track">
+      <div class="station" id="demo-sensors">
+        <b>Sensors</b>a reading every 1.5 s
+      </div>
+      <div class="station rust" id="demo-ingestion">
+        <b>iot-ingestion</b>parse, publish
+      </div>
+      <div class="station" id="demo-stream">
+        <b>JetStream</b>
+        <span class="count" id="demo-waiting">
+          0
+        </span>
+        waiting
+      </div>
+      <div class="station rust" id="demo-processing">
+        <b>iot-processing</b>
+        <span id="demo-processing-state">idle</span>
+      </div>
+      <div class="station" id="demo-db-station">
+        <b>TimescaleDB</b>
+        <span class="count" id="demo-stored">
+          0
+        </span>
+        stored
+      </div>
+      <div class="station dlq" id="demo-dlq">
+        <b>Dead-letter queue</b>
+        <span class="count" id="demo-invalid">
+          0
+        </span>
+        invalid
+      </div>
+    </div>
+    <p class="log" id="demo-log" data-js-only hidden>
+      Running.
+    </p>
+    <p class="visually-hidden" id="demo-announce" aria-live="polite"></p>
+    <p class="note" data-js-only hidden>
+      Simulation, not live data. The rules are the real ones: no ack until the insert succeeds,
+      failed validation goes to <code>DLQ_OBSERVATIONS</code>, and duplicates hit{' '}
+      <code>ON CONFLICT DO NOTHING</code>.
+    </p>
+    <noscript>
+      <p class="note">
+        The three rules behind this simulation: a reading is not acked until the insert succeeds, so
+        it waits in JetStream while the database is down; a reading that fails validation goes to{' '}
+        <code>DLQ_OBSERVATIONS</code>; a duplicate hits <code>ON CONFLICT DO NOTHING</code> and
+        stays one row.
+      </p>
+    </noscript>
+  </div>
+  <p>Every failure case, and what SPARC does about it:</p>
+  <dl>
+    {failureCases.map((failure) => (
+      <>
+        <dt>{failure.scenario}</dt>
+        <dd>{failure.behavior}</dd>
+      </>
+    ))}
+  </dl>
+</section>
+
+<script>
+  type Kind = 'ok' | 'bad' | 'dup';
+
+  interface Reading {
+    id: number;
+    kind: Kind;
+  }
+
+  const EMIT_EVERY_MS = 1500;
+  const PROCESS_EVERY_MS = 250;
+  const RETRY_AFTER_MS = 1000;
+  const FLIGHT_MS = 320;
+
+  function byId(id: string): HTMLElement {
+    const element = document.getElementById(id);
+    if (!element) throw new Error(`Missing #${id}`);
+    return element;
+  }
+
+  const track = byId('demo-track');
+  const sensors = byId('demo-sensors');
+  const ingestion = byId('demo-ingestion');
+  const stream = byId('demo-stream');
+  const processing = byId('demo-processing');
+  const dbStation = byId('demo-db-station');
+  const dlqStation = byId('demo-dlq');
+  const processingState = byId('demo-processing-state');
+  const log = byId('demo-log');
+  const announcer = byId('demo-announce');
+  const dbButton = byId('demo-db');
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const waiting: Reading[] = [];
+  const stored = new Set<number>();
+  let invalidCount = 0;
+  let lastId = 0;
+  let lastStoredId: number | null = null;
+  let dbUp = true;
+  let busy = false;
+
+  document.querySelectorAll<HTMLElement>('[data-js-only]').forEach((element) => {
+    element.hidden = false;
+  });
+
+  // Routine events only update the visible log; announcing one every 1.5 s would flood screen readers.
+  function say(text: string, announce = false): void {
+    log.textContent = text;
+    if (announce) announcer.textContent = text;
+  }
+
+  function draw(): void {
+    byId('demo-waiting').textContent = String(waiting.length);
+    byId('demo-stored').textContent = String(stored.size);
+    byId('demo-invalid').textContent = String(invalidCount);
+  }
+
+  function centerOf(element: HTMLElement): [number, number] {
+    const box = element.getBoundingClientRect();
+    const origin = track.getBoundingClientRect();
+    return [box.left - origin.left + box.width / 2 - 5, box.top - origin.top + box.height / 2 - 5];
+  }
+
+  function fly(kind: Kind, from: HTMLElement, to: HTMLElement): Promise<void> {
+    if (reduceMotion) return Promise.resolve();
+    return new Promise((resolve) => {
+      const dot = document.createElement('span');
+      dot.className = `dot ${kind}`;
+      const [x0, y0] = centerOf(from);
+      const [x1, y1] = centerOf(to);
+      dot.style.transform = `translate(${x0}px, ${y0}px)`;
+      track.appendChild(dot);
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          dot.style.transform = `translate(${x1}px, ${y1}px)`;
+        }),
+      );
+      setTimeout(() => {
+        dot.remove();
+        resolve();
+      }, FLIGHT_MS);
+    });
+  }
+
+  async function emit(kind: Kind): Promise<void> {
+    const id = kind === 'dup' ? lastStoredId : ++lastId;
+    if (id === null) return;
+    const reading: Reading = { id, kind };
+    await fly(kind, sensors, ingestion);
+    await fly(kind, ingestion, stream);
+    waiting.push(reading);
+    draw();
+  }
+
+  async function processNext(): Promise<void> {
+    if (busy || waiting.length === 0) return;
+    busy = true;
+    const reading = waiting[0];
+    processingState.textContent = `reading #${reading.id}`;
+    await fly(reading.kind, stream, processing);
+
+    if (reading.kind === 'bad') {
+      waiting.shift();
+      invalidCount++;
+      await fly('bad', processing, dlqStation);
+      say(
+        `Reading #${reading.id} failed validation: moved to the dead-letter queue, the stream keeps flowing.`,
+        true,
+      );
+    } else if (!dbUp) {
+      await fly(reading.kind, processing, stream);
+      say(
+        `Insert failed, so reading #${reading.id} is not acked. It stays in JetStream and is redelivered (${waiting.length} waiting).`,
+      );
+      processingState.textContent = 'retrying';
+      draw();
+      setTimeout(() => {
+        busy = false;
+      }, RETRY_AFTER_MS);
+      return;
+    } else {
+      waiting.shift();
+      await fly(reading.kind, processing, dbStation);
+      if (stored.has(reading.id)) {
+        say(
+          `Reading #${reading.id} was already stored: ON CONFLICT DO NOTHING, still one row.`,
+          true,
+        );
+      } else {
+        stored.add(reading.id);
+        lastStoredId = reading.id;
+        say(
+          waiting.length > 3
+            ? `Draining the backlog: ${waiting.length} left.`
+            : `Reading #${reading.id} stored and acked.`,
+        );
+      }
+    }
+
+    processingState.textContent = 'idle';
+    draw();
+    busy = false;
+  }
+
+  dbButton.addEventListener('click', () => {
+    dbUp = !dbUp;
+    dbButton.setAttribute('aria-pressed', String(!dbUp));
+    dbButton.textContent = dbUp ? 'Stop TimescaleDB' : 'Start TimescaleDB';
+    dbStation.classList.toggle('down', !dbUp);
+    say(
+      dbUp
+        ? 'TimescaleDB is back. JetStream redelivers the backlog.'
+        : 'TimescaleDB is down. Watch the readings pile up in JetStream.',
+      true,
+    );
+  });
+  byId('demo-bad').addEventListener('click', () => emit('bad'));
+  byId('demo-dup').addEventListener('click', () => emit('dup'));
+
+  setInterval(() => emit('ok'), EMIT_EVERY_MS);
+  setInterval(processNext, PROCESS_EVERY_MS);
+</script>
+
+<style>
+  .demo {
+    padding: 24px;
+    border: 1px solid var(--rule);
+    background: var(--soft);
+  }
+
+  .controls:not([hidden]) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  button {
+    font: inherit;
+    font-size: 0.875rem;
+    padding: 7px 12px;
+    border: 1px solid var(--ink);
+    background: var(--bg);
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  button[aria-pressed='true'] {
+    background: var(--signal);
+    border-color: var(--signal);
+    color: var(--on-signal);
+  }
+
+  .track {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  @media (min-width: 900px) {
+    .track {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .dlq {
+      grid-column: 4;
+    }
+  }
+
+  .station {
+    position: relative;
+    min-height: 96px;
+    padding: 10px;
+    border: 1px solid var(--ink);
+    background: var(--bg);
+    font-size: 0.8125rem;
+  }
+
+  .station b {
+    display: block;
+    font-size: 0.875rem;
+  }
+
+  .rust {
+    background: var(--rust);
+    border-color: var(--rustline);
+  }
+
+  .down {
+    border-style: dashed;
+    color: var(--muted);
+  }
+
+  .dlq {
+    border-color: var(--signal);
+  }
+
+  .count {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-stretch: 80%;
+    line-height: 1.2;
+  }
+
+  .track :global(.dot) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--ink);
+    transition: transform 0.3s ease-in-out;
+    pointer-events: none;
+  }
+
+  .track :global(.dot.bad) {
+    background: var(--signal);
+  }
+
+  .track :global(.dot.dup) {
+    background: var(--rustline);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track :global(.dot) {
+      display: none;
+    }
+  }
+
+  .log {
+    margin: 16px 0 0;
+    min-height: 1.6em;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .note {
+    margin: 10px 0 0;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+</style>

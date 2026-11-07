@@ -3,60 +3,58 @@ export interface ProjectLink {
   href: string;
 }
 
-export interface Project {
-  slug: string;
-  name: string;
-  role: string;
-  summary: string;
-  highlights: string[];
-  stack: string[];
-  links?: ProjectLink[];
+export interface PackageLayer {
+  label: string;
+  packages: string[];
+  description: string;
 }
 
-export const projects: Project[] = [
+export interface ShippedProject {
+  name: string;
+  summary: string;
+  stack: string;
+  link?: ProjectLink;
+}
+
+export const digitalTwin = {
+  name: 'Digital Twin Framework',
+  license: 'open source, MIT',
+  summary:
+    'A TypeScript framework for building digital twins: you write Collectors, Harvesters, Handlers and Assets Managers, and the engine schedules them, queues the work and exposes the API. NGSI-LD native, built as an in-house alternative to FIWARE/Orion. It runs in production as the gateway that unifies digital-twin entities, IoT sensors, mobility and environment data for a Unity 3D visualisation.',
+  layers: [
+    { label: 'Layer 3', packages: ['engine'], description: 'scheduler, queues, loader, OpenAPI' },
+    { label: 'Layer 2', packages: ['components', 'assets'], description: 'what users extend' },
+    { label: 'Layer 1', packages: ['database', 'storage', 'auth'], description: 'adapters' },
+    {
+      label: 'Layer 0',
+      packages: ['shared'],
+      description: 'types, errors, utils, no internal deps',
+    },
+  ] satisfies PackageLayer[],
+  stack: ['TypeScript', 'PostgreSQL', 'Redis', 'BullMQ', 'OVH S3'],
+  link: {
+    label: 'github.com/CePseudoBE/digitaltwin',
+    href: 'https://github.com/CePseudoBE/digitaltwin',
+  } satisfies ProjectLink,
+};
+
+export const alsoShipped: ShippedProject[] = [
   {
-    slug: 'digital-twin',
-    name: 'Digital Twin Framework',
-    role: 'Author · open source (MIT)',
-    summary:
-      'Component-based TypeScript framework for NGSI-LD digital twins, developed for FARI and designed as an in-house alternative to FIWARE/Orion. In production as the gateway that unifies digital twin entities, IoT sensors, mobility and environmental data behind one API for a Unity-based 3D city visualization.',
-    highlights: [
-      'Components: Collectors, Harvesters, Handlers, Assets Managers',
-      'Native NGSI-LD entities with subscription notifications',
-      'Redis, PostgreSQL and BullMQ (4 queues); presigned-URL uploads to OVH Object Storage',
-    ],
-    stack: ['TypeScript', 'NGSI-LD', 'PostgreSQL', 'Redis', 'BullMQ'],
-    links: [
-      {
-        label: 'github.com/CePseudoBE/digitaltwin',
-        href: 'https://github.com/CePseudoBE/digitaltwin',
-      },
-    ],
-  },
-  {
-    slug: 'tandem',
     name: 'Tandem',
-    role: 'Backend engineer',
-    summary: 'Language-exchange platform matching learners across three universities.',
-    highlights: [],
-    stack: ['AdonisJS'],
-  },
-  {
-    slug: 'iris',
-    name: 'IRIS',
-    role: 'Backend engineer',
-    summary: 'Platform for submitting applications and their supporting documents.',
-    highlights: [],
-    stack: ['AdonisJS'],
-  },
-  {
-    slug: 'infofin',
-    name: 'Infofin',
-    role: 'Backend engineer',
     summary:
-      "ULB's platform listing research funding opportunities (calls for projects, grants, mobility, events).",
-    highlights: [],
-    stack: ['Laravel'],
-    links: [{ label: 'infofin.ulb.be', href: 'https://infofin.ulb.be' }],
+      'Language exchange platform for students and staff of three universities (ULB, VUB, UAntwerp).',
+    stack: 'AdonisJS',
+  },
+  {
+    name: 'IRIS',
+    summary: 'Application and document submission platform for postdoctoral fellows.',
+    stack: 'AdonisJS',
+  },
+  {
+    name: 'Infofin',
+    summary:
+      "ULB's platform listing research funding opportunities: calls for projects, grants, mobility, events.",
+    stack: 'Laravel',
+    link: { label: 'infofin.ulb.be', href: 'https://infofin.ulb.be' },
   },
 ];

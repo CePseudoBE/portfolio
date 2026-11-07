@@ -1,0 +1,127 @@
+---
+import FailureDemo from './FailureDemo.astro';
+import CodeExcerpt from './CodeExcerpt.astro';
+import Notes from './Notes.astro';
+import {
+  sparcConstraints,
+  sparcDatasheet,
+  sparcDecisions,
+  sparcDiagramAlt,
+  sparcExplorerAlt,
+  sparcInfra,
+} from '../data/sparc';
+---
+
+<section id="sparc">
+  <h2>SPARC</h2>
+  <p class="sub">
+    Sensor Platform for Academic Research and Community · in production since January 2026
+  </p>
+
+  <figure>
+    <a class="frame" href="/sparc-architecture.svg">
+      <img src="/sparc-architecture.svg" width="1120" height="590" alt={sparcDiagramAlt} />
+    </a>
+    <figcaption>
+      Every box and arrow matches the code: three Rust binaries built from one workspace.
+    </figcaption>
+  </figure>
+
+  <div class="cols">
+    <table>
+      <tbody>
+        {sparcDatasheet.map((row) => (
+          <tr>
+            <th scope="row">{row.name}</th>
+            <td>{row.description}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <figure>
+      <img
+        class="screenshot"
+        src="/sparc-explorer.png"
+        width="998"
+        height="996"
+        loading="lazy"
+        alt={sparcExplorerAlt}
+      />
+      <figcaption>
+        The SPARC web app: a week of hourly averages from one room sensor, served from the
+        continuous aggregates.
+      </figcaption>
+    </figure>
+  </div>
+
+  <p>
+    <strong>The problem:</strong> research and campus teams need reliable sensor data, but devices
+    speak different protocols and no team should have to run its own pipeline.
+  </p>
+
+  <h3>Constraints</h3>
+  <ul>
+    {sparcConstraints.map((constraint) => (
+      <li>{constraint}</li>
+    ))}
+  </ul>
+
+  <h3>Decisions and trade-offs</h3>
+  <dl>
+    {sparcDecisions.map((decision) => (
+      <>
+        <dt>{decision.name}</dt>
+        <dd>{decision.description}</dd>
+      </>
+    ))}
+  </dl>
+
+  <FailureDemo />
+
+  <h3>Infrastructure</h3>
+  <p>
+    SPARC's backend runs as Podman containers behind Traefik on a Proxmox VM, with GitLab CI for
+    builds and tests. Its Nuxt 4 front-end runs on our OKD cluster, deployed through GitOps.
+  </p>
+  <dl>
+    {sparcInfra.map((item) => (
+      <>
+        <dt>{item.name}</dt>
+        <dd>{item.description}</dd>
+      </>
+    ))}
+  </dl>
+
+  <CodeExcerpt />
+  <Notes />
+</section>
+
+<style>
+  .frame {
+    display: block;
+    padding: 20px;
+    border: 1px solid var(--rule);
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .cols {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+  }
+
+  .screenshot {
+    border: 1px solid var(--rule);
+  }
+
+  ul {
+    max-width: 68ch;
+    padding-left: 1.25rem;
+  }
+</style>

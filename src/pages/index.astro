@@ -1,30 +1,49 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/sections/Header.astro';
-import Intro from '../components/sections/Intro.astro';
-import Sparc from '../components/sections/Sparc.astro';
-import Architecture from '../components/sections/Architecture.astro';
-import Reliability from '../components/sections/Reliability.astro';
-import Infrastructure from '../components/sections/Infrastructure.astro';
-import OtherWork from '../components/sections/OtherWork.astro';
-import About from '../components/sections/About.astro';
-import Contact from '../components/sections/Contact.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Sparc from '../components/Sparc.astro';
+import OtherWork from '../components/OtherWork.astro';
+import About from '../components/About.astro';
+import ContactLinks from '../components/ContactLinks.astro';
 ---
 
 <Layout>
   <a href="#main" class="skip-link">
     Skip to content
   </a>
-  <Header />
-  <main id="main">
-    <Intro />
-    <Sparc />
-    <Architecture />
-    <Reliability />
-    <Infrastructure />
-    <OtherWork />
-    <About />
-    <Contact />
-  </main>
-  <footer>Built with Astro</footer>
+  <div class="page">
+    <Sidebar />
+    <main id="main">
+      <p class="lead">
+        I designed, built and run <a href="#sparc">SPARC</a>, the platform collecting sensor data on
+        two ULB campuses. Alone, from the gateway to the database.
+      </p>
+      <Sparc />
+      <OtherWork />
+      <About />
+    </main>
+    <footer>
+      <ContactLinks />
+      <p>Built with Astro</p>
+    </footer>
+  </div>
 </Layout>
+
+<style>
+  main :global(#sparc > h2) {
+    margin-top: 0;
+  }
+
+  footer {
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  footer :global(.contact-links) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+  }
+</style>

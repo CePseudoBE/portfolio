@@ -1,0 +1,127 @@
+---
+import ContactLinks from './ContactLinks.astro';
+import { publishedNotes } from '../data/notes';
+import { coreLanguages } from '../data/skills';
+
+const navItems = [
+  { href: '#sparc', label: 'SPARC' },
+  { href: '#demo', label: 'Failure demo' },
+  { href: '#code', label: 'Code' },
+  ...(publishedNotes.length > 0 ? [{ href: '#notes', label: 'Notes' }] : []),
+  { href: '#other', label: 'Other work' },
+  { href: '#about', label: 'About' },
+];
+---
+
+<aside>
+  <h1 class="name">
+    Axel
+    <br />
+    Hoffmann
+  </h1>
+  <p class="role">Backend engineer</p>
+  <p class="where">ULB, Brussels · since 2023</p>
+  <ContactLinks />
+  <nav aria-label="Sections" data-section-nav>
+    {navItems.map((item) => (
+      <a href={item.href}>{item.label}</a>
+    ))}
+  </nav>
+  <p class="status">
+    <strong>Open to remote roles in the EU.</strong>
+    <br />
+    {coreLanguages.join(', ')}.
+  </p>
+</aside>
+
+<script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-section-nav] a')];
+  const targets = links.map((link) => document.querySelector<HTMLElement>(link.hash));
+
+  function markCurrent(): void {
+    const line = window.innerHeight / 2;
+    let current = 0;
+    targets.forEach((target, index) => {
+      if (target && target.getBoundingClientRect().top < line) current = index;
+    });
+    links.forEach((link, index) => {
+      if (index === current) link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    });
+  }
+
+  const observer = new IntersectionObserver(markCurrent, { rootMargin: '0px 0px -50% 0px' });
+  targets.forEach((target) => target && observer.observe(target));
+</script>
+
+<style>
+  aside {
+    min-width: 0;
+  }
+
+  @media (min-width: 900px) {
+    aside {
+      position: sticky;
+      top: 56px;
+      align-self: start;
+    }
+  }
+
+  .name {
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: 3rem;
+    line-height: 0.92;
+    margin: 0 0 14px;
+  }
+
+  @media (min-width: 900px) {
+    .name {
+      font-size: 3.5rem;
+    }
+  }
+
+  .role {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .where {
+    margin: 0 0 28px;
+    color: var(--muted);
+  }
+
+  aside :global(.contact-links a) {
+    display: block;
+    padding: 3px 0;
+  }
+
+  nav {
+    margin-top: 28px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+
+  nav a {
+    display: block;
+    padding: 3px 0;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  nav a[aria-current] {
+    color: var(--ink);
+    font-weight: 650;
+  }
+
+  .status {
+    margin-top: 28px;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .status strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+</style>

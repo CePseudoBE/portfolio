@@ -3,18 +3,28 @@ export interface NamedItem {
   description: string;
 }
 
-export interface DiagramPath {
-  label: string;
-  nodes: NamedItem[];
-}
-
 export interface FailureCase {
   scenario: string;
   behavior: string;
 }
 
-export const sparcNumbers =
-  'It has about 50 devices and 3 LoRaWAN gateways, and the Rust backend is 8 crates with 673 automated tests.';
+export const sparcDiagramAlt =
+  "LoRaWAN sensors reach the campus gateways and ChirpStack v4 on a separate VM, which publishes over MQTT with TLS to the platform's Mosquitto broker. MQTT 5.0 devices connect to Mosquitto over TLS 1.3 with authentication and ACLs. HTTP devices go through Traefik. The Rust iot-ingestion binary reads Mosquitto on the internal network, maps ChirpStack payloads to FIWARE, checks per-device API keys for HTTP, and publishes to the NATS JetStream stream OBSERVATIONS. The Rust iot-processing binary validates each reading against the metric registry, stores it in TimescaleDB and evaluates alert thresholds, sending emails through an SMTP relay; invalid readings go to the DLQ_OBSERVATIONS stream. Users open the Nuxt 4 web app on OKD, sign in with Authentik, and call the Rust iot-api binary, which checks tokens against the JWKS, applies RBAC, reads TimescaleDB continuous aggregates, runs the CSV export workers and manages the LoRaWAN fleet through ChirpStack's gRPC API. Grafana reads the aggregates directly and Prometheus scrapes the three Rust binaries.";
+
+export const sparcExplorerAlt =
+  "SPARC web app, Explorer page: one room sensor's temperature over 7 days, hourly averages, between 17.8 and 21.1 °C";
+
+export const sparcDatasheet: NamedItem[] = [
+  { name: 'Users', description: 'CIREM, ULB infrastructure department' },
+  {
+    name: 'Fleet',
+    description: '34 registered sensors, 3 LoRaWAN gateways, 2 campuses (November 2026)',
+  },
+  { name: 'Protocols', description: 'LoRaWAN (ChirpStack v4), MQTT 5.0, HTTP' },
+  { name: 'Data model', description: 'FIWARE Smart Data Models, NGSI-LD ids' },
+  { name: 'Backend', description: 'Rust, 8 crates, 673 automated tests' },
+  { name: 'Runs on', description: 'Podman + Traefik on a VM; front-end on OKD' },
+];
 
 export const sparcConstraints: string[] = [
   'One engineer, from design to production',
@@ -24,49 +34,6 @@ export const sparcConstraints: string[] = [
   'University infrastructure: Authentik for identity, an internal PKI for certificates',
 ];
 
-export const architecturePaths: DiagramPath[] = [
-  {
-    label: 'Write path',
-    nodes: [
-      { name: 'Devices', description: 'LoRaWAN via ChirpStack v4, MQTT 5.0 via Mosquitto, HTTP' },
-      { name: 'Ingestion', description: 'Rust adapters, idempotent' },
-      { name: 'NATS JetStream', description: 'Durable buffer, dead-letter queue' },
-      { name: 'TimescaleDB', description: 'Hypertables, compression' },
-    ],
-  },
-  {
-    label: 'Read path',
-    nodes: [
-      { name: 'Users', description: 'CIREM, ULB infrastructure department' },
-      { name: 'Nuxt 4 web app', description: 'Device status, alerts, exports' },
-      { name: 'Query API', description: 'Axum, OIDC and RBAC' },
-      { name: 'TimescaleDB', description: 'Continuous aggregates' },
-    ],
-  },
-];
-
-export const sparcIngestion: NamedItem[] = [
-  {
-    name: 'LoRaWAN',
-    description:
-      'Sensors reach the 3 existing campus gateways, with ChirpStack v4 as the network server. Traffic from gateway to network server is encrypted with TLS.',
-  },
-  {
-    name: 'MQTT 5.0',
-    description: 'Devices publish to a Mosquitto broker over TLS.',
-  },
-  {
-    name: 'HTTP',
-    description:
-      'Each device pushes readings with its own API key, so one key can be revoked without touching the rest of the fleet.',
-  },
-  {
-    name: 'Access',
-    description:
-      'Users sign in through Authentik (OIDC). The API verifies RS256 tokens against the JWKS, with no shared secret, and multi-tenant RBAC fails closed.',
-  },
-];
-
 export const sparcDecisions: NamedItem[] = [
   {
     name: 'Rust, because I build it alone',
@@ -74,9 +41,9 @@ export const sparcDecisions: NamedItem[] = [
       'With no second reviewer, the compiler is my first safety net. Trade-off: slower prototyping than in TypeScript.',
   },
   {
-    name: 'A modular monolith, not microservices',
+    name: 'One workspace, not microservices',
     description:
-      'One engineer runs it, so the backend ships as one Rust service. Hexagonal boundaries keep the domain independent of Axum, NATS and TimescaleDB.',
+      'One engineer runs it, so the backend is one Rust workspace (8 crates) built into one image and run as three binaries: iot-ingestion, iot-processing and iot-api. Hexagonal boundaries keep the domain independent of Axum, NATS and TimescaleDB.',
   },
   {
     name: 'Light CQRS, checked by the compiler',
@@ -98,14 +65,6 @@ export const sparcDecisions: NamedItem[] = [
     description:
       "SPARC's scale does not justify Kubernetes for the backend: Podman and Traefik on a VM are simpler to run and to debug. The Nuxt 4 front-end ships through our OKD GitOps chain.",
   },
-];
-
-export const sparcFeatures: string[] = [
-  'Threshold alerts, sent by email',
-  'Asynchronous CSV exports',
-  'Device status derived from last activity',
-  'LoRaWAN fleet management through the API',
-  "Nuxt 4 web app for CIREM researchers and ULB's infrastructure department",
 ];
 
 export const failureCases: FailureCase[] = [
@@ -143,7 +102,7 @@ export const sparcInfra: NamedItem[] = [
   {
     name: 'Proxmox VM + Podman',
     description:
-      'The backend stack (Rust API, NATS, TimescaleDB, ChirpStack, Traefik) runs as containers on a VM.',
+      'The backend stack (the three Rust binaries, NATS, TimescaleDB, Traefik) runs as containers on a VM. ChirpStack v4 runs on a separate VM.',
   },
   {
     name: 'Traefik + internal PKI',
