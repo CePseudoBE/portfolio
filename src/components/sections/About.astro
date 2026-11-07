@@ -1,0 +1,30 @@
+---
+import { skills } from '../../data/skills';
+---
+
+<section id="about">
+  <h2>About</h2>
+  <p>
+    I build the systems behind the screen: backend services, data pipelines and IoT infrastructure.
+    I care about clean architecture, honest engineering and software that holds up in production. My
+    rule of thumb: simple until proven otherwise.
+  </p>
+  <p>
+    Since 2023, I have been a backend engineer at STARI (ULB &amp; FARI) in Brussels, working
+    closely with FARI, the AI Institute for the Common Good. I reach for Rust when correctness and
+    performance are critical, and TypeScript when iteration speed matters more.
+  </p>
+  <p>
+    With the FARI AI Academy, I delivered a one-day training session on AI for the common good for
+    BELSPO, the Belgian Federal Science Policy Office.
+  </p>
+
+  <h3>Stack</h3>
+  <ul>
+    {skills.map((category) => (
+      <li>
+        <strong>{category.label}</strong>: {category.items.join(', ')}
+      </li>
+    ))}
+  </ul>
+</section>

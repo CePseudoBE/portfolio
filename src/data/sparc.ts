@@ -1,8 +1,3 @@
-export interface Metric {
-  value: string;
-  label: string;
-}
-
 export interface NamedItem {
   name: string;
   description: string;
@@ -18,14 +13,8 @@ export interface FailureCase {
   behavior: string;
 }
 
-export const sparcMetrics: Metric[] = [
-  { value: 'Jan 2026', label: 'In production since' },
-  { value: '2', label: 'ULB campuses' },
-  { value: '~50', label: 'Devices' },
-  { value: '3', label: 'LoRaWAN gateways' },
-  { value: '673', label: 'Automated tests' },
-  { value: '8', label: 'Rust crates' },
-];
+export const sparcNumbers =
+  'It has about 50 devices and 3 LoRaWAN gateways, and the Rust backend is 8 crates with 673 automated tests.';
 
 export const sparcConstraints: string[] = [
   'One engineer, from design to production',
@@ -153,7 +142,8 @@ export const failureCases: FailureCase[] = [
 export const sparcInfra: NamedItem[] = [
   {
     name: 'Proxmox VM + Podman',
-    description: 'The backend stack (Rust API, NATS, TimescaleDB, ChirpStack, Traefik) runs as containers on a VM.',
+    description:
+      'The backend stack (Rust API, NATS, TimescaleDB, ChirpStack, Traefik) runs as containers on a VM.',
   },
   {
     name: 'Traefik + internal PKI',

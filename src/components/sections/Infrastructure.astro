@@ -1,0 +1,49 @@
+---
+import { sparcInfra } from '../../data/sparc';
+---
+
+<section id="infrastructure">
+  <h2>Infrastructure</h2>
+  <p>
+    SPARC's backend runs as Podman containers behind Traefik on a Proxmox VM, with GitLab CI for
+    builds and tests. Its Nuxt 4 front-end runs on our OKD cluster, deployed through GitOps.
+  </p>
+  <dl>
+    {sparcInfra.map((item) => (
+      <>
+        <dt>{item.name}</dt>
+        <dd>{item.description}</dd>
+      </>
+    ))}
+  </dl>
+  {import.meta.env.DEV && (
+    <figure class="todo">
+      TODO: a screenshot of SPARC's real Grafana dashboard (to be supplied)
+    </figure>
+  )}
+
+  <h3>Front-end and other services: OKD and GitOps</h3>
+  <p>
+    SPARC's front-end, IRIS, Tandem and Infofin run on an OKD (OpenShift) cluster, where merging to
+    main <em>is</em> the deployment. Workloads are hardened: read-only root filesystem, non-root
+    containers, SCC-constrained pods.
+  </p>
+  <ol>
+    <li>
+      <strong>Merge</strong>: A merge on main is the only deployment trigger
+    </li>
+    <li>
+      <strong>Tekton</strong>: In-cluster pipelines build and push the images
+    </li>
+    <li>
+      <strong>Argo CD</strong>: Continuously syncs the cluster to the state declared in Git
+    </li>
+    <li>
+      <strong>Kustomize</strong>: Per-environment overlays, no templating drift
+    </li>
+    <li>
+      <strong>Sealed Secrets</strong>: Secrets encrypted at rest in Git, decrypted only in the
+      cluster
+    </li>
+  </ol>
+</section>

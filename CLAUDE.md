@@ -1,63 +1,68 @@
-# CLAUDE.md - Portfolio "Depth"
+# CLAUDE.md - Portfolio
 
 ## Concept
 
-Portfolio de développeur backend structuré comme une **descente en profondeur** à travers les couches d'un système : **SPARC**, le projet phare. Le visiteur scrolle et "perce" chaque couche de SPARC, de la surface (hero) jusqu'au core (autres projets, about, contact). La métaphore et le projet phare ne font qu'un : chaque couche raconte une seule histoire. Cible : postes Backend Engineer medior, full remote UE ; un recruteur passe 30 à 60 secondes sur le site, donc SPARC, le niveau et le contact doivent être visibles dès le hero.
+Portfolio de développeur backend centré sur **SPARC**, le projet phare. Une seule page, une seule colonne, du texte lisible. Cible : postes Backend Engineer medior, full remote UE ; un recruteur passe 30 à 60 secondes sur le site, donc SPARC, le niveau et le contact doivent être visibles en haut de page.
 
-### Les 6 couches
+Le site doit avoir l'air construit à la main par un ingénieur backend, pas généré par une IA. Ne pas charger de skill de design frontend et ne pas chercher à le rendre "distinctif" ou "éditorial" de sa propre initiative : c'est cet instinct qui avait produit l'ancienne version (concept "Depth", abandonné). Voir **Banned patterns**.
 
-| Layer | ID | Label nav | Accent | Heading | Text | Background | Contenu |
-|---|---|---|---|---|---|---|---|
-| 0 - Surface | `surface` | Intro | `#8fa8c2` | `#c8d5e2` | `#a0aab8` | `#0c1018` | Hero : nom, titre, 3 ans à l'ULB, dispo remote UE, phrase SPARC, CTA (case study, email, CV), ~8 pills |
-| 1 - Interface | `interface` | SPARC | `#5e8a8a` | `#a8ccc8` | `#7e9494` | `#0a0e12` | SPARC : problème, contraintes, chiffres, diagramme write/read path, comment les données entrent (LoRaWAN, MQTT, HTTP, accès) |
-| 2 - Services | `services` | Architecture | `#4a7263` | `#8fbdaa` | `#7a9e8e` | `#080c0e` | Monolithe modulaire, décisions et trade-offs, fonctionnalités |
-| 3 - Data | `data` | Pipeline | `#6b6243` | `#b5a87a` | `#8e8670` | `#0a0908` | Write path étape par étape, "When things go wrong" (fiabilité) |
-| 4 - Infrastructure | `infra` | Infrastructure | `#5c4035` | `#a88072` | `#8a7068` | `#0a0807` | Comment SPARC tourne : backend sur VM (Podman, Traefik, GitLab CI, Prometheus/Grafana), front-end et autres services sur OKD + GitOps |
-| 5 - Core | `core` | Work & contact | `#3d2828` | `#9a7070` | `#806464` | `#080606` | Digital Twin Framework, "Also shipped" (Tandem, IRIS, Infofin), about, stack complète, contact |
+### Sections (ordre fixe)
 
-Les h2 décrivent le contenu ("How it runs"), le petit label mono garde la métaphore ("4 / Infrastructure").
+| Composant      | id               | Titre          | Contenu                                                                             |
+| -------------- | ---------------- | -------------- | ----------------------------------------------------------------------------------- |
+| Header         | -                | h1 (nom)       | Nom, une ligne de rôle, une ligne de liens de contact                               |
+| Intro          | -                | -              | 3 ans à l'ULB, dispo remote UE, phrase SPARC, stack principale en une ligne         |
+| Sparc          | `sparc`          | SPARC          | Problème, chiffres en une phrase, contraintes, write/read paths (figure), ingestion |
+| Architecture   | `architecture`   | Architecture   | Monolithe modulaire, décisions et trade-offs, extrait de code Rust, fonctionnalités |
+| Reliability    | `reliability`    | Reliability    | Write path étape par étape, "When things go wrong"                                  |
+| Infrastructure | `infrastructure` | Infrastructure | Backend sur VM, capture Grafana, front-end et autres services sur OKD + GitOps      |
+| OtherWork      | `other-work`     | Other work     | Digital Twin Framework, "Also shipped" (Tandem, IRIS, Infofin)                      |
+| About          | `about`          | About          | Parcours, BELSPO, stack complète                                                    |
+| Contact        | `contact`        | Contact        | Email, CV, GitHub, LinkedIn                                                         |
 
-### Système de couleurs dual-track
+### Style visuel
 
-Chaque couche utilise **3 niveaux de couleur** pour garder la lisibilité en profondeur :
+- Une pile système pour tout le texte : `system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`. `ui-monospace` uniquement dans `<code>`/`<pre>` et pour des noms d'outils inline dans une phrase.
+- Hiérarchie par taille et graisse uniquement (400/600). h1 2.25rem, h2 1.5rem, h3 1.125rem. Body 1rem / line-height 1.6, mesure 70ch max. `text-wrap: balance` sur les titres, `text-wrap: pretty` sur les paragraphes.
+- Fond `#ffffff`, texte `#1a1a1a`, secondaire `#555`. Un seul accent : `#1f5fbf`, pour les liens et le focus uniquement. Mode sombre via `prefers-color-scheme` : `#141414` / `#e6e6e6`, secondaire `#a6a6a6`, liens `#8ab4f8` (`#1f5fbf` ne fait que 3:1 sur `#141414`).
+- Une colonne alignée à gauche dans un cadre centré de 60rem ; la prose est limitée à 44rem. Seuls les `<figure>` (diagramme, code, captures) vont jusqu'à 60rem : c'est la seule asymétrie voulue.
+- Plus d'espace au-dessus des titres qu'en dessous.
+- Listes de termes (décisions, scénarios de panne, infra, ingestion) en `<dl>` simples, étapes en `<ol>`, stack en phrases séparées par des virgules, CTA en liens soulignés.
+- Le site ne charge aucun JavaScript ; le contenu est complet tel quel.
 
-- **accent** : couleur identitaire de la couche. S'assombrit avec la profondeur. Utilisé pour les labels, pills, glows, indicateurs.
-- **heading** : titres et éléments importants. Reste lisible même aux couches profondes.
-- **text** : body text, descriptions. Gris teinté avec contraste suffisant (WCAG AA exigé pour heading+text sur leur bg respectif).
+## Banned patterns
 
-Le fond (`bg`) s'assombrit progressivement. L'accent aussi. Mais heading et text gardent un plancher de lisibilité. Les variables CSS reflètent ce système : `--layer-{id}-accent`, `--layer-{id}-heading`, `--layer-{id}-text`, `--layer-{id}-bg`.
+Ne jamais réintroduire, même "pour améliorer le design" :
 
-### Direction artistique
-
-- **Vibe** : dark, éditorial, atmosphérique. Pas "template dev dark mode". Penser Linear, pas Bootstrap.
-- **Fond** : shift progressif inspiré des strates géologiques. Du bleu-ardoise en surface vers le brun-terre en profondeur. Pas de thème clair : le fond sombre fait partie du concept.
-- **Typographie** : Instrument Serif (display, titres) + IBM Plex Mono (labels, code, annotations) + Manrope (body text). PAS de Inter, Roboto, Space Grotesk. Subsets latins uniquement.
-- **Éléments récurrents** : indicateur de profondeur fixe (sidebar gauche, dots compacts sur mobile), readout "depth: XX%" en bas à droite, liens rapides fixes en haut à droite (SPARC, Contact, CV).
-- **Rédaction** : 5 tirets cadratins (—) maximum dans tout le texte affiché (lu comme du texte généré par IA). Préférer deux-points, virgules, points. Labels de couche au format `0 / Surface`.
+- **Polices** : tout paquet `@fontsource` ou police web. Instrument Serif, toute serif display, tout mot d'accent en italique, Inter, Geist, Space Grotesk, Manrope, DM Sans, Plus Jakarta, Syne, Outfit, Fraunces, Playfair, IBM Plex, JetBrains Mono.
+- **Typographie** : `text-transform: uppercase` (nulle part), `letter-spacing` autre que la valeur par défaut, monospace hors `<code>`/`<pre>`/noms d'outils inline, graisses autres que 400/600, h1 plein écran.
+- **Couleur** : fond crème/beige, palettes par section ou par "couche", dégradés (`gradient`), glows, `box-shadow` colorées, glassmorphism (`backdrop-filter`, fonds translucides), bandes d'accent en `border-left`, toute couleur d'accent autre que le bleu des liens, mode sombre bleu marine.
+- **Layout** : hero centré ou plein écran, sections en `min-height: 100vh`, petit label au-dessus des titres, numérotation "N / Layer", grilles de cartes, cartes imbriquées, icônes au-dessus des titres, grilles de stats ("By the numbers"), pills/tags de technos, boutons, badge dans le hero, indicateur "scroll", navigation fixe.
+- **Mouvement** : révélation au scroll (`opacity: 0` initial), compteurs animés, lignes animées, indicateur de profondeur, readout "depth: XX%", tracker de scroll, `scroll-behavior: smooth`, `@keyframes`, effets hover en `transform`. Seules les transitions de couleur au hover/focus sont permises.
+- **Concept** : la métaphore "Depth" (couches, surface, core, descente) dans le texte, les ids, les classes ou les noms de fichiers.
+- **Preuves** : images générées, captures, diagrammes ou extraits de code factices. Les `<figure>` de preuve (diagramme d'architecture, extrait de code Rust, capture Grafana) ne contiennent que des fichiers fournis par Axel. En attendant : un placeholder `TODO` rendu uniquement en dev (`import.meta.env.DEV`), pour que `pnpm deploy` ne le publie jamais.
+- **Rédaction** : plus de 3 tirets cadratins (—) dans tout le texte affiché, slogans, contrastes forcés. Ne pas réécrire la copie d'Axel sans demande : signaler les lignes problématiques.
 
 ## Stack
 
 - **Framework** : Astro (statique, single page)
 - **Package manager** : pnpm (PAS npm ni yarn)
-- **Animations** : CSS + IntersectionObserver (Reveal, compteurs, lignes de pipeline). Pas de GSAP à ce jour. Toutes les animations respectent `prefers-reduced-motion` et le contenu doit rester complet sans JS (valeurs finales dans le HTML statique).
-- **Styling** : CSS vanilla, PAS de Tailwind, PAS de CSS-in-JS. Variables CSS pour les couleurs par couche.
+- **Styling** : CSS vanilla, tout dans `src/styles/global.css`. PAS de Tailwind, PAS de CSS-in-JS.
+- **JavaScript client** : aucun.
+- **Outillage** : `pnpm format` / `pnpm format:check` (Prettier + prettier-plugin-astro), `pnpm check` (`astro check`, types). Pas de linter à ce jour.
 - **Déploiement** : `pnpm deploy` — build + scp vers le VPS (axel-hoffmann.dev).
 
 ## Structure du projet
 
 ```
 src/
-  layouts/Layout.astro        # Layout principal, fonts, meta
-  pages/index.astro           # Page unique, assemble les couches
+  layouts/Layout.astro        # Layout principal, meta
+  pages/index.astro           # Page unique, assemble les sections
   pages/404.astro             # Page 404 (servie par nginx via error_page)
-  components/
-    layers/                   # Surface, Interface, Services, Data, Infra, Core
-    ui/                       # DepthIndicator, DepthReadout, QuickLinks, Reveal,
-                              # TechPill, MetricBlock, ProjectCard, PatternCard,
-                              # PipelineStep, ArchitectureDiagram
-  styles/                     # global.css (reset, variables, .button), layers.css
+  components/sections/        # Header, Intro, Sparc, Architecture, Reliability,
+                              # Infrastructure, OtherWork, About, Contact
+  styles/global.css           # Variables de couleur, typographie, listes, figures
   data/                       # sparc.ts, pipeline.ts, projects.ts, skills.ts, contact.ts
-  scripts/depth-tracker.ts    # Logique scroll -> depth percentage
 ```
 
 ## Contenu technique (EXACT — règle : AUCUNE donnée inventée)
@@ -99,45 +104,36 @@ Tout fait affiché doit être vérifiable. Pas de métriques non mesurées, pas 
 
 ### Astro
 
-- Un composant = un fichier. Pas de composants géants multi-sections.
+- Un composant par section (un h2 = un fichier dans `components/sections/`).
 - Props typées avec TypeScript dans le frontmatter.
-- Les données viennent de `src/data/`, pas hardcodées dans les composants.
+- Les données structurées (listes, chiffres, projets, liens) viennent de `src/data/`, pas hardcodées dans les composants.
 
 ### CSS
 
-- Variables CSS pour TOUTES les couleurs de couche. Nommage : `--layer-{id}-accent`, `--layer-{id}-heading`, `--layer-{id}-text`, `--layer-{id}-bg`.
-- Mobile-first. Les layouts grid passent en single column sous 768px.
+- Couleurs uniquement via les variables de `global.css` : `--bg`, `--text`, `--text-secondary`, `--link`.
+- Styler les éléments HTML (`h2`, `dl`, `figure`...) plutôt que d'inventer des classes. Classes existantes : `.secondary`, `.todo`, `.skip-link`.
 - Pas de `!important`. Jamais.
-- `clamp()` pour les tailles de police et les paddings responsifs.
-
-### Animations
-
-- Les transitions CSS simples (hover, reveal) restent en CSS pur.
-- Toutes les animations respectent `prefers-reduced-motion`.
-- Le HTML statique contient toujours l'état final (pas de compteurs à 0 sans JS).
-- Performance : pas de layout thrashing, `transform` et `opacity` uniquement pour les animations fréquentes.
 
 ### TypeScript
 
-- Strict mode. Types partagés dans `src/types.ts`. Pas de `any`.
+- Strict mode. Types définis à côté des données qu'ils décrivent (`src/data/*.ts`). Pas de `any`.
 
 ### Commits
 
 - Atomiques : un commit = un changement logique, qui compile.
-- Messages à l'impératif, en anglais, préfixés (content, fix, feat, refactor, chore, perf) avec scope si pertinent.
+- Messages à l'impératif, en anglais, préfixés (content, fix, feat, refactor, chore, perf, style) avec scope si pertinent.
 
 ## Tests
 
-- `astro build` doit passer sans erreur.
-- Vérifier le depth tracker sur mobile et desktop.
-- Tester avec `prefers-reduced-motion: reduce` et sans JavaScript.
+- `pnpm format:check`, `pnpm check` et `pnpm build` doivent passer.
+- Vérifier en clair et en sombre, sur mobile et desktop, et sans JavaScript.
+- `rg -i "uppercase|letter-spacing|gradient|box-shadow|backdrop-filter|@fontsource|opacity: 0" src` ne doit rien renvoyer.
 - Lighthouse : viser 95+ en performance. Contrastes : WCAG AA minimum.
 
 ## Notes
 
 - Le site est une single page. Pas de routing multi-pages (seule exception : `404.astro`).
 - GitHub : https://github.com/CePseudoBE — LinkedIn : https://www.linkedin.com/in/axel-g-hoffmann/ — Email : axel.g.hoffmann@gmail.com (source : `src/data/contact.ts`).
-- CV : `public/cv.pdf` (version EN sans photo), lié depuis le hero, les liens rapides et Core.
-- Image sociale : `public/og-sparc.png` (2400×1260). LinkedIn cache l'image par URL : tout nouveau rendu doit changer de nom de fichier.
+- CV : `public/cv.pdf` (version EN sans photo), lié depuis le header et Contact.
+- Image sociale : `public/og-sparc.png` (2400×1260). LinkedIn cache l'image par URL : tout nouveau rendu doit changer de nom de fichier. L'image actuelle et `public/favicon.svg` portent encore l'ancien design "Depth" : à refaire.
 - Le contenu est en anglais (portfolio pour des postes remote internationaux).
-- Le "depth: XX%" readout et l'indicateur latéral sont des éléments signature du design, ne pas les retirer.

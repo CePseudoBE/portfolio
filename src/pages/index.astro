@@ -1,27 +1,30 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Surface from '../components/layers/Surface.astro';
-import Interface from '../components/layers/Interface.astro';
-import Services from '../components/layers/Services.astro';
-import Data from '../components/layers/Data.astro';
-import Infra from '../components/layers/Infra.astro';
-import Core from '../components/layers/Core.astro';
-import DepthIndicator from '../components/ui/DepthIndicator.astro';
-import DepthReadout from '../components/ui/DepthReadout.astro';
-import QuickLinks from '../components/ui/QuickLinks.astro';
+import Header from '../components/sections/Header.astro';
+import Intro from '../components/sections/Intro.astro';
+import Sparc from '../components/sections/Sparc.astro';
+import Architecture from '../components/sections/Architecture.astro';
+import Reliability from '../components/sections/Reliability.astro';
+import Infrastructure from '../components/sections/Infrastructure.astro';
+import OtherWork from '../components/sections/OtherWork.astro';
+import About from '../components/sections/About.astro';
+import Contact from '../components/sections/Contact.astro';
 ---
 
 <Layout>
-  <a href="#main" class="skip-link mono">Skip to content</a>
-  <QuickLinks />
-  <DepthIndicator />
+  <a href="#main" class="skip-link">
+    Skip to content
+  </a>
+  <Header />
   <main id="main">
-    <DepthReadout />
-    <Surface />
-    <Interface />
-    <Services />
-    <Data />
-    <Infra />
-    <Core />
+    <Intro />
+    <Sparc />
+    <Architecture />
+    <Reliability />
+    <Infrastructure />
+    <OtherWork />
+    <About />
+    <Contact />
   </main>
+  <footer>Built with Astro</footer>
 </Layout>

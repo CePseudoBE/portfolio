@@ -1,0 +1,69 @@
+---
+import {
+  architecturePaths,
+  sparcConstraints,
+  sparcIngestion,
+  sparcNumbers,
+} from '../../data/sparc';
+---
+
+<section id="sparc">
+  <h2>SPARC</h2>
+  <p class="secondary">
+    Sole engineer, within STARI · Rust backend, Nuxt 4 web app, infrastructure
+  </p>
+  <p>
+    Sensor Platform for Academic Research and Community. In production since January 2026 on two ULB
+    campuses, used by a research center (CIREM) and ULB's infrastructure department.
+    {sparcNumbers}
+  </p>
+  <p>
+    <strong>The problem:</strong> research and campus teams need reliable sensor data, but devices
+    speak different protocols and no team should have to run its own pipeline.
+  </p>
+  <p>
+    <a href="https://sparc.ulb.be">sparc.ulb.be</a>
+  </p>
+
+  <h3>Constraints</h3>
+  <ul>
+    {sparcConstraints.map((constraint) => (
+      <li>{constraint}</li>
+    ))}
+  </ul>
+
+  <h3>Write and read paths</h3>
+  <figure>
+    {import.meta.env.DEV && (
+      <div class="todo">TODO: the actual SPARC architecture diagram (image to be supplied)</div>
+    )}
+    {architecturePaths.map((path) => (
+      <>
+        <p>
+          <strong>{path.label}</strong>
+        </p>
+        <ol>
+          {path.nodes.map((node) => (
+            <li>
+              <strong>{node.name}</strong>: {node.description}
+            </li>
+          ))}
+        </ol>
+      </>
+    ))}
+    <figcaption>
+      Around it: Prometheus and Grafana for monitoring, threshold alerts by email, asynchronous CSV
+      exports.
+    </figcaption>
+  </figure>
+
+  <h3>How data gets in</h3>
+  <dl>
+    {sparcIngestion.map((item) => (
+      <>
+        <dt>{item.name}</dt>
+        <dd>{item.description}</dd>
+      </>
+    ))}
+  </dl>
+</section>

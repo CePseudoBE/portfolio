@@ -1,0 +1,31 @@
+---
+import { pipelineSteps } from '../../data/pipeline';
+import { failureCases } from '../../data/sparc';
+---
+
+<section id="reliability">
+  <h2>Reliability</h2>
+  <p>
+    Every reading takes the same write path, whatever protocol it arrived on. NATS JetStream sits
+    between ingestion and storage, and TimescaleDB keeps the time series.
+  </p>
+
+  <h3>Write path, step by step</h3>
+  <ol>
+    {pipelineSteps.map((step) => (
+      <li>
+        <strong>{step.label}</strong> ({step.tech}): {step.description}
+      </li>
+    ))}
+  </ol>
+
+  <h3>When things go wrong</h3>
+  <dl>
+    {failureCases.map((failure) => (
+      <>
+        <dt>{failure.scenario}</dt>
+        <dd>{failure.behavior}</dd>
+      </>
+    ))}
+  </dl>
+</section>

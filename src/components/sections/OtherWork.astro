@@ -1,0 +1,43 @@
+---
+import { projects } from '../../data/projects';
+
+const digitalTwin = projects.find((p) => p.slug === 'digital-twin')!;
+const alsoShipped = projects.filter((p) => p.slug !== 'digital-twin');
+---
+
+<section id="other-work">
+  <h2>Other work</h2>
+
+  <h3>{digitalTwin.name}</h3>
+  <p class="secondary">{digitalTwin.role}</p>
+  <p>{digitalTwin.summary}</p>
+  <ul>
+    {digitalTwin.highlights.map((highlight) => (
+      <li>{highlight}</li>
+    ))}
+  </ul>
+  <p class="secondary">
+    {digitalTwin.stack.join(', ')}
+    {digitalTwin.links?.map((link) => (
+      <>
+        {' '}
+        · <a href={link.href}>{link.label}</a>
+      </>
+    ))}
+  </p>
+
+  <h3>Also shipped to production at ULB</h3>
+  <ul>
+    {alsoShipped.map((project) => (
+      <li>
+        <strong>{project.name}</strong> ({project.stack.join(', ')}): {project.summary}
+        {project.links?.map((link) => (
+          <>
+            {' '}
+            <a href={link.href}>{link.label}</a>
+          </>
+        ))}
+      </li>
+    ))}
+  </ul>
+</section>
