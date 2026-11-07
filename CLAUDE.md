@@ -8,17 +8,17 @@ Historique : la v1 ("Depth", serif, thème sombre, labels uppercase, glows) fais
 
 ### Structure de la page
 
-| Composant                    | id      | Titre                                 | Contenu                                                                                                 |
-| ---------------------------- | ------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `Sidebar`                    | -       | h1 (nom)                              | Nom, rôle, "ULB, Brussels · since 2023", liens de contact, nav, disponibilité, "Rust, TypeScript, SQL." |
-| lead (`index.astro`)         | -       | -                                     | Phrase d'accroche SPARC                                                                                 |
-| `Sparc`                      | `sparc` | h2 SPARC                              | Diagramme, datasheet + capture, problème, contraintes, décisions, pannes, infrastructure                |
-| `FailureDemo` (dans `Sparc`) | `demo`  | h3 What happens when something breaks | Démo interactive de la write path                                                                       |
-| `CodeExcerpt` (dans `Sparc`) | `code`  | h3 The export queue is a table        | Extrait `claim_next` verbatim, Shiki                                                                    |
-| `Notes` (dans `Sparc`)       | `notes` | h3 Notes                              | Rendu seulement si une note est publiée                                                                 |
-| `OtherWork`                  | `other` | h2 Other work                         | Digital Twin (lignes de couches), Also shipped, ligne OKD/GitOps                                        |
-| `About`                      | `about` | h2 About                              | Parcours, envie d'équipe, homelab, BELSPO, stack en une ligne                                           |
-| footer (`index.astro`)       | -       | -                                     | Liens de contact, "Built with Astro"                                                                    |
+| Composant                    | id      | Titre                          | Contenu                                                                                                 |
+| ---------------------------- | ------- | ------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `Sidebar`                    | -       | h1 (nom)                       | Nom, rôle, "ULB, Brussels · since 2023", liens de contact, nav, disponibilité, "Rust, TypeScript, SQL." |
+| lead (`index.astro`)         | -       | -                              | Phrase d'accroche SPARC                                                                                 |
+| `Sparc`                      | `sparc` | h2 SPARC                       | Diagramme, datasheet + capture, problème, contraintes, décisions, infrastructure                        |
+| `FailureDemo` (dans `Sparc`) | `demo`  | h3 When things go wrong        | Démo interactive de la write path, puis les cas de panne (`failureCases`)                               |
+| `CodeExcerpt` (dans `Sparc`) | `code`  | h3 The export queue is a table | Extrait `claim_next` verbatim, Shiki                                                                    |
+| `Notes` (dans `Sparc`)       | `notes` | h3 Notes                       | Rendu seulement si une note est publiée                                                                 |
+| `OtherWork`                  | `other` | h2 Other work                  | Digital Twin (lignes de couches), Also shipped, ligne OKD/GitOps                                        |
+| `About`                      | `about` | h2 About                       | Parcours, envie d'équipe, homelab, BELSPO, stack en une ligne                                           |
+| footer (`index.astro`)       | -       | -                              | Liens de contact, "Built with Astro"                                                                    |
 
 ### Design system
 
@@ -52,9 +52,9 @@ Historique : la v1 ("Depth", serif, thème sombre, labels uppercase, glows) fais
 - **Framework** : Astro (statique, single page)
 - **Package manager** : pnpm (PAS npm ni yarn)
 - **Styling** : CSS vanilla. Variables, base et éléments partagés dans `src/styles/global.css` ; styles propres à un composant dans son `<style>` scopé. PAS de Tailwind, PAS de CSS-in-JS.
-- **Coloration du code** : `<Code>` d'Astro (Shiki), thèmes `github-light-default` / `github-dark-default`, `defaultColor: false` ; le choix du thème se fait dans `global.css` via `prefers-color-scheme`.
+- **Coloration du code** : `<Code>` d'Astro (Shiki), thèmes `github-light-high-contrast` / `github-dark-default` (le thème clair par défaut ne passe pas AA sur `--soft`), `defaultColor: false` ; le choix du thème se fait dans `global.css` via `prefers-color-scheme`.
 - **Outillage** : `pnpm format` / `pnpm format:check` (Prettier + prettier-plugin-astro), `pnpm check` (`astro check`). Pas de linter à ce jour.
-- **Déploiement** : `pnpm deploy` — build + scp vers le VPS (axel-hoffmann.dev).
+- **Déploiement** : `pnpm run deploy` — build + scp vers le VPS (axel-hoffmann.dev). Pas `pnpm deploy`, qui lance la commande intégrée de pnpm et non le script.
 
 ## Structure du projet
 
